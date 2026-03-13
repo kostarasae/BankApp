@@ -39,9 +39,18 @@ public class Customer extends AbstractEntity {
     @JoinColumn(name = "user_id", nullable = false, unique = true)
     private User user;
 
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "personal_info_id")
+    private User personalInfo;
+
     @PrePersist
     public void initializeUUID() {
         this.uuid = UUID.randomUUID();
+    }
+
+    public void addUser(User user) {
+        this.user = user;
+        user.setCustomer(this);
     }
 
     @Override
