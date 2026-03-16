@@ -2,6 +2,7 @@ package gr.aueb.cf.restbankapp.service;
 
 import gr.aueb.cf.restbankapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityInvalidArgumentException;
+import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.dto.UserInsertDTO;
 import gr.aueb.cf.restbankapp.dto.UserReadOnlyDTO;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
@@ -52,12 +53,30 @@ public class UserService implements IUserService {
     }
 
     @Override
-    public UserReadOnlyDTO getUserByUUID(UUID uuid) {
-        return null;
+    @Transactional(readOnly = true)
+    public UserReadOnlyDTO getUserByUUID(UUID uuid) throws EntityNotFoundException {
+        try {
+            User user = userRepository.findByUuid(uuid)
+                    .orElseThrow(() -> new EntityNotFoundException("User", "User with uuid=" + uuid + " not found"));
+        log.debug("User with uuid={} found successfully", uuid);
+        return mapper.mapToUserReadOnlyDTO(user);
+        } catch (EntityNotFoundException e) {
+            log.error("Get failed. User with uuid={} not found", uuid);
+            throw e;
+        }
     }
 
     @Override
-    public UserReadOnlyDTO getUserByUUIDDeletedFalse(UUID uuid) {
-        return null;
+    @Transactional(readOnly = true)
+    public UserReadOnlyDTO getUserByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException {
+        try {
+            User user = userRepository.findByUuidAndDeletedFalse(uuid)
+                    .orElseThrow(() -> new EntityNotFoundException("User", "User with uuid=" + uuid + " not found"));
+            log.debug("Active user with uuid={} found successfully", uuid);
+            return mapper.mapToUserReadOnlyDTO(user);
+        } catch (EntityNotFoundException e) {
+            log.error("Get failed. User with uuid={} not found", uuid);
+            throw e;
+        }
     }
 }
