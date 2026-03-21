@@ -1,0 +1,232 @@
+2026-03-17 19:32:34 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 19:32:34 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 22684 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 19:32:34 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 19:32:35 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+ 2026-03-17 19:32:35 ERROR o.s.boot.SpringApplication - Application run failed
+ org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:72)
+2026-03-17 19:32:56 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 19:32:56 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 16952 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 19:32:56 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 19:32:57 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+ 2026-03-17 19:32:57 ERROR o.s.boot.SpringApplication - Application run failed
+ org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:72)
+2026-03-17 19:39:07 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 19:39:07 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 20684 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 19:39:07 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 19:39:08 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+ 2026-03-17 19:39:08 ERROR o.s.boot.SpringApplication - Application run failed
+ org.springframework.beans.factory.parsing.BeanDefinitionParsingException: Configuration problem: @Bean method 'corsConfigurationSource' must not be private or final; change the method's modifiers to continue.
+Offending resource: class path resource [gr/aueb/cf/restbankapp/security/SecurityConfiguration.class]
+	at org.springframework.beans.factory.parsing.FailFastProblemReporter.error(FailFastProblemReporter.java:72)
+2026-03-17 19:41:57 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 19:41:57 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 8800 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 19:41:57 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 19:41:59 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 19:41:59 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 59 ms. Found 7 JPA repository interfaces.
+ 2026-03-17 19:41:59 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 19:41:59 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2009 ms
+ 2026-03-17 19:42:00 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 19:42:01 INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.051s)
+ 2026-03-17 19:42:01 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 3
+ 2026-03-17 19:42:01 INFO  o.f.core.internal.command.DbMigrate - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-17 19:42:01 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 19:42:01 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 19:42:01 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 19:42:01 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 19:42:03 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 19:42:03 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 19:42:03 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'accountController' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\api\AccountController.class]: Unsatisfied dependency expressed through constructor parameter 0: No qualifying bean of type 'gr.aueb.cf.restbankapp.service.IAccountService' available: expected at least 1 bean which qualifies as autowire candidate. Dependency annotations: {}
+ 2026-03-17 19:42:03 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 19:42:03 ERROR o.s.b.d.LoggingFailureAnalysisReporter - 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Parameter 0 of constructor in gr.aueb.cf.restbankapp.api.AccountController required a bean of type 'gr.aueb.cf.restbankapp.service.IAccountService' that could not be found.
+
+
+Action:
+
+Consider defining a bean of type 'gr.aueb.cf.restbankapp.service.IAccountService' in your configuration.
+
+ 2026-03-17 20:01:37 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 20:01:37 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 8432 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 20:01:37 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 20:01:38 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 20:01:38 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 56 ms. Found 6 JPA repository interfaces.
+ 2026-03-17 20:01:39 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 20:01:39 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1757 ms
+ 2026-03-17 20:01:39 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 20:01:40 INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.036s)
+ 2026-03-17 20:01:40 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 3
+ 2026-03-17 20:01:40 INFO  o.f.core.internal.command.DbMigrate - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-17 20:01:40 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 20:01:40 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 20:01:40 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 20:01:40 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 20:01:42 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 20:01:42 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 20:01:42 INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+ 2026-03-17 20:01:42 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+ 2026-03-17 20:01:43 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'customerRepository' defined in gr.aueb.cf.restbankapp.repository.CustomerRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); No property 'afm' found for type 'User'; Traversed path: Customer.personalInfo
+ 2026-03-17 20:01:43 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Closing JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 20:01:43 ERROR o.s.boot.SpringApplication - Application run failed
+ org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'customerRepository' defined in gr.aueb.cf.restbankapp.repository.CustomerRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Could not create query for public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); No property 'afm' found for type 'User'; Traversed path: Customer.personalInfo
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)
+Caused by: org.springframework.data.repository.query.QueryCreationException: Could not create query for public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); Reason: Failed to create query for method public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); No property 'afm' found for type 'User'; Traversed path: Customer.personalInfo
+	at org.springframework.data.repository.query.QueryCreationException.create(QueryCreationException.java:101)
+Caused by: java.lang.IllegalArgumentException: Failed to create query for method public abstract java.util.Optional gr.aueb.cf.restbankapp.repository.CustomerRepository.findByPersonalInfo_Afm(java.lang.String); No property 'afm' found for type 'User'; Traversed path: Customer.personalInfo
+	at org.springframework.data.jpa.repository.query.PartTreeJpaQuery.<init>(PartTreeJpaQuery.java:107)
+Caused by: org.springframework.data.mapping.PropertyReferenceException: No property 'afm' found for type 'User'; Traversed path: Customer.personalInfo
+	at org.springframework.data.mapping.PropertyPath.<init>(PropertyPath.java:94)
+2026-03-17 20:06:48 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 20:06:48 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 11808 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 20:06:48 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 20:06:49 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 20:06:49 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 54 ms. Found 6 JPA repository interfaces.
+ 2026-03-17 20:06:50 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 20:06:50 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1708 ms
+ 2026-03-17 20:06:50 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 20:06:51 INFO  o.f.core.internal.command.DbValidate - Successfully validated 3 migrations (execution time 00:00.029s)
+ 2026-03-17 20:06:51 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 3
+ 2026-03-17 20:06:51 INFO  o.f.core.internal.command.DbMigrate - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-17 20:06:51 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 20:06:51 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 20:06:51 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 20:06:51 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 20:06:53 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 20:06:53 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 20:06:53 INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+ 2026-03-17 20:06:53 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+ 2026-03-17 20:06:54 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+ 2026-03-17 20:06:54 INFO  g.a.c.r.RestBankAppApplication - Started RestBankAppApplication in 6.908 seconds (process running for 7.452)
+ 2026-03-17 21:05:51 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+ 2026-03-17 21:05:52 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 104 ms
+ 2026-03-17 21:05:53 INFO  g.a.c.r.service.UserService - Save succeeded for user with username=kostis.
+ 2026-03-17 21:11:53 WARN  g.a.c.r.s.CustomAuthenticationEntryPoint - User not authenticated, with message=Full authentication is required to access this resource
+ 2026-03-17 21:16:19 WARN  g.a.c.r.s.CustomAuthenticationEntryPoint - User not authenticated, with message=Full authentication is required to access this resource
+ 2026-03-17 21:24:51 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 21:24:51 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 11900 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 21:24:51 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 21:24:52 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 21:24:52 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 62 ms. Found 6 JPA repository interfaces.
+ 2026-03-17 21:24:53 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 21:24:53 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 1932 ms
+ 2026-03-17 21:24:54 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 21:24:54 INFO  o.f.core.internal.command.DbValidate - Successfully validated 4 migrations (execution time 00:00.046s)
+ 2026-03-17 21:24:54 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 3
+ 2026-03-17 21:24:54 INFO  o.f.core.internal.command.DbMigrate - Migrating schema `bankapp` to version "4 - insert view user capability to admin"
+ 2026-03-17 21:24:55 INFO  o.f.core.internal.command.DbMigrate - Successfully applied 1 migration to schema `bankapp`, now at version v4 (execution time 00:00.030s)
+ 2026-03-17 21:24:55 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 21:24:55 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 21:24:55 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 21:24:55 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 21:24:57 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 21:24:57 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 21:24:57 INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+ 2026-03-17 21:24:57 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+ 2026-03-17 21:24:58 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+ 2026-03-17 21:24:58 INFO  g.a.c.r.RestBankAppApplication - Started RestBankAppApplication in 7.883 seconds (process running for 8.308)
+ 2026-03-17 21:28:54 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+ 2026-03-17 21:28:54 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 62 ms
+ 2026-03-17 21:29:53 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 21:29:53 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 11128 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 21:29:53 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 21:29:55 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 21:29:55 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 269 ms. Found 6 JPA repository interfaces.
+ 2026-03-17 21:29:56 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 21:29:56 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 3181 ms
+ 2026-03-17 21:29:57 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 21:29:58 INFO  o.f.core.internal.command.DbValidate - Successfully validated 4 migrations (execution time 00:00.037s)
+ 2026-03-17 21:29:58 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 4
+ 2026-03-17 21:29:58 INFO  o.f.core.internal.command.DbMigrate - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-17 21:29:58 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 21:29:58 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 21:30:01 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 21:30:04 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 21:30:06 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 21:30:06 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 21:30:09 INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+ 2026-03-17 21:30:09 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+ 2026-03-17 21:30:10 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+ 2026-03-17 21:30:10 INFO  g.a.c.r.RestBankAppApplication - Started RestBankAppApplication in 19.893 seconds (process running for 20.317)
+ 2026-03-17 21:30:18 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+ 2026-03-17 21:30:18 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+ 2026-03-17 21:30:19 WARN  g.a.cf.restbankapp.core.ErrorHandler - Failed login for IP=0:0:0:0:0:0:0:1
+ 2026-03-17 21:36:35 INFO  o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-17 21:36:36 INFO  g.a.c.r.RestBankAppApplication - Starting RestBankAppApplication using Java 21.0.8 with PID 25588 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-17 21:36:36 INFO  g.a.c.r.RestBankAppApplication - The following 1 profile is active: "dev"
+ 2026-03-17 21:36:37 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-17 21:36:38 INFO  o.s.d.r.c.RepositoryConfigurationDelegate - Finished Spring Data repository scanning in 61 ms. Found 6 JPA repository interfaces.
+ 2026-03-17 21:36:38 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat initialized with port 8080 (http)
+ 2026-03-17 21:36:38 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext - Root WebApplicationContext: initialization completed in 2368 ms
+ 2026-03-17 21:36:39 INFO  org.flywaydb.core.FlywayExecutor - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-17 21:36:40 INFO  o.f.core.internal.command.DbValidate - Successfully validated 4 migrations (execution time 00:00.056s)
+ 2026-03-17 21:36:40 INFO  o.f.core.internal.command.DbMigrate - Current version of schema `bankapp`: 4
+ 2026-03-17 21:36:40 INFO  o.f.core.internal.command.DbMigrate - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-17 21:36:40 INFO  org.hibernate.Version - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-17 21:36:41 INFO  o.h.c.i.RegionFactoryInitiator - HHH000026: Second-level cache disabled
+ 2026-03-17 21:36:42 INFO  o.s.o.j.p.SpringPersistenceUnitInfo - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-17 21:36:42 INFO  o.hibernate.orm.connections.pooling - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-17 21:36:44 INFO  o.h.e.t.j.p.i.JtaPlatformInitiator - HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+ 2026-03-17 21:36:44 INFO  o.s.o.j.LocalContainerEntityManagerFactoryBean - Initialized JPA EntityManagerFactory for persistence unit 'default'
+ 2026-03-17 21:36:46 INFO  o.s.s.c.a.a.c.InitializeAuthenticationProviderBeanManagerConfigurer$InitializeAuthenticationProviderManagerConfigurer - Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+ 2026-03-17 21:36:46 WARN  o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+ 2026-03-17 21:36:48 INFO  o.s.b.w.e.tomcat.TomcatWebServer - Tomcat started on port 8080 (http) with context path '/'
+ 2026-03-17 21:36:48 INFO  g.a.c.r.RestBankAppApplication - Started RestBankAppApplication in 13.253 seconds (process running for 13.683)
+ 2026-03-17 21:36:50 INFO  o.s.web.servlet.DispatcherServlet - Initializing Servlet 'dispatcherServlet'
+ 2026-03-17 21:36:50 INFO  o.s.web.servlet.DispatcherServlet - Completed initialization in 2 ms
+ 2026-03-17 21:37:51 WARN  g.a.c.r.s.CustomAuthenticationEntryPoint - User not authenticated, with message=Full authentication is required to access this resource
+ 

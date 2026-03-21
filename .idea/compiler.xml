@@ -1,6 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
+    <excludeFromCompile>
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/dto/AccountDepositDTO.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/dto/AccountInsertDTO.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/dto/AccountReadOnlyDTO.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/dto/AccountWithdrawDTO.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/api/AccountController.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/api/TransactionTask.java" />
+      <directory url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/core/factory" includeSubdirectories="true" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/Account.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/AccountChecking.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/AccountSavings.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/AccountType.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/FeeStrategy.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/Generator.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/model/Reportable.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/service/AccountServiceImpl.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/service/IAccountService.java" />
+      <file url="file://$PROJECT_DIR$/src/main/java/gr/aueb/cf/restbankapp/core/config/BankConfiguration.java" />
+    </excludeFromCompile>
     <annotationProcessing>
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
