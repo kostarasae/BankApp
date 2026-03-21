@@ -15,7 +15,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     Optional<Customer> findByUuid(UUID uuid);
     Optional<Customer> findByVat(String vat);
-    Optional<Customer> findByPersonalInfo_Afm(String afm);
 
     @EntityGraph(attributePaths = {"personalInfo", "region"})
     Page<Customer> findAllByDeletedFalse(Pageable pageable);
