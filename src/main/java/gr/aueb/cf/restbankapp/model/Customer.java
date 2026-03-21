@@ -41,7 +41,7 @@ public class Customer extends AbstractEntity {
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "personal_info_id")
-    private User personalInfo;
+    private PersonalInfo personalInfo;
 
     @PrePersist
     public void initializeUUID() {
