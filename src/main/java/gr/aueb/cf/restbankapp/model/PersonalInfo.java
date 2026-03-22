@@ -11,7 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @Getter
 @Setter
-@Table(name ="personal_information")
+@Table(name = "personal_information")
 public class PersonalInfo extends AbstractEntity {
 
     @Id

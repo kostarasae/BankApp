@@ -4,10 +4,10 @@ import gr.aueb.cf.restbankapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.ValidationException;
-import gr.aueb.cf.restbankapp.dto.RoleReadOnlyDTO;
+//import gr.aueb.cf.restbankapp.dto.RoleReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.UserInsertDTO;
 import gr.aueb.cf.restbankapp.dto.UserReadOnlyDTO;
-import gr.aueb.cf.restbankapp.service.IRoleService;
+//import gr.aueb.cf.restbankapp.service.IRoleService;
 import gr.aueb.cf.restbankapp.service.IUserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,6 @@ import java.util.UUID;
 public class UserRestController {
 
     private final IUserService userService;
-
 
     @PostMapping
     public ResponseEntity<UserReadOnlyDTO> registerUser(@Valid @RequestBody UserInsertDTO userInsertDTO,
