@@ -4,15 +4,15 @@ import gr.aueb.cf.restbankapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.FileUploadException;
-//import gr.aueb.cf.restbankapp.core.filters.CustomerFilters;
+import gr.aueb.cf.restbankapp.core.filters.CustomerFilters;
 import gr.aueb.cf.restbankapp.dto.CustomerInsertDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerReadOnlyDTO;
-//import gr.aueb.cf.restbankapp.dto.CustomerUpdateDTO;
+import gr.aueb.cf.restbankapp.dto.CustomerUpdateDTO;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.*;
 import gr.aueb.cf.restbankapp.model.static_data.Region;
 import gr.aueb.cf.restbankapp.repository.*;
-//import gr.aueb.cf.restbankapp.specification.CustomerSpecification;
+import gr.aueb.cf.restbankapp.specification.CustomerSpecification;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.tika.Tika;
@@ -108,7 +108,6 @@ public class CustomerServiceImpl implements ICustomerService {
         return customerRepository.findByVat(vat).isPresent();
     }
 
-
     @Override
     @PreAuthorize("hasAuthority('VIEW_CUSTOMERS')")
     @Transactional(readOnly = true)
@@ -127,56 +126,56 @@ public class CustomerServiceImpl implements ICustomerService {
         return customersPage.map(mapper::mapToCustomerReadOnlyDTO);
     }
 
-//    @Override
-//    @PreAuthorize("hasAuthority('EDIT_CUSTOMER')")
-//    @Transactional(rollbackFor = { EntityNotFoundException.class, EntityAlreadyExistsException.class, EntityInvalidArgumentException.class} )
-//    public CustomerReadOnlyDTO updateCustomer(CustomerUpdateDTO dto)
-//            throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException {
-//        try {
-//            Customer customer = customerRepository.findByUuid(dto.uuid())
-//                    .orElseThrow(() -> new EntityNotFoundException("Customer", "Customer with uuid=" + dto.uuid() + " not found"));
-//
-//            customer.setFirstname(dto.firstname());
-//            customer.setLastname(dto.lastname());
-//
-//            if (!customer.getVat().equals(dto.vat())) {
-//                if (customerRepository.findByVat(dto.vat()).isPresent()) {
-//                    throw new EntityAlreadyExistsException("","Customer with vat=" + dto.vat() + " already exists");
-//                }
-//                customer.setVat(dto.vat());
-//            }
-//
-//            if (!customer.getPersonalInfo().getIdentityNumber().equals(dto.personalInfoUpdateDTO().identityNumber()) &&
-//                    personalInfoRepository.findByIdentityNumber(dto.personalInfoUpdateDTO().identityNumber()).isPresent()) {
-//                throw new EntityAlreadyExistsException("Customer", "Customer with identity number " + dto.personalInfoUpdateDTO().identityNumber() + " already exists");
-//            }
-//
-//            if (!Objects.equals(dto.regionId(), customer.getRegion().getId())) {
-//                Region region = regionRepository.findById(dto.regionId())
-//                        .orElseThrow(() -> new EntityInvalidArgumentException("Region","Region id=" + dto.regionId() + " invalid"));
-//                Region oldRegion = customer.getRegion();
-//                if (oldRegion != null) {
-//                    oldRegion.removeCustomer(customer);
-//                }
-//                region.addCustomer(customer);
-//            }
-//            // user username and password updated TODO
-//            // other features to be updated TODO
-//
-//            customerRepository.save(customer);    // προαιρετικό αν είναι managed
-//            log.info("Customer with uuid={} updated successfully", dto.uuid());
-//            return mapper.mapToCustomerReadOnlyDTO(customer);
-//        } catch (EntityNotFoundException e) {
-//            log.error("Update failed for customer with uuid={}. Customer not found", dto.uuid(), e);
-//            throw e;
-//        } catch (EntityAlreadyExistsException e) {
-//            log.error("Update failed for customer with uuid={}. Customer with vat={} already exists", dto.uuid(), dto.vat(), e);
-//            throw e;
-//        } catch (EntityInvalidArgumentException e) {
-//            log.error("Update failed for customer with uuid={}. Region id={} invalid", dto.uuid(), dto.regionId(), e);
-//            throw e;
-//        }
-//    }
+    @Override
+    @PreAuthorize("hasAuthority('EDIT_CUSTOMER')")
+    @Transactional(rollbackFor = { EntityNotFoundException.class, EntityAlreadyExistsException.class, EntityInvalidArgumentException.class} )
+    public CustomerReadOnlyDTO updateCustomer(CustomerUpdateDTO dto)
+            throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException {
+        try {
+            Customer customer = customerRepository.findByUuid(dto.uuid())
+                    .orElseThrow(() -> new EntityNotFoundException("Customer", "Customer with uuid=" + dto.uuid() + " not found"));
+
+            customer.setFirstname(dto.firstname());
+            customer.setLastname(dto.lastname());
+
+            if (!customer.getVat().equals(dto.vat())) {
+                if (customerRepository.findByVat(dto.vat()).isPresent()) {
+                    throw new EntityAlreadyExistsException("","Customer with vat=" + dto.vat() + " already exists");
+                }
+                customer.setVat(dto.vat());
+            }
+
+            if (!customer.getPersonalInfo().getIdentityNumber().equals(dto.personalInfoUpdateDTO().identityNumber()) &&
+                    personalInfoRepository.findByIdentityNumber(dto.personalInfoUpdateDTO().identityNumber()).isPresent()) {
+                throw new EntityAlreadyExistsException("Customer", "Customer with identity number " + dto.personalInfoUpdateDTO().identityNumber() + " already exists");
+            }
+
+            if (!Objects.equals(dto.regionId(), customer.getRegion().getId())) {
+                Region region = regionRepository.findById(dto.regionId())
+                        .orElseThrow(() -> new EntityInvalidArgumentException("Region","Region id=" + dto.regionId() + " invalid"));
+                Region oldRegion = customer.getRegion();
+                if (oldRegion != null) {
+                    oldRegion.removeCustomer(customer);
+                }
+                region.addCustomer(customer);
+            }
+            // user username and password updated TODO
+            // other features to be updated TODO
+
+            customerRepository.save(customer);    // προαιρετικό αν είναι managed
+            log.info("Customer with uuid={} updated successfully", dto.uuid());
+            return mapper.mapToCustomerReadOnlyDTO(customer);
+        } catch (EntityNotFoundException e) {
+            log.error("Update failed for customer with uuid={}. Customer not found", dto.uuid(), e);
+            throw e;
+        } catch (EntityAlreadyExistsException e) {
+            log.error("Update failed for customer with uuid={}. Customer with vat={} already exists", dto.uuid(), dto.vat(), e);
+            throw e;
+        } catch (EntityInvalidArgumentException e) {
+            log.error("Update failed for customer with uuid={}. Region id={} invalid", dto.uuid(), dto.regionId(), e);
+            throw e;
+        }
+    }
 
     @Override
     @PreAuthorize("hasAuthority('DELETE_CUSTOMER')")
@@ -194,7 +193,7 @@ public class CustomerServiceImpl implements ICustomerService {
             log.info("Customer with uuid={} deleted successfully", uuid);
             return mapper.mapToCustomerReadOnlyDTO(customer);
         } catch (EntityNotFoundException e) {
-            log.error("Update failed for customer with uuid={}. Customer not found", uuid, e);
+            log.error("Delete failed for customer with uuid={}. Customer not found", uuid, e);
 
             // Automatic rollback due to @Transactional annotation
             throw e;
@@ -284,42 +283,40 @@ public class CustomerServiceImpl implements ICustomerService {
         }
     }
 
+    @Override
+    @PreAuthorize("hasAuthority('VIEW_CUSTOMERS')")
+    @Transactional(readOnly = true)
+    public Page<CustomerReadOnlyDTO> getCustomersPaginatedFiltered(Pageable pageable, CustomerFilters filters)
+            throws EntityNotFoundException {
+        try {
+            if (filters.getUuid() != null) {
+                Customer customer = customerRepository.findByUuid(filters.getUuid())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "uuid=" + filters.getUuid() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
 
+            if (filters.getVat() != null) {
+                Customer customer = customerRepository.findByVat(filters.getVat())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "vat=" + filters.getVat() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
 
-//    @Override
-//    @PreAuthorize("hasAuthority('VIEW_CUSTOMERS')")
-//    @Transactional(readOnly = true)
-//    public Page<CustomerReadOnlyDTO> getCustomersPaginatedFiltered(Pageable pageable, CustomerFilters filters)
-//            throws EntityNotFoundException {
-//        try {
-//            if (filters.getUuid() != null) {
-//                Customer customer = customerRepository.findByUuid(filters.getUuid())
-//                        .orElseThrow(() -> new EntityNotFoundException("Customer", "uuid=" + filters.getUuid() + " not found"));
-//                return singleResultPage(customer, pageable);
-//            }
-//
-//            if (filters.getVat() != null) {
-//                Customer customer = customerRepository.findByVat(filters.getVat())
-//                        .orElseThrow(() -> new EntityNotFoundException("Customer", "vat=" + filters.getVat() + " not found"));
-//                return singleResultPage(customer, pageable);
-//            }
-//
-//            if (filters.getAfm() != null) {
-//                Customer customer = customerRepository.findByPersonalInfo_Afm(filters.getAfm())
-//                        .orElseThrow(() -> new EntityNotFoundException("Customer", "afm=" + filters.getAfm() + " not found"));
-//                return singleResultPage(customer, pageable);
-//            }
-//
-//            var filtered = customerRepository.findAll(CustomerSpecification.build(filters), pageable);
-//
-//            log.debug("Filtered and paginated customers were returned successfully with page={} and size={}", pageable.getPageNumber(),
-//                    pageable.getPageSize());
-//            return filtered.map(mapper::mapToCustomerReadOnlyDTO);
-//        } catch (EntityNotFoundException e) {
-//            log.error("Filtered and paginated customers were not found", e);
-//            throw e;
-//        }
-//    }
+            if (filters.getAfm() != null) {
+                Customer customer = customerRepository.findByPersonalInfo_Afm(filters.getAfm())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "afm=" + filters.getAfm() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
+
+            var filtered = customerRepository.findAll(CustomerSpecification.build(filters), pageable);
+
+            log.debug("Filtered and paginated customers were returned successfully with page={} and size={}", pageable.getPageNumber(),
+                    pageable.getPageSize());
+            return filtered.map(mapper::mapToCustomerReadOnlyDTO);
+        } catch (EntityNotFoundException e) {
+            log.error("Filtered and paginated customers were not found", e);
+            throw e;
+        }
+    }
 
     private String getFileExtension(String filename) {
         if (filename != null && filename.contains(".")) {
