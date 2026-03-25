@@ -15,9 +15,9 @@ public class SecurityService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public boolean isOwnTeacherProfile(UUID teacherUuid, Authentication authentication) {
+    public boolean isOwnCustomerProfile(UUID customerUuid, Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
-        // Find the teacher record and check if its user uuid matches the logged-in user
-        return customerRepository.existsByUuidAndUser_Uuid(teacherUuid, principal.getUuid());
+        // Find the customer record and check if its user uuid matches the logged-in user
+        return customerRepository.existsByUuidAndUser_Uuid(customerUuid, principal.getUuid());
     }
 }
