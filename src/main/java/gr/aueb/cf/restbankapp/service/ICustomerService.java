@@ -19,20 +19,20 @@ public interface ICustomerService {
     CustomerReadOnlyDTO saveCustomer(CustomerInsertDTO customerInsertDTO)
             throws EntityAlreadyExistsException, EntityInvalidArgumentException;
 
-    void saveAfmFile(UUID uuid, MultipartFile afmFile)
-            throws FileUploadException, EntityNotFoundException;
-
     CustomerReadOnlyDTO updateCustomer(CustomerUpdateDTO customerUpdateDTO)
             throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException;
 
     CustomerReadOnlyDTO deleteCustomerByUUID(UUID uuid) throws EntityNotFoundException;
 
     CustomerReadOnlyDTO getCustomerByUUID(UUID uuid) throws EntityNotFoundException;
-    public CustomerReadOnlyDTO getCustomerByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException;
+    CustomerReadOnlyDTO getCustomerByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException;
 
     Page<CustomerReadOnlyDTO> getPaginatedCustomers(Pageable pageable);
     Page<CustomerReadOnlyDTO> getPaginatedCustomersDeletedFalse(Pageable pageable);
     Page<CustomerReadOnlyDTO> getCustomersPaginatedFiltered(Pageable pageable, CustomerFilters filters)
             throws EntityNotFoundException;
     boolean isCustomerExists(String vat);
+
+    void saveAfmFile(UUID uuid, MultipartFile afmFile)
+            throws FileUploadException, EntityNotFoundException;
 }
