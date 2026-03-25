@@ -65,31 +65,29 @@ public class CustomerServiceImpl implements ICustomerService {
             if (personalInfoRepository.findByAfm(dto.personalInfoInsertDTO().afm()).isPresent()) {
                 throw new EntityAlreadyExistsException("AFM", "User with AFM " + dto.personalInfoInsertDTO().afm() + " already exists");
             }
-
             if (userRepository.findByUsername(dto.userInsertDTO().username()).isPresent()) {
                 throw new EntityAlreadyExistsException("Username", "User with username " + dto.userInsertDTO().username() + " already exists");
             }
-
-//            if (personalInfoRepository.findByIdentityNumber(dto.personalInfoInsertDTO().identityNumber()).isPresent()) {
-//                throw new EntityAlreadyExistsException("IdentityNumber", "User with identity number " + dto.personalInfoInsertDTO().identityNumber() + " already exists");
-//            }
+            if (personalInfoRepository.findByIdentityNumber(dto.personalInfoInsertDTO().identityNumber()).isPresent()) {
+                throw new EntityAlreadyExistsException("IdentityNumber", "User with identity number " + dto.personalInfoInsertDTO().identityNumber() + " already exists");
+            }
 
             Region region = regionRepository.findById(dto.regionId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Region", "Region id=" + dto.regionId() + " invalid"));
 
-            final Long customerRoleId = 3L;    // Πάντα ο ρόλος είναι customer - TODO να αλλάξει το DTO
-//            Role role = roleRepository.findById(dto.userInsertDTO().roleId())
-//                    .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + dto.userInsertDTO().roleId() + " invalid"));
-            Role role = roleRepository.findById(customerRoleId)
-                    .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + customerRoleId + " invalid"));
+//            final Long customerRoleId = 3L;    // Πάντα ο ρόλος είναι customer - TODO να αλλάξει το DTO
+//            Role role = roleRepository.findById(customerRoleId)
+//                    .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + customerRoleId + " invalid"));
+            Role role = roleRepository.findById(dto.userInsertDTO().roleId())
+                    .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + dto.userInsertDTO().roleId() + " invalid"));
 
             Customer customer = mapper.mapToCustomerEntity(dto);
-//            User user = mapper.mapToUserEntity(dto.userInsertDTO());
-            User user = customer.getUser();
+//            User user = customer.getUser();
+            User user = mapper.mapToUserEntity(dto.userInsertDTO());
             user.setPassword(passwordEncoder.encode(dto.userInsertDTO().password()));
             region.addCustomer(customer);
             role.addUser(user);
-//            customer.addUser(user); added to mapper TODO
+            customer.addUser(user); // added to mapper TODO
             customerRepository.save(customer);        // saved customer
             log.info("Customer with vat={} saved successfully.", dto.vat());
             return mapper.mapToCustomerReadOnlyDTO(customer);
@@ -188,13 +186,11 @@ public class CustomerServiceImpl implements ICustomerService {
             customer.softDelete();
             customer.getPersonalInfo().softDelete();
             customer.getUser().softDelete();
-            // No save needed if Customer is managed
-//            customerRepository.save(customer);
+//            customerRepository.save(customer); // No save needed if Customer is managed
             log.info("Customer with uuid={} deleted successfully", uuid);
             return mapper.mapToCustomerReadOnlyDTO(customer);
         } catch (EntityNotFoundException e) {
             log.error("Delete failed for customer with uuid={}. Customer not found", uuid, e);
-
             // Automatic rollback due to @Transactional annotation
             throw e;
         }
@@ -228,6 +224,49 @@ public class CustomerServiceImpl implements ICustomerService {
             log.error("Get customer by uuid={} failed", uuid, e);
             throw e;
         }
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('VIEW_CUSTOMERS')")
+    @Transactional(readOnly = true)
+    public Page<CustomerReadOnlyDTO> getCustomersPaginatedFiltered(Pageable pageable, CustomerFilters filters)
+            throws EntityNotFoundException {
+        try {
+            if (filters.getUuid() != null) {
+                Customer customer = customerRepository.findByUuid(filters.getUuid())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "uuid=" + filters.getUuid() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
+
+            if (filters.getVat() != null) {
+                Customer customer = customerRepository.findByVat(filters.getVat())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "vat=" + filters.getVat() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
+
+            if (filters.getAfm() != null) {
+                Customer customer = customerRepository.findByPersonalInfo_Afm(filters.getAfm())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "afm=" + filters.getAfm() + " not found"));
+                return singleResultPage(customer, pageable);
+            }
+
+            var filtered = customerRepository.findAll(CustomerSpecification.build(filters), pageable);
+
+            log.debug("Filtered and paginated customers were returned successfully with page={} and size={}", pageable.getPageNumber(),
+                    pageable.getPageSize());
+            return filtered.map(mapper::mapToCustomerReadOnlyDTO);
+        } catch (EntityNotFoundException e) {
+            log.error("Filtered and paginated customers were not found", e);
+            throw e;
+        }
+    }
+
+    private Page<CustomerReadOnlyDTO> singleResultPage(Customer customer, Pageable pageable) {
+        return new PageImpl<>(
+                List.of(mapper.mapToCustomerReadOnlyDTO(customer)),
+                pageable,
+                1
+        );
     }
 
     @Override
@@ -283,53 +322,10 @@ public class CustomerServiceImpl implements ICustomerService {
         }
     }
 
-    @Override
-    @PreAuthorize("hasAuthority('VIEW_CUSTOMERS')")
-    @Transactional(readOnly = true)
-    public Page<CustomerReadOnlyDTO> getCustomersPaginatedFiltered(Pageable pageable, CustomerFilters filters)
-            throws EntityNotFoundException {
-        try {
-            if (filters.getUuid() != null) {
-                Customer customer = customerRepository.findByUuid(filters.getUuid())
-                        .orElseThrow(() -> new EntityNotFoundException("Customer", "uuid=" + filters.getUuid() + " not found"));
-                return singleResultPage(customer, pageable);
-            }
-
-            if (filters.getVat() != null) {
-                Customer customer = customerRepository.findByVat(filters.getVat())
-                        .orElseThrow(() -> new EntityNotFoundException("Customer", "vat=" + filters.getVat() + " not found"));
-                return singleResultPage(customer, pageable);
-            }
-
-            if (filters.getAfm() != null) {
-                Customer customer = customerRepository.findByPersonalInfo_Afm(filters.getAfm())
-                        .orElseThrow(() -> new EntityNotFoundException("Customer", "afm=" + filters.getAfm() + " not found"));
-                return singleResultPage(customer, pageable);
-            }
-
-            var filtered = customerRepository.findAll(CustomerSpecification.build(filters), pageable);
-
-            log.debug("Filtered and paginated customers were returned successfully with page={} and size={}", pageable.getPageNumber(),
-                    pageable.getPageSize());
-            return filtered.map(mapper::mapToCustomerReadOnlyDTO);
-        } catch (EntityNotFoundException e) {
-            log.error("Filtered and paginated customers were not found", e);
-            throw e;
-        }
-    }
-
     private String getFileExtension(String filename) {
         if (filename != null && filename.contains(".")) {
             return filename.substring(filename.lastIndexOf("."));
         }
         return "";
-    }
-
-    private Page<CustomerReadOnlyDTO> singleResultPage(Customer customer, Pageable pageable) {
-        return new PageImpl<>(
-                List.of(mapper.mapToCustomerReadOnlyDTO(customer)),
-                pageable,
-                1
-        );
     }
 }

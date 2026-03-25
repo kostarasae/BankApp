@@ -2,11 +2,10 @@ package gr.aueb.cf.restbankapp.api;
 
 import gr.aueb.cf.restbankapp.core.exceptions.*;
 import gr.aueb.cf.restbankapp.core.filters.CustomerFilters;
-import gr.aueb.cf.restbankapp.dto.CustomerInsertDTO;
-import gr.aueb.cf.restbankapp.dto.CustomerReadOnlyDTO;
-import gr.aueb.cf.restbankapp.dto.CustomerUpdateDTO;
+import gr.aueb.cf.restbankapp.dto.*;
 import gr.aueb.cf.restbankapp.service.ICustomerService;
 import gr.aueb.cf.restbankapp.validation.CustomerInsertValidator;
+import gr.aueb.cf.restbankapp.validation.CustomerEditValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -65,7 +64,7 @@ public class CustomerRestController {
             throw new ValidationException("Customer", "Invalid customer data", bindingResult);
         }
 
-        //customerUpdateValidator.validate(customerUpdateDTO, bindingResult);
+        customerEditValidator.validate(customerUpdateDTO, bindingResult);
 
         CustomerReadOnlyDTO customerReadOnlyDTO = customerService.updateCustomer(customerUpdateDTO);
 
@@ -83,7 +82,7 @@ public class CustomerRestController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CustomerReadOnlyDTO>> getFilteredAndPaginatedTeachers(
+    public ResponseEntity<Page<CustomerReadOnlyDTO>> getFilteredAndPaginatedCustomers(
             @PageableDefault(page = 0, size = 5) Pageable pageable,
             @ModelAttribute CustomerFilters filters // instantiates filters with NoArgsConstructor
             ) throws EntityNotFoundException {
