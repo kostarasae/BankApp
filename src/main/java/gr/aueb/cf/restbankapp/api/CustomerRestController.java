@@ -63,7 +63,7 @@ public class CustomerRestController {
     public ResponseEntity<CustomerReadOnlyDTO> saveCustomer(
             @Valid @RequestBody CustomerInsertDTO customerInsertDTO,
             BindingResult bindingResult)
-    throws EntityAlreadyExistsException, EntityInvalidArgumentException, ValidationException {
+            throws EntityAlreadyExistsException, EntityInvalidArgumentException, ValidationException {
 
         if (bindingResult.hasErrors()) {
             throw new ValidationException("Customer", "Invalid customer data", bindingResult);
