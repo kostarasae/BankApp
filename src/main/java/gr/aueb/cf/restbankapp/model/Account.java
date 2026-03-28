@@ -1,0 +1,153 @@
+package gr.aueb.cf.restbankapp.model;
+
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
+
+/**
+ * Abstract Class / Skeletal Implementation / Builder Design Pattern
+ */
+@Entity
+@NoArgsConstructor
+@Getter
+@Setter
+@Table(name = "accounts")
+public abstract class Account extends AbstractEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long id;
+
+    @Column(unique = true, nullable = false, updatable = false)
+    private String accountNumber;
+
+    @Column(unique = true)
+    private String iban;
+
+    private String currency;
+    private BigDecimal balance;
+    private Instant createdAt;
+
+    @Transient
+    protected FeeStrategy feeStrategy;
+
+    @Setter(AccessLevel.NONE)
+    @Getter
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    private Set<Customer> customers = new HashSet<>();
+
+    protected Account(Builder<?> builder) {
+        this.accountNumber = builder.accountNumber;
+        this.iban = builder.iban;
+        this.balance = builder.balance;
+        this.createdAt = builder.createdAt;
+        this.feeStrategy = builder.feeStrategy;
+    }
+
+    public abstract static class Builder<T extends Builder<T>> {
+        private String accountNumber;
+        private String iban;
+        private BigDecimal balance;
+        private Instant createdAt;
+        protected FeeStrategy feeStrategy;
+
+        public Builder(String accountNumber, String iban, BigDecimal balance, Instant createdAt) {
+
+            if (accountNumber == null || accountNumber.isBlank())
+                throw new IllegalArgumentException("Account number required");
+
+            if (iban == null || iban.isBlank())
+                throw new IllegalArgumentException("IBAN required");
+
+            if (balance == null)
+                throw new IllegalArgumentException("Balance required");
+
+            this.accountNumber = accountNumber;
+            this.iban = iban;
+            this.balance = balance;
+            this.createdAt = createdAt;
+        }
+
+        public T feeStrategy(FeeStrategy feeStrategy) {
+            this.feeStrategy = feeStrategy;
+            return self();
+        }
+
+        protected abstract T self();
+
+        public abstract Account build();
+    }
+
+    // Template Method / Hook
+    public abstract boolean violatesRules(BigDecimal balance);
+
+    // getters
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
+    public String getIban() {
+        return iban;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public FeeStrategy getFeeStrategy() {
+        return feeStrategy;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
+    }
+
+    public void setFeeStrategy(FeeStrategy feeStrategy) {
+        this.feeStrategy = feeStrategy;
+    }
+
+    // concrete methods (full implementation, opposite of abstract)
+    // override concrete methods
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) return true;
+        if (!(other instanceof Account account)) return false;
+        return Objects.equals(this.iban, account.iban);
+    }
+
+    @Override
+    public int hashCode() {
+        return this.iban.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        String feeStrategyInfo = "none";
+        if (feeStrategy != null) {
+            String value = feeStrategy.value();
+            feeStrategyInfo = (value == null || value.isBlank())
+                    ? feeStrategy.getClass().getSimpleName()
+                    : value;
+        }
+
+        return "Account number " + this.accountNumber + " with iban " + this.iban + " has balance of " + this.balance
+                + " in currency of " + this.currency + " and fee strategy " + feeStrategyInfo + " created at " + this.createdAt;
+    }
+}
