@@ -1,0 +1,42 @@
+2026-03-28 19:27:56 INFO  o.h.validator.internal.util.Version [] [] - HV000001: Hibernate Validator 8.0.3.Final
+ 2026-03-28 19:27:56 INFO  g.a.c.r.RestBankAppApplication [] [] - Starting RestBankAppApplication using Java 21.0.8 with PID 32888 (C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+ 2026-03-28 19:27:56 INFO  g.a.c.r.RestBankAppApplication [] [] - The following 1 profile is active: "dev"
+ 2026-03-28 19:27:58 INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] [] - Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+ 2026-03-28 19:27:58 INFO  o.s.d.r.c.RepositoryConfigurationDelegate [] [] - Finished Spring Data repository scanning in 69 ms. Found 8 JPA repository interfaces.
+ 2026-03-28 19:27:59 INFO  o.s.b.w.e.tomcat.TomcatWebServer [] [] - Tomcat initialized with port 8080 (http)
+ 2026-03-28 19:27:59 INFO  o.s.b.w.s.c.ServletWebServerApplicationContext [] [] - Root WebApplicationContext: initialization completed in 2929 ms
+ 2026-03-28 19:28:00 INFO  org.flywaydb.core.FlywayExecutor [] [] - Database: jdbc:mysql://localhost:3306/bankapp?useSSL=true&serverTimezone=UTC (MySQL 8.0)
+ 2026-03-28 19:28:01 INFO  o.f.core.internal.command.DbValidate [] [] - Successfully validated 4 migrations (execution time 00:00.059s)
+ 2026-03-28 19:28:01 INFO  o.f.core.internal.command.DbMigrate [] [] - Current version of schema `bankapp`: 4
+ 2026-03-28 19:28:01 INFO  o.f.core.internal.command.DbMigrate [] [] - Schema `bankapp` is up to date. No migration necessary.
+ 2026-03-28 19:28:01 INFO  org.hibernate.Version [] [] - HHH000412: Hibernate ORM core version 6.6.42.Final
+ 2026-03-28 19:28:01 INFO  o.h.c.i.RegionFactoryInitiator [] [] - HHH000026: Second-level cache disabled
+ 2026-03-28 19:28:02 INFO  o.s.o.j.p.SpringPersistenceUnitInfo [] [] - No LoadTimeWeaver setup: ignoring JPA class transformer
+ 2026-03-28 19:28:02 INFO  o.hibernate.orm.connections.pooling [] [] - HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0.44
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+ 2026-03-28 19:28:02 ERROR o.s.o.j.LocalContainerEntityManagerFactoryBean [] [] - Failed to initialize JPA EntityManagerFactory: Collection 'gr.aueb.cf.restbankapp.model.Account.customers' is 'mappedBy' a property named 'account' which does not exist in the target entity 'gr.aueb.cf.restbankapp.model.Customer'
+ 2026-03-28 19:28:02 ERROR o.s.b.w.e.tomcat.TomcatStarter [] [] - Error starting Tomcat context. Exception: org.springframework.beans.factory.UnsatisfiedDependencyException. Message: Error creating bean with name 'jwtAuthenticationFilter' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\authentication\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in gr.aueb.cf.restbankapp.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+ 2026-03-28 19:28:02 WARN  o.s.b.w.s.c.AnnotationConfigServletWebServerApplicationContext [] [] - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.context.ApplicationContextException: Unable to start web server
+ 2026-03-28 19:28:02 ERROR o.s.boot.SpringApplication [] [] - Application run failed
+ org.springframework.context.ApplicationContextException: Unable to start web server
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.onRefresh(ServletWebServerApplicationContext.java:170)
+Caused by: org.springframework.boot.web.server.WebServerException: Unable to start embedded Tomcat
+	at org.springframework.boot.web.embedded.tomcat.TomcatWebServer.initialize(TomcatWebServer.java:147)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'jwtAuthenticationFilter' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\security\JwtAuthenticationFilter.class]: Unsatisfied dependency expressed through constructor parameter 1: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\authentication\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in gr.aueb.cf.restbankapp.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+Caused by: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'customUserDetailsService' defined in file [C:\Users\kosta\IdeaProjects\restBankApp\build\classes\java\main\gr\aueb\cf\restbankapp\authentication\CustomUserDetailsService.class]: Unsatisfied dependency expressed through constructor parameter 0: Error creating bean with name 'userRepository' defined in gr.aueb.cf.restbankapp.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:804)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'userRepository' defined in gr.aueb.cf.restbankapp.repository.UserRepository defined in @EnableJpaRepositories declared on JpaRepositoriesRegistrar.EnableJpaRepositoriesConfiguration: Cannot resolve reference to bean 'jpaSharedEM_entityManagerFactory' while setting bean property 'entityManager'
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'jpaSharedEM_entityManagerFactory': Cannot resolve reference to bean 'entityManagerFactory' while setting constructor argument
+	at org.springframework.beans.factory.support.BeanDefinitionValueResolver.resolveReference(BeanDefinitionValueResolver.java:377)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Collection 'gr.aueb.cf.restbankapp.model.Account.customers' is 'mappedBy' a property named 'account' which does not exist in the target entity 'gr.aueb.cf.restbankapp.model.Customer'
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1826)
+Caused by: org.hibernate.AnnotationException: Collection 'gr.aueb.cf.restbankapp.model.Account.customers' is 'mappedBy' a property named 'account' which does not exist in the target entity 'gr.aueb.cf.restbankapp.model.Customer'
+	at org.hibernate.boot.model.internal.CollectionBinder.isReversePropertyInJoin(CollectionBinder.java:1638)
