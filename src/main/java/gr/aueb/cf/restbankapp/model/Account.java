@@ -17,6 +17,8 @@ import java.util.Set;
 @Getter
 @Setter
 @Table(name = "accounts")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "account_type")
 public abstract class Account extends AbstractEntity {
 
     @Id
