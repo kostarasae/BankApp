@@ -22,7 +22,7 @@ public class Customer extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true, nullable = false, updatable = false)
+    @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
     private UUID uuid;
 
     @Column(unique = true)
@@ -42,6 +42,10 @@ public class Customer extends AbstractEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "personal_info_id")
     private PersonalInfo personalInfo;
+
+    @ManyToOne
+    @JoinColumn(name = "account_id")
+    private Account account;
 
     @PrePersist
     public void initializeUUID() {
