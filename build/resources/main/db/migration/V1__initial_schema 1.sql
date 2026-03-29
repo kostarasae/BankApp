@@ -128,6 +128,24 @@ CREATE TABLE personal_information (
     INDEX idx_personal_information_deleted_at (deleted_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+CREATE TABLE accounts (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    account_number VARCHAR(255) NOT NULL,
+    iban VARCHAR(255),
+    currency VARCHAR(10),
+    balance DECIMAL(19,2),
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL,
+    deleted TINYINT(1) NOT NULL DEFAULT 0,
+    deleted_at DATETIME NULL,
+
+    account_type VARCHAR(50) NOT NULL,
+
+    PRIMARY KEY (id),
+    UNIQUE (account_number),
+    UNIQUE (iban)
+);
+
 CREATE TABLE customers (
     id BIGINT NOT NULL AUTO_INCREMENT,
     uuid BINARY(16) NOT NULL,
@@ -135,6 +153,7 @@ CREATE TABLE customers (
     lastname VARCHAR(255) NOT NULL,
     vat VARCHAR(255) NOT NULL,
     region_id BIGINT,
+    account_id BIGINT,
     user_id BIGINT NOT NULL,
     personal_info_id BIGINT NULL,
 
@@ -165,6 +184,11 @@ CREATE TABLE customers (
     CONSTRAINT fk_customers_personal_information FOREIGN KEY (personal_info_id)
         REFERENCES personal_information(id)
         ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    CONSTRAINT fk_customers_accounts FOREIGN KEY (account_id)
+        REFERENCES accounts(id)
+        ON DELETE SET NULL
         ON UPDATE CASCADE,
 
     INDEX idx_customers_region_id (region_id),
