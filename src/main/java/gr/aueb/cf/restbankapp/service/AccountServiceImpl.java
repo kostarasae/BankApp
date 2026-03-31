@@ -67,7 +67,7 @@ public class AccountServiceImpl implements IAccountService {
         }
     }
 
-    @PreAuthorize("hasAuthority('VIEW_ACCOUNTS')")
+    @PreAuthorize("hasAuthority('CAN_DEPOSIT')")
     @Override
     public final synchronized AccountReadOnlyDTO deposit(AccountDepositDTO depositDTO)
             throws EntityNotFoundException, NegativeAmountException {
@@ -90,7 +90,7 @@ public class AccountServiceImpl implements IAccountService {
         }
     }
 
-    @PreAuthorize("hasAuthority('VIEW_ACCOUNTS')")
+    @PreAuthorize("hasAuthority('CAN_WITHDRAW')")
     @Override
     public final synchronized AccountReadOnlyDTO withdraw(AccountWithdrawDTO withdrawDTO)
             throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException {

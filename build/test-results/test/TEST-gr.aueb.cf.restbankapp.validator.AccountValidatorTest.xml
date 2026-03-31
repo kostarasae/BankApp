@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="gr.aueb.cf.restbankapp.validator.AccountValidatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-31T09:48:10.009Z" hostname="LAPTOP-UTD4P65M" time="0.006">
+<testsuite name="gr.aueb.cf.restbankapp.validator.AccountValidatorTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-03-31T20:35:14.319Z" hostname="LAPTOP-UTD4P65M" time="0.003">
   <properties/>
   <testcase name="validateDeposit_shouldHaveErrors_whenNegativeAmount()" classname="gr.aueb.cf.restbankapp.validator.AccountValidatorTest" time="0.002"/>
-  <testcase name="validateWithdraw_shouldPass_whenValidAmount()" classname="gr.aueb.cf.restbankapp.validator.AccountValidatorTest" time="0.002"/>
-  <system-out><![CDATA[?[31m[WARN ]?[0;39m ?[36m12:48:10.010?[0;39m g.a.c.r.validation.AccountValidator - Deposit failed. Invalid amount: -10
+  <testcase name="validateWithdraw_shouldPass_whenValidAmount()" classname="gr.aueb.cf.restbankapp.validator.AccountValidatorTest" time="0.001"/>
+  <system-out><![CDATA[?[31m[WARN ]?[0;39m ?[36m23:35:14.319?[0;39m g.a.c.r.validation.AccountValidator - Deposit failed. Invalid amount: -10
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
