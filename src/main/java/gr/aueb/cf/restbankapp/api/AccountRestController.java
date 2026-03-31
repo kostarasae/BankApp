@@ -24,7 +24,7 @@ import java.net.URI;
 @RestController
 @RequestMapping("/api/v1/accounts")
 @RequiredArgsConstructor
-public class AccountController {
+public class AccountRestController {
 
     private final IAccountService accountService;
     private final AccountValidator accountValidator;
@@ -70,7 +70,7 @@ public class AccountController {
     }
 
     @PostMapping("/deposit")
-    @PreAuthorize("hasAuthority('DEPOSIT')")
+    @PreAuthorize("hasAuthority('CAN_DEPOSIT')")
     public ResponseEntity<AccountReadOnlyDTO> deposit(
             @Valid @RequestBody AccountDepositDTO depositDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, ValidationException
@@ -95,7 +95,7 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
-    @PreAuthorize("hasAuthority('WITHDRAW')")
+    @PreAuthorize("hasAuthority('CAN_WITHDRAW')")
     public ResponseEntity<AccountReadOnlyDTO> withdraw(
             @Valid @RequestBody AccountWithdrawDTO withdrawDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException, ValidationException
