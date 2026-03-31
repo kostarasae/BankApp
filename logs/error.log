@@ -790,3 +790,4 @@ Caused by: java.lang.IllegalArgumentException: JPA metamodel must not be empty
 2026-03-31 12:33:56 ERROR g.a.c.r.service.AccountServiceImpl - The amount=1000 is greater than the balance of the account with iban=GR123
 2026-03-31 12:35:13 ERROR g.a.c.r.service.AccountServiceImpl - The amount=1000 is greater than the balance of the account with iban=GR123
 2026-03-31 12:41:29 ERROR g.a.c.r.service.AccountServiceImpl - The amount=1000 is greater than the balance of the account with iban=GR123
+2026-03-31 12:48:10 ERROR g.a.c.r.service.AccountServiceImpl - The amount=1000 is greater than the balance of the account with iban=GR123

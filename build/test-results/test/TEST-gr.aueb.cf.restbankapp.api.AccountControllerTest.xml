@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="gr.aueb.cf.restbankapp.api.AccountControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-31T09:41:21.574Z" hostname="LAPTOP-UTD4P65M" time="0.404">
+<testsuite name="gr.aueb.cf.restbankapp.api.AccountControllerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-03-31T09:48:09.248Z" hostname="LAPTOP-UTD4P65M" time="0.394">
   <properties/>
-  <testcase name="deposit_shouldReturn403_whenNoAuthority()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.36"/>
-  <testcase name="deposit_shouldReturn201()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.025"/>
-  <testcase name="deposit_shouldWork_withProperAuthority()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.013"/>
-  <system-out><![CDATA[12:41:17.346 [Test worker] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration gr.aueb.cf.restbankapp.RestBankAppApplication for test class gr.aueb.cf.restbankapp.api.AccountControllerTest
+  <testcase name="deposit_shouldReturn403_whenNoAuthority()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.308"/>
+  <testcase name="deposit_shouldReturn201()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.047"/>
+  <testcase name="deposit_shouldWork_withProperAuthority()" classname="gr.aueb.cf.restbankapp.api.AccountControllerTest" time="0.03"/>
+  <system-out><![CDATA[?[34m[INFO ]?[0;39m ?[36m12:48:07.200?[0;39m o.s.b.t.c.SpringBootTestContextBootstrapper - Found @SpringBootConfiguration gr.aueb.cf.restbankapp.RestBankAppApplication for test class gr.aueb.cf.restbankapp.api.AccountControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -15,26 +15,20 @@
 
  :: Spring Boot ::               (v3.5.11)
 
-?[34m[INFO ]?[0;39m ?[36m12:41:17.985?[0;39m o.h.validator.internal.util.Version - HV000001: Hibernate Validator 8.0.3.Final
-?[34m[INFO ]?[0;39m ?[36m12:41:18.049?[0;39m g.a.c.r.api.AccountControllerTest - Starting AccountControllerTest using Java 21.0.8 with PID 36684 (started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
-?[34m[INFO ]?[0;39m ?[36m12:41:18.050?[0;39m g.a.c.r.api.AccountControllerTest - The following 1 profile is active: "dev"
-?[31m[WARN ]?[0;39m ?[36m12:41:21.301?[0;39m o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
+?[34m[INFO ]?[0;39m ?[36m12:48:07.276?[0;39m g.a.c.r.api.AccountControllerTest - Starting AccountControllerTest using Java 21.0.8 with PID 9680 (started by kosta in C:\Users\kosta\IdeaProjects\restBankApp)
+?[34m[INFO ]?[0;39m ?[36m12:48:07.276?[0;39m g.a.c.r.api.AccountControllerTest - The following 1 profile is active: "dev"
+?[31m[WARN ]?[0;39m ?[36m12:48:08.887?[0;39m o.s.b.a.s.s.UserDetailsServiceAutoConfiguration - 
 
-Using generated security password: f85b3f50-25d8-4332-a41e-382081588492
+Using generated security password: 7a15752c-cab5-41dd-9129-282743a4f2c5
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-?[34m[INFO ]?[0;39m ?[36m12:41:21.309?[0;39m o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-?[34m[INFO ]?[0;39m ?[36m12:41:21.518?[0;39m o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
-?[34m[INFO ]?[0;39m ?[36m12:41:21.518?[0;39m o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
-?[34m[INFO ]?[0;39m ?[36m12:41:21.520?[0;39m o.s.t.w.s.TestDispatcherServlet - Completed initialization in 2 ms
-?[34m[INFO ]?[0;39m ?[36m12:41:21.558?[0;39m g.a.c.r.api.AccountControllerTest - Started AccountControllerTest in 4.129 seconds (process running for 5.596)
-?[31m[WARN ]?[0;39m ?[36m12:41:21.896?[0;39m g.a.cf.restbankapp.core.ErrorHandler - Access denied. Message=Access Denied
+?[34m[INFO ]?[0;39m ?[36m12:48:08.897?[0;39m o.s.s.c.a.a.c.InitializeUserDetailsBeanManagerConfigurer$InitializeUserDetailsManagerConfigurer - Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+?[34m[INFO ]?[0;39m ?[36m12:48:09.192?[0;39m o.s.b.t.m.w.SpringBootMockServletContext - Initializing Spring TestDispatcherServlet ''
+?[34m[INFO ]?[0;39m ?[36m12:48:09.192?[0;39m o.s.t.w.s.TestDispatcherServlet - Initializing Servlet ''
+?[34m[INFO ]?[0;39m ?[36m12:48:09.194?[0;39m o.s.t.w.s.TestDispatcherServlet - Completed initialization in 1 ms
+?[34m[INFO ]?[0;39m ?[36m12:48:09.228?[0;39m g.a.c.r.api.AccountControllerTest - Started AccountControllerTest in 2.019 seconds (process running for 15.504)
+?[31m[WARN ]?[0;39m ?[36m12:48:09.512?[0;39m g.a.cf.restbankapp.core.ErrorHandler - Access denied. Message=Access Denied
 ]]></system-out>
-  <system-err><![CDATA[Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-WARNING: A Java agent has been loaded dynamically (C:\Users\kosta\.gradle\caches\modules-2\files-2.1\net.bytebuddy\byte-buddy-agent\1.17.8\f09415827a71be7ed621c7bd02550678f28bc81c\byte-buddy-agent-1.17.8.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-]]></system-err>
+  <system-err><![CDATA[]]></system-err>
 </testsuite>
