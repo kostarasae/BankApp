@@ -38,9 +38,9 @@ public abstract class Account extends AbstractEntity {
     @Transient
     protected FeeStrategy feeStrategy;
 
-    @Setter(AccessLevel.NONE)
     @Getter
-    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    @Setter(AccessLevel.NONE)
+    @ManyToMany(mappedBy = "accounts", fetch = FetchType.LAZY)
     private Set<Customer> customers = new HashSet<>();
 
     protected Account(Builder<?> builder) {
@@ -85,45 +85,18 @@ public abstract class Account extends AbstractEntity {
         public abstract Account build();
     }
 
+    public void addCustomer(Customer customer) {
+        customers.add(customer);
+        customer.getAccounts().add(this);
+    }
+
+    public void removeCustomer(Customer customer) {
+        customers.remove(customer);
+        customer.getAccounts().remove(this);
+    }
+
     // Template Method / Hook
     public abstract boolean violatesRules(BigDecimal balance);
-
-    // getters
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public String getIban() {
-        return iban;
-    }
-
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public String getCurrency() {
-        return currency;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public FeeStrategy getFeeStrategy() {
-        return feeStrategy;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
-    public void setCurrency(String currency) {
-        this.currency = currency;
-    }
-
-    public void setFeeStrategy(FeeStrategy feeStrategy) {
-        this.feeStrategy = feeStrategy;
-    }
 
     // concrete methods (full implementation, opposite of abstract)
     // override concrete methods

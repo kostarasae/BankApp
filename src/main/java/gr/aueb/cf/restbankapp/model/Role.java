@@ -34,7 +34,6 @@ public class Role {
     @JoinTable(name = "roles_capabilities",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "capability_id"))
-
     private Set<Capability> capabilities = new HashSet<>();
 
     public Set<Capability> getAllCapabilities() {
