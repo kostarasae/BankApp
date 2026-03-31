@@ -2,12 +2,11 @@ package gr.aueb.cf.restbankapp.model;
 
 import gr.aueb.cf.restbankapp.model.static_data.Region;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -43,9 +42,11 @@ public class Customer extends AbstractEntity {
     @JoinColumn(name = "personal_info_id")
     private PersonalInfo personalInfo;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "customers_accounts",
+            joinColumns = @JoinColumn(name = "customer_id"),
+            inverseJoinColumns = @JoinColumn(name = "account_id"))
+    private Set<Account> accounts = new HashSet<>();
 
     @PrePersist
     public void initializeUUID() {
@@ -55,6 +56,16 @@ public class Customer extends AbstractEntity {
     public void addUser(User user) {
         this.user = user;
         user.setCustomer(this);
+    }
+
+    public void addAccount(Account account) {
+        accounts.add(account);
+        account.getCustomers().add(this);
+    }
+
+    public void removeAccount(Account account) {
+        accounts.remove(account);
+        account.getCustomers().remove(this);
     }
 
     @Override
