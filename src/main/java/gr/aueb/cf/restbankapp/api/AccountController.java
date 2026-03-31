@@ -10,6 +10,7 @@ import gr.aueb.cf.restbankapp.validation.AccountValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -69,6 +70,7 @@ public class AccountController {
     }
 
     @PostMapping("/deposit")
+    @PreAuthorize("hasAuthority('DEPOSIT')")
     public ResponseEntity<AccountReadOnlyDTO> deposit(
             @Valid @RequestBody AccountDepositDTO depositDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, ValidationException
@@ -93,6 +95,7 @@ public class AccountController {
     }
 
     @PostMapping("/withdraw")
+    @PreAuthorize("hasAuthority('WITHDRAW')")
     public ResponseEntity<AccountReadOnlyDTO> withdraw(
             @Valid @RequestBody AccountWithdrawDTO withdrawDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException, ValidationException

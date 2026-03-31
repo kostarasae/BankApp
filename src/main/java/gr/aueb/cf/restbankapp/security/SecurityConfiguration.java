@@ -63,6 +63,8 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.GET, "/api/v1/accounts").hasAuthority("VIEW_ACCOUNTS")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/customers/{uuid}").hasAuthority("DELETE_CUSTOMER")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/accounts/{uuid}").hasAuthority("DELETE_ACCOUNT")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts/deposit").hasAuthority("DEPOSIT")
+                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts/withdraw").hasAuthority("WITHDRAW")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
