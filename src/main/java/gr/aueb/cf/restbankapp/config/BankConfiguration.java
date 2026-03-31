@@ -2,12 +2,16 @@ package gr.aueb.cf.restbankapp.config;
 
 
 import gr.aueb.cf.restbankapp.model.FeeStrategy;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 
 /**
  * Singleton Design Pattern
  */
+@Getter
+@Setter
 public final class BankConfiguration {
 
     private String defaultCurrency;
@@ -56,53 +60,5 @@ public final class BankConfiguration {
 
     public static BankConfiguration getInstance() {
         return INSTANCE;
-    }
-
-    public String getDefaultCurrency() {
-        return defaultCurrency;
-    }
-
-    public void setDefaultCurrency(String defaultCurrency) {
-        this.defaultCurrency = defaultCurrency;
-    }
-
-    public BigDecimal getDefaultCheckingOverdraftLimit() {
-        return defaultCheckingOverdraftLimit;
-    }
-
-    public void setDefaultCheckingOverdraftLimit(BigDecimal defaultCheckingOverdraftLimit) {
-        this.defaultCheckingOverdraftLimit = defaultCheckingOverdraftLimit;
-    }
-
-    public BigDecimal getDefaultSavingsOverdraftLimit() {
-        return defaultSavingsOverdraftLimit;
-    }
-
-    public void setDefaultSavingsOverdraftLimit(BigDecimal defaultSavingsOverdraftLimit) {
-        this.defaultSavingsOverdraftLimit = defaultSavingsOverdraftLimit;
-    }
-
-    public FeeStrategy getDefaultCheckingFeeStrategy() {
-        return defaultCheckingFeeStrategy;
-    }
-
-    public FeeStrategy getDefaultSavingsFeeStrategy() {
-        return defaultSavingsFeeStrategy;
-    }
-
-    public void setDefaultCheckingFeeStrategy(FeeStrategy defaultCheckingFeeStrategy) {
-        this.defaultCheckingFeeStrategy = defaultCheckingFeeStrategy;
-    }
-
-    public void setDefaultSavingsFeeStrategy(FeeStrategy defaultSavingsFeeStrategy) {
-        this.defaultSavingsFeeStrategy = defaultSavingsFeeStrategy;
-    }
-
-    public BigDecimal getDefaultCheckingFee() {
-        return defaultCheckingFee;
-    }
-
-    public BigDecimal getDefaultSavingsFee() {
-        return defaultSavingsFee;
     }
 }
