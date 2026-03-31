@@ -1,6 +1,6 @@
 package gr.aueb.cf.restbankapp.core.factory;
 
-import gr.aueb.cf.restbankapp.core.config.BankConfiguration;
+import gr.aueb.cf.restbankapp.config.BankConfiguration;
 import gr.aueb.cf.restbankapp.model.*;
 
 import java.math.BigDecimal;
