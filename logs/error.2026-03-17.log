@@ -66,7 +66,7 @@ APPLICATION FAILED TO START
 
 Description:
 
-Parameter 0 of constructor in gr.aueb.cf.restbankapp.api.AccountController required a bean of type 'gr.aueb.cf.restbankapp.service.IAccountService' that could not be found.
+Parameter 0 of constructor in gr.aueb.cf.restbankapp.api.AccountRestController required a bean of type 'gr.aueb.cf.restbankapp.service.IAccountService' that could not be found.
 
 
 Action:
