@@ -28,9 +28,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.junit.jupiter.api.BeforeEach;
 import static org.mockito.Mockito.doAnswer;
 
-@WebMvcTest(controllers = AccountController.class)
-@Import(AccountControllerTest.TestMethodSecurityConfig.class)
-class AccountControllerTest {
+@WebMvcTest(controllers = AccountRestController.class)
+@Import(AccountRestControllerTest.TestMethodSecurityConfig.class)
+class AccountRestControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -69,7 +69,7 @@ class AccountControllerTest {
 
     // Basic test — bypass security with csrf disabled
     @Test
-    @WithMockUser(authorities = "DEPOSIT")
+    @WithMockUser(authorities = "CAN_DEPOSIT")
     void deposit_shouldReturn201() throws Exception {
         AccountDepositDTO depositDTO = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
         AccountReadOnlyDTO readOnlyDTO = new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100));
@@ -85,7 +85,7 @@ class AccountControllerTest {
 
     // Test with a specific authority
     @Test
-    @WithMockUser(authorities = "DEPOSIT")
+    @WithMockUser(authorities = "CAN_DEPOSIT")
     void deposit_shouldWork_withProperAuthority() throws Exception {
         AccountDepositDTO dto = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
 
