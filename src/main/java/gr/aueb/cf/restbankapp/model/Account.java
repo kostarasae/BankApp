@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -33,7 +32,6 @@ public abstract class Account extends AbstractEntity {
 
     private String currency;
     private BigDecimal balance;
-    private Instant createdAt;
 
     @Transient
     protected FeeStrategy feeStrategy;
@@ -47,18 +45,17 @@ public abstract class Account extends AbstractEntity {
         this.accountNumber = builder.accountNumber;
         this.iban = builder.iban;
         this.balance = builder.balance;
-        this.createdAt = builder.createdAt;
         this.feeStrategy = builder.feeStrategy;
     }
 
     public abstract static class Builder<T extends Builder<T>> {
-        private String accountNumber;
-        private String iban;
-        private BigDecimal balance;
-        private Instant createdAt;
+        private final String accountNumber;
+        private final String iban;
+        private final BigDecimal balance;
+        private final String customerUuid;
         protected FeeStrategy feeStrategy;
 
-        public Builder(String accountNumber, String iban, BigDecimal balance, Instant createdAt) {
+        public Builder(String accountNumber, String iban, BigDecimal balance, String customerUuid) {
 
             if (accountNumber == null || accountNumber.isBlank())
                 throw new IllegalArgumentException("Account number required");
@@ -69,10 +66,13 @@ public abstract class Account extends AbstractEntity {
             if (balance == null)
                 throw new IllegalArgumentException("Balance required");
 
+            if (customerUuid == null || customerUuid.isBlank())
+                throw new IllegalArgumentException("Customer UUID required");
+
             this.accountNumber = accountNumber;
             this.iban = iban;
             this.balance = balance;
-            this.createdAt = createdAt;
+            this.customerUuid = customerUuid;
         }
 
         public T feeStrategy(FeeStrategy feeStrategy) {
@@ -123,6 +123,6 @@ public abstract class Account extends AbstractEntity {
         }
 
         return "Account number " + this.accountNumber + " with iban " + this.iban + " has balance of " + this.balance
-                + " in currency of " + this.currency + " and fee strategy " + feeStrategyInfo + " created at " + this.createdAt;
+                + " in currency of " + this.currency + " and fee strategy " + feeStrategyInfo + " created at " + this.getCreatedAt();
     }
 }
