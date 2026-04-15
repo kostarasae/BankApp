@@ -9,30 +9,35 @@ import java.util.UUID;
 
     public record CustomerUpdateDTO(
 
-            @NotNull
-            UUID uuid,
+        @NotNull
+        UUID uuid,
 
-            @NotNull
-            @Size(min = 2)
-            String firstname,
+        @NotNull
+        @Size(min = 2)
+        String firstname,
 
-            @NotNull
-            @Size(min = 2)
-            String lastname,
+        @NotNull
+        @Size(min = 2)
+        String lastname,
 
-            @Pattern(regexp = "\\d{9,}")
-            String vat,
+        @NotNull
+        @Pattern(regexp = "\\d{9,}")
+        String vat,
 
-            @NotNull
-            Long regionId,
+        @NotNull
+        @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")
+        String email,
 
-            @Valid
-            @NotNull
-            UserUpdateDTO userUpdateDTO,
+        @NotNull
+        Long regionId,
 
-            @Valid
-            @NotNull
-            PersonalInfoUpdateDTO personalInfoUpdateDTO
+        @Valid
+        @NotNull
+        UserUpdateDTO userUpdateDTO,
+
+        @Valid
+        @NotNull
+        PersonalInfoUpdateDTO personalInfoUpdateDTO
     ) {
 
     }
