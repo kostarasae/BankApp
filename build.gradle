@@ -54,6 +54,10 @@ dependencies {
     // override for addressing vulnerability
 }
 
+springBoot {
+    mainClass = 'gr.aueb.cf.restbankapp.RestBankAppApplication'
+}
+
 tasks.named('test', Test) {
     useJUnitPlatform()
 }
