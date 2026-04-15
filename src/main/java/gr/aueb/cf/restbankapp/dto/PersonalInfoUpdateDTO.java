@@ -7,12 +7,9 @@ import lombok.Builder;
 @Builder
 public record PersonalInfoUpdateDTO(
 
-        @NotEmpty(message = "AFM is required")
-        @Pattern(regexp = "\\d{11}", message = "AFM must be an 11-digit number")
-        String afm,
-
-        @NotEmpty(message = "Identity number is required")
-        String identityNumber,
+        @NotEmpty(message = "ID number is required")
+        @Pattern(regexp = "[Α-ΩA-Z]{1,2}\\d{6,7}", message = "ID number must be 1-2 uppercase letters followed by 6-7 digits")
+        String idNumber,
 
         @NotEmpty(message = "Place of birth is required")
         String placeOfBirth,
