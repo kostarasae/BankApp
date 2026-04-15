@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
-import java.rmi.server.ExportException;
 
 @Component
 @RequiredArgsConstructor
@@ -62,16 +60,20 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authenticationToken);
             }
         } catch (ExpiredJwtException e) {
-            // triggers AuthenticationEntryPoint 401
-            throw new AuthenticationCredentialsNotFoundException("Token has expired");
-        } catch (JwtException | IllegalArgumentException e) {
-            throw new BadCredentialsException("Invalid token");
-        } catch (BadCredentialsException e) {
-            // pass it to next filter
-            throw e;
+            log.warn("Expired JWT token");
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+            return;
+        } catch (JwtException | IllegalArgumentException | BadCredentialsException e) {
+            log.warn("Invalid JWT token: {}", e.getMessage());
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+            return;
         } catch (Exception e) {
             log.error("Token validation failed", e);
-            throw new AuthenticationCredentialsNotFoundException("Token validation failed");
+            SecurityContextHolder.clearContext();
+            filterChain.doFilter(request, response);
+            return;
         }
 
         filterChain.doFilter(request, response);

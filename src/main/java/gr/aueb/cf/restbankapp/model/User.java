@@ -36,7 +36,7 @@ public class User extends AbstractEntity implements UserDetails {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
     private Customer customer;
 
     public User(String username, String password) {

@@ -2,18 +2,18 @@ package gr.aueb.cf.restbankapp.security;
 
 import gr.aueb.cf.restbankapp.model.User;
 import gr.aueb.cf.restbankapp.repository.CustomerRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.attribute.UserPrincipal;
 import java.util.UUID;
 
+@RequiredArgsConstructor
 @Service("securityService")
 public class SecurityService {
 
-    @Autowired
-    private CustomerRepository customerRepository;
+    private final CustomerRepository customerRepository;
 
     public boolean isOwnCustomerProfile(UUID customerUuid, Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
