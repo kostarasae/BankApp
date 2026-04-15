@@ -41,6 +41,8 @@ public class SecurityConfiguration {
 
     @Value("${allowed.origins}")
     private List<String> allowedOrigins;
+    @Value("${security.bcrypt.strength:10}")
+    private int bcryptStrength;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, AuthenticationProvider authenticationProvider)
@@ -49,22 +51,22 @@ public class SecurityConfiguration {
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(req -> req
+                        .requestMatchers("/*.html", "/*.js", "/*.css", "/*.png", "/*.svg", "/*.ico").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/customers").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/customers/{uuid}/*").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts").hasAuthority("CREATE_ACCOUNT")
                         .requestMatchers("/api/v1/eligible/**").permitAll()
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/v1/users/*").hasAuthority("VIEW_USER")
                         .requestMatchers(HttpMethod.PUT, "/api/v1/customers/{uuid}").hasAuthority("EDIT_CUSTOMER")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/customers").hasAuthority("VIEW_CUSTOMERS")
                         .requestMatchers(HttpMethod.GET, "/api/v1/customers/{uuid}").hasAnyAuthority("VIEW_CUSTOMER", "VIEW_ONLY_CUSTOMER")
-                        .requestMatchers(HttpMethod.GET, "/api/v1/accounts").hasAuthority("VIEW_ACCOUNTS")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/customers").hasAuthority("VIEW_CUSTOMERS")
                         .requestMatchers(HttpMethod.DELETE, "/api/v1/customers/{uuid}").hasAuthority("DELETE_CUSTOMER")
-                        .requestMatchers(HttpMethod.DELETE, "/api/v1/accounts/{uuid}").hasAuthority("DELETE_ACCOUNT")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts/deposit").hasAuthority("CAN_DEPOSIT")
-                        .requestMatchers(HttpMethod.POST, "/api/v1/accounts/withdraw").hasAuthority("CAN_WITHDRAW")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/accounts/{iban}").hasAnyAuthority("VIEW_ACCOUNT", "VIEW_ONLY_ACCOUNT")
+                        .requestMatchers(HttpMethod.GET, "/api/v1/accounts").hasAuthority("VIEW_ACCOUNTS")
+                        .requestMatchers(HttpMethod.DELETE, "/api/v1/accounts/{iban}").hasAuthority("DELETE_ACCOUNT")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
@@ -102,7 +104,7 @@ public class SecurityConfiguration {
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder(bcryptStrength);
     }
 
     @Bean
