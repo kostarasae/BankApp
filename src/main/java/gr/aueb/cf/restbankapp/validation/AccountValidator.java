@@ -44,21 +44,12 @@ public class AccountValidator implements Validator {
 
     private void validateInsert(AccountInsertDTO dto, Errors errors) {
 
-        if (dto.iban() == null || !dto.iban().trim().matches("GR\\d{3,25}")) {
-            log.warn("Validation failed. Invalid IBAN: {}", dto.iban());
+        if (dto.customerUuid() == null) {
+            log.warn("Validation failed. Invalid customer Uuid: {}", dto.customerUuid());
             errors.rejectValue(
-                    "iban",
-                    "iban.account.invalid",
-                    "Invalid IBAN. needs to start with GR and followed by 3-25 digits"
-            );
-        }
-
-        if (accountService.isAccountExists(dto.iban())) {
-            log.warn("Save failed. Account with iban={} already exists", dto.iban());
-            errors.rejectValue(
-                    "iban",
-                    "iban.account.exists",
-                    "Save failed. Account already exists"
+                    "customerUuid",
+                    "customerUuid.account.invalid",
+                    "Missing customer Uuid"
             );
         }
 

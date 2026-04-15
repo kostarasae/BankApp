@@ -4,13 +4,14 @@ import gr.aueb.cf.restbankapp.core.exceptions.*;
 import gr.aueb.cf.restbankapp.dto.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Contract
  */
 public interface IAccountService {
     AccountReadOnlyDTO createNewAccount(AccountInsertDTO insertDTO)
-            throws EntityAlreadyExistsException;
+            throws EntityAlreadyExistsException, EntityNotFoundException, EntityInvalidArgumentException;
 
     AccountReadOnlyDTO closeAccount(String iban) throws EntityNotFoundException;
 
@@ -23,4 +24,6 @@ public interface IAccountService {
     AccountReadOnlyDTO getAccountByIbanAndDeletedFalse(String iban) throws EntityNotFoundException;
 
     public boolean isAccountExists(String iban);
+
+    List<AccountReadOnlyDTO> getAllAccounts();
 }

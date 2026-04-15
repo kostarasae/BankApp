@@ -8,15 +8,15 @@ import java.math.BigDecimal;
 public record AccountInsertDTO(
 
         @NotNull
-        String iban,
-
-        @NotNull
         AccountType type,
 
-        BigDecimal balance)  {
+        BigDecimal balance,
+        
+        @NotNull
+        String customerUuid)  {
 
     public static AccountInsertDTO empty() {
 
-        return new AccountInsertDTO("GR0", AccountType.CHECKING, BigDecimal.ZERO);
+        return new AccountInsertDTO(AccountType.CHECKING, BigDecimal.ZERO, "");
     }
 }

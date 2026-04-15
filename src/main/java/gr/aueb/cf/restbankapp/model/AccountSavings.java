@@ -1,15 +1,21 @@
 package gr.aueb.cf.restbankapp.model;
 
 import gr.aueb.cf.restbankapp.config.BankConfiguration;
+import jakarta.persistence.DiscriminatorValue;
+import jakarta.persistence.Entity;
+import jakarta.persistence.PostLoad;
 
 import java.math.BigDecimal;
-import java.time.Instant;
 
 /**
  * Concrete subclass
  * extends abstract class
  */
+@Entity
+@DiscriminatorValue("SAVINGS")
 public class AccountSavings extends Account {
+
+    protected AccountSavings() {}
 
     private AccountSavings(Builder builder) {
         super(builder);
@@ -17,8 +23,8 @@ public class AccountSavings extends Account {
 
     public static class Builder extends Account.Builder<Builder> {
 
-        public Builder(String accountNumber, String iban, BigDecimal balance, Instant createdAt) {
-            super(accountNumber, iban, balance, createdAt);
+        public Builder(String accountNumber, String iban, BigDecimal balance, String customerUuid) {
+            super(accountNumber, iban, balance, customerUuid);
         }
 
         @Override
@@ -33,6 +39,11 @@ public class AccountSavings extends Account {
             }
             return new AccountSavings(this);
         }
+    }
+
+    @PostLoad
+    private void initFeeStrategy() {
+        this.feeStrategy = BankConfiguration.getInstance().getDefaultSavingsFeeStrategy();
     }
 
     @Override
