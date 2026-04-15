@@ -27,6 +27,9 @@ public class Customer extends AbstractEntity {
     @Column(unique = true)
     private String vat;
 
+    @Column(nullable = false)
+    private String email;
+
     private String firstname;
     private String lastname;
 

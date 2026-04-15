@@ -24,6 +24,7 @@ public class Mapper {
         customer.setFirstname(dto.firstname());
         customer.setLastname(dto.lastname());
         customer.setVat(dto.vat());
+        customer.setEmail(dto.email());
 
         UserInsertDTO userDTO = dto.userInsertDTO();
         User user = new User();
@@ -34,8 +35,7 @@ public class Mapper {
 
         PersonalInfoInsertDTO personalInfoDTO = dto.personalInfoInsertDTO();
         PersonalInfo personalInfo = new PersonalInfo();
-        personalInfo.setAfm(personalInfoDTO.afm());
-        personalInfo.setIdentityNumber(personalInfoDTO.identityNumber());
+        personalInfo.setIdNumber(personalInfoDTO.idNumber());
         personalInfo.setPlaceOfBirth(personalInfoDTO.placeOfBirth());
         personalInfo.setMunicipalityOfRegistration(personalInfoDTO
                 .municipalityOfRegistration());
@@ -45,12 +45,18 @@ public class Mapper {
     }
 
     public CustomerReadOnlyDTO mapToCustomerReadOnlyDTO(Customer customer) {
+        PersonalInfoReadOnlyDTO personalInfoDTO = new PersonalInfoReadOnlyDTO(
+                customer.getPersonalInfo().getIdNumber(),
+                customer.getPersonalInfo().getPlaceOfBirth(),
+                customer.getPersonalInfo().getMunicipalityOfRegistration()
+        );
         return new CustomerReadOnlyDTO(customer.getUuid().toString(),
-                customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getRegion().getName());
+                customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getEmail(), 
+                customer.getRegion().getName(), personalInfoDTO);
     }
 
     public Account mapToAccountModelEntity(AccountInsertDTO dto) {
-        return AccountFactory.create(dto.type(), dto.balance());
+        return AccountFactory.create(dto.type(), dto.balance(), dto.customerUuid());
     }
 
     public AccountReadOnlyDTO mapToAccountReadOnlyDTO(Account account) {

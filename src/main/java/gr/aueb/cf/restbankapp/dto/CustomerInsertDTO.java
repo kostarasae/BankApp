@@ -15,8 +15,13 @@ public record CustomerInsertDTO (
         @Size(min = 2)
         String lastname,
 
+        @NotNull
         @Pattern(regexp = "\\d{9,}")
         String vat,
+
+        @NotNull
+        @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")
+        String email,
 
         @NotNull
         Long regionId,
