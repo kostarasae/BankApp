@@ -106,10 +106,10 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     // Generic fallback
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleGenericException(Exception e) {
-        log.warn("Unexpected error. Message={}", e.getMessage());
+        log.error("Unexpected error", e);
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorResponseDTO("INTERNAL_SERVER_ERROR", "A unexpected error occurred."));
+            .status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorResponseDTO("INTERNAL_SERVER_ERROR", "An unexpected error occurred."));
     }
 
     @ExceptionHandler(AuthenticationException.class)
