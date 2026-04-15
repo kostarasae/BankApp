@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="el">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>KostaBank</title>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-logo">
+        <figure class="img">
+            <img src="bank_logo.png" alt="KostaBank logo">
+            <h1>KostaBank</h1>
+        </figure>
+    </div>
+</header>
+
+<main class="container">
+
+    <!-- Hamburger -->
+    <button class="menu-toggle" aria-label="Άνοιγμα μενού">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <nav>
+            <ul>
+                <li data-target="panel-dashboard">
+                    <span class="icon">🏠</span> Προεπισκόπηση
+                </li>
+                <li data-target="panel-create">
+                    <span class="icon">➕</span> Λογαριασμοί
+                </li>
+                <li data-target="panel-payments">
+                    <span class="icon">💸</span> Πληρωμές
+                </li>
+                <li data-target="panel-iris">
+                    <span class="icon">📲</span> IRIS
+                </li>
+                <li data-target="panel-investments">
+                    <span class="icon">📈</span> Επενδύσεις
+                </li>
+                <li data-target="panel-loans">
+                    <span class="icon">🏦</span> Δάνεια
+                </li>
+                <li data-target="panel-cards">
+                    <span class="icon">💳</span> Κάρτες
+                </li>
+                <li data-target="panel-profile">
+                    <span class="icon">👤</span> Προφίλ
+                </li>
+                <li data-target="panel-settings">
+                    <span class="icon">⚙️</span> Ρυθμίσεις
+                </li>
+            </ul>
+        </nav>
+    </aside>
+
+    <!-- Overlay -->
+    <div class="overlay"></div>
+
+    
+    <div class="workspace">
+
+        <!-- Προεπισκόπηση -->
+        <section class="panel active" id="panel-dashboard">
+
+            <section class="card pie-card">
+                <h2>Κατανομή Εσόδων / Εξόδων</h2>
+                <div class="dashboard-top">
+                    <div class="account-selector">
+                        <label class="form-label" for="accountSelect">Ενεργός Λογαριασμός</label>
+                        <select class="form-select" id="accountSelect">
+                        </select>
+                    </div>
+                    <div class="pie-wrapper">
+                        <canvas id="incomeExpensePie" width="260" height="260"></canvas>
+                        <div id="legend">
+                            <div class="legend-item" data-index="0">
+                                <span class="dot expense"></span>
+                                Έξοδα
+                            </div>
+                            <div class="legend-item" data-index="1">
+                                <span class="dot income"></span>
+                                Έσοδα
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Συναλλαγές -->
+            <section class="card transactions" id="transactions">
+                <h2>Συναλλαγές</h2>
+                <div>
+                    <table class="transactions-table" data-account-id="12345">
+                        <thead>
+                            <tr>
+                                <th>Ημερομηνία</th>
+                                <th>Ώρα</th>
+                                <th>Περιγραφή</th>
+                                <th>Τύπος</th>
+                                <th>Ποσό (€)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionRows">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Υπόλοιπο -->
+            <section class="card balance-section" id="balance">
+                <h2>Υπόλοιπο</h2>
+                <p class="balance-amount">0.00 €</p>
+            </section>
+        
+        </section>
+
+        <!-- Λογαριασμοί -->
+        <section class="panel" id="panel-create">
+            <section class="card">
+                <h2>Δημιουργία Λογαριασμού</h2>
+                <form class="form">
+                    <fieldset>
+                        <legend>Εγγραφή Χρήστη</legend>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="username">Username</label>
+                                <input class="form-input" type="text" id="username" name="username" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="password">Password</label>
+                                <input class="form-input" type="password" id="password" name="password" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Στοιχεία Κατόχου</legend>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="ownerIdNumber">Αριθμός Ταυτότητας</label>
+                                <input class="form-input" type="text" id="ownerIdNumber" name="ownerIdNumber" placeholder="Π.χ. ΑΒ123456" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerName">Όνομα Κατόχου</label>
+                                <input class="form-input" type="text" id="ownerName" name="ownerName" placeholder="Π.χ. Γιώργος" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerSurname">Επώνυμο Κατόχου</label>
+                                <input class="form-input" type="text" id="ownerSurname" name="ownerSurname" placeholder="Π.χ. Παπαδόπουλος" required>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Προσωπικά Στοιχεία</legend>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="ownerIdFile">Επισύναψη Δελτίου Ταυτότητας</label>
+                                <input class="form-input" type="file" id="ownerIdFile" name="ownerIdFile" accept="image/*,.pdf">
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerPlaceOfBirth">Μέρος Γέννησης</label>
+                                <input class="form-input" type="text" id="ownerPlaceOfBirth" name="ownerPlaceOfBirth" placeholder="Π.χ. Αθήνα" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerMunicipalityOfRegistration">Δήμος Εγγραφής</label>
+                                <input class="form-input" type="text" id="ownerMunicipalityOfRegistration" name="ownerMunicipalityOfRegistration" placeholder="Π.χ. Αθήνα" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label">Φύλο</label>
+                                <div class="form-radio-group">
+                                    <input type="radio" id="male" name="gender" value="male">
+                                    <label for="male">Άνδρας</label>
+                                    <input type="radio" id="female" name="gender" value="female">
+                                    <label for="female">Γυναίκα</label>
+                                    <input type="radio" id="neutral" name="gender" value="neutral">
+                                    <label for="neutral">Δεν επιθυμώ να δηλώσω</label>
+                                </div>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerDob">Ημερομηνία Γέννησης</label>
+                                <input class="form-input" type="date" id="ownerDob" name="ownerDob" required>
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerVat">Αριθμός Φορολογικής Εγγραφής</label>
+                                <input class="form-input" type="text" id="ownerVat" name="ownerVat" placeholder="Π.χ. 123456789" pattern="\d{9,}" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="ownerAddress">Διεύθυνση Κατοικίας</label>
+                                <input class="form-input" type="text" id="ownerAddress" name="ownerAddress" placeholder="Οδός Ερμού 123, Αθήνα">
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerEmail">Email</label>
+                                <input class="form-input" type="email" id="ownerEmail" name="ownerEmail" placeholder="email@example.com">
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="ownerPhone">Τηλέφωνο</label>
+                                <input class="form-input" type="tel" id="ownerPhone" name="ownerPhone" placeholder="+30 69xxxxxxxx" pattern="[+]{1}[0-9]{11}">
+                            </div>
+                        </div>
+                    </fieldset>
+                    <label class="form-label" for="accountType">Τύπος Λογαριασμού</label>
+                    <select class="form-select" id="accountType" name="accountType">
+                        <option value="checking">Ταμιευτηρίου</option>
+                        <option value="savings">Αποταμίευσης</option>
+                    </select>
+                    <label class="form-label" for="accountBalance">Αρχικό Ποσό (€)</label>
+                    <input class="form-input" type="number" id="accountBalance" name="accountBalance" placeholder="0.00" min="0" required>
+                    <label class="form-checkbox" for="terms">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        Αποδέχομαι τους <span class="terms-text" title="Θα σας πάρουμε και τα σώβρακα...">όρους χρήσης</span>
+                    </label>
+                    <button class="btn primary" type="submit">Δημιουργία</button>
+                </form>
+            </section>
+        </section>
+
+        <!-- Πληρωμές -->
+        <section class="panel" id="panel-payments">
+            <section class="card">
+                <h2>Πληρωμές</h2>
+                <form class="form">
+                    <fieldset>
+                        <legend>Πληρωμή Λογαριασμού</legend>
+                        <label class="form-label" for="provider">Πάροχος</label>
+                        <select class="form-select" id="provider" name="provider">
+                            <option value="">-- Επιλέξτε Πάροχο --</option>
+                            <option value="electricity">ΔΕΗ</option>
+                            <option value="water">ΕΥΔΑΠ</option>
+                            <option value="internet">OTE</option>
+                            <option value="aade">ΑΑΔΕ</option>
+                        </select>
+                        <label class="form-label" for="paymentId">Κωδικός Λογαριασμού</label>
+                        <input class="form-input" type="text" id="paymentId" name="paymentId" placeholder="RF1234567890123456789012345">
+                        <label class="form-label" for="paymentAmount">Ποσό (€)</label>
+                        <input class="form-input" type="number" id="paymentAmount" name="paymentAmount" placeholder="0.00" min="0.01" step="0.01">
+                        <button class="btn primary" id="paymentBtn" type="button">Πληρωμή</button>
+                        <p class="payment-status"></p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Τραπεζική Μεταφορά</legend>
+                        <label class="form-label" for="recipientIban">IBAN Παραλήπτη</label>
+                        <input class="form-input" type="text" id="recipientIban" name="recipientIban" placeholder="GR1234567890123456789012345">
+                        <label class="form-label" for="transferAmount">Ποσό (€)</label>
+                        <input class="form-input" type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="0.01" step="0.01">
+                        <button class="btn primary" id="transferBtn" type="button">Μεταφορά</button>
+                        <p class="transfer-status"></p>
+                    </fieldset>
+                    <fieldset>
+                        <legend>ATM</legend>
+                        <label class="form-label" for="atm">Επιλογή ATM</label>
+                        <select class="form-select" id="atm" name="atm">
+                            <option value="">-- Επιλέξτε ATM --</option>
+                            <option value="syntagma">Σύνταγμα</option>
+                            <option value="omonoia">Ομόνοια</option>
+                            <option value="monastiraki">Μοναστηράκι</option>
+                        </select>
+                        <label class="form-label" for="atmAmount">Ποσό (€)</label>
+                        <input class="form-input" type="number" id="atmAmount" name="atmAmount" placeholder="0.00" min="0.01" step="0.01">
+                        <div class="form-row">
+                            <div class="form-col">
+                                <button class="btn primary" id="depositBtn" type="button">Κατάθεση</button>
+                            </div>
+                            <div class="form-col">
+                                <button class="btn secondary" id="withdrawBtn" type="button">Ανάληψη</button>
+                            </div>
+                        </div>
+                        <p class="atm-status"></p>
+                    </fieldset>
+                </form>
+                <aside class="transactions-help">
+                    <details class="details-section">
+                        <summary>Οδηγίες Συναλλαγών</summary>
+                        <p>Πληρωμή: Επιλέξτε πάροχο ή/και εισάγετε IBAN, συμπληρώστε ποσό και πατήστε Πληρωμή. ATM: Επιλέξτε ATM, συμπληρώστε ποσό και πατήστε Κατάθεση ή Ανάληψη.</p>
+                    </details>
+                </aside>
+            </section>
+        </section>
+
+        <!-- IRIS -->
+        <section class="panel" id="panel-iris">
+            <section class="card">
+                <h2>IRIS</h2>
+                <form class="form">
+                    <fieldset>
+                        <legend>Αποστολή χρημάτων μέσω IRIS</legend>
+                        <label class="form-label" for="irisPhone">Αριθμός τηλεφώνου</label>
+                        <input class="form-input" type="tel" id="irisPhone" name="irisPhone" placeholder="+30 69xxxxxxxx">
+                        <label class="form-label" for="irisAmount">Ποσό (€)</label>
+                        <input class="form-input" type="number" id="irisAmount" name="irisAmount" placeholder="0.00" min="0.01" step="0.01">
+                        <button class="btn primary" id="irisBtn" type="button">Υποβολή</button>
+                    </fieldset>
+                </form>
+            </section>
+        </section>
+        
+        <!-- Επενδύσεις -->
+        <section class="panel" id="panel-investments">
+            <section class="card">
+                <h2>Επενδύσεις</h2>
+                <div class="stock-header">
+                    <span class="stock-ticker">S&amp;P 500</span>
+                    <span id="stockPrice">—</span>
+                    <span id="stockChange">—</span>
+                </div>
+                <div class="period-btns">
+                    <button class="btn-period" data-period="1W">1Ε</button>
+                    <button class="btn-period" data-period="1M">1Μ</button>
+                    <button class="btn-period" data-period="3M">3Μ</button>
+                    <button class="btn-period active" data-period="1Y">1Χ</button>
+                </div>
+                <canvas id="sp500Chart"></canvas>
+            </section>
+        </section>
+
+        <!-- Δάνεια -->
+        <section class="panel" id="panel-loans">
+            <section class="card">
+                <h2>Δάνεια</h2>
+                <form class="form" id="loanForm">
+                    <fieldset>
+                        <legend>Υπολογισμός Δανείου</legend>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="loanAmount">Ποσό Δανείου (€)</label>
+                                <input class="form-input" type="number" id="loanAmount" min="1000" max="500000" step="1000" value="10000">
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="loanRate">Ετήσιο Επιτόκιο (%)</label>
+                                <input class="form-input" type="number" id="loanRate" min="0.1" max="30" step="0.1" value="5.5">
+                            </div>
+                            <div class="form-col">
+                                <label class="form-label" for="loanMonths">Διάρκεια (μήνες)</label>
+                                <input class="form-input" type="number" id="loanMonths" min="12" max="360" step="12" value="60">
+                            </div>
+                        </div>
+                        <button class="btn primary" type="submit">Υπολογισμός</button>
+                    </fieldset>
+                </form>
+                <div id="loanResult" style="display:none">
+                    <div class="loan-summary">
+                        <div class="loan-stat">
+                            <span>Μηνιαία Δόση</span>
+                            <strong id="monthlyPayment">—</strong>
+                        </div>
+                        <div class="loan-stat">
+                            <span>Συνολικό Ποσό</span>
+                            <strong id="totalAmount">—</strong>
+                        </div>
+                        <div class="loan-stat">
+                            <span>Συνολικοί Τόκοι</span>
+                            <strong id="totalInterest">—</strong>
+                        </div>
+                    </div>
+                    <details>
+                        <summary class="amortization-summary">Αναλυτικός Πίνακας Αποπληρωμής</summary>
+                        <div class="amortization-wrapper">
+                            <table class="transactions-table">
+                                <thead>
+                                    <tr>
+                                        <th>Μήνας</th>
+                                        <th>Δόση (€)</th>
+                                        <th>Κεφάλαιο (€)</th>
+                                        <th>Τόκος (€)</th>
+                                        <th>Υπόλοιπο (€)</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="amortizationRows"></tbody>
+                            </table>
+                        </div>
+                    </details>
+                </div>
+            </section>
+        </section>
+
+        <!-- Κάρτες -->
+        <section class="panel" id="panel-cards">
+            <section class="card">
+                <h2>Κάρτες</h2>
+                <div class="bank-card">
+                    <div class="bank-card-top">
+                        <span class="bank-card-name">KostaBank</span>
+                        <span class="bank-card-brand">VISA</span>
+                    </div>
+                    <div class="bank-card-chip"></div>
+                    <div class="bank-card-number">4728 •••• •••• 3891</div>
+                    <div class="bank-card-bottom">
+                        <div>
+                            <div class="bank-card-label">Κάτοχος Κάρτας</div>
+                            <div class="bank-card-holder" id="cardHolder">Γ. ΠΑΠΑΔΟΠΟΥΛΟΣ</div>
+                        </div>
+                        <div>
+                            <div class="bank-card-label">Λήξη</div>
+                            <div>12/28</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-details">
+                    <div class="card-detail-row">
+                        <span>Τύπος</span>
+                        <span>VISA Debit</span>
+                    </div>
+                    <div class="card-detail-row">
+                        <span>Κατάσταση</span>
+                        <span class="card-status-active">● Ενεργή</span>
+                    </div>
+                    <div class="card-detail-row">
+                        <span>Όριο ημερήσιων συναλλαγών</span>
+                        <span>1.000,00 €</span>
+                    </div>
+                    <div class="card-detail-row">
+                        <span>Contactless</span>
+                        <span>Ενεργό</span>
+                    </div>
+                </div>
+            </section>
+        </section>
+
+        <!-- Προφίλ -->
+        <section class="panel" id="panel-profile">
+            <section class="card">
+                <h2>Προφίλ</h2>
+                <div class="profile-info">
+                </div>
+            </section>
+        </section>
+
+        <!-- Ρυθμίσεις -->
+        <section class="panel" id="panel-settings">
+            <section class="card">
+                <h2>Ρυθμίσεις</h2>
+                <form class="form" id="newPasswordForm">
+                    <fieldset>
+                        <legend>Αλλαγή Κωδικού</legend>
+                        <label class="form-label" for="currentPassword">Τρέχων Κωδικός</label>
+                        <input class="form-input" type="password" id="currentPassword" name="currentPassword" required>
+                        <label class="form-label" for="newPassword">Νέος Κωδικός</label>
+                        <input class="form-input" type="password" id="newPassword" name="newPassword" required>
+                        <label class="form-label" for="confirmPassword">Επιβεβαίωση Νέου Κωδικού</label>
+                        <input class="form-input" type="password" id="confirmPassword" name="confirmPassword" required>
+                        <p id="settingsStatus" class="error"></p>
+                        <button class="btn primary" id="changePasswordBtn" type="submit">Αποθήκευση Κωδικού</button>
+                    </fieldset>
+                </form>
+            </section>
+        </section>
+
+    </div>
+</main>
+
+<footer class="site-footer">
+    <figure class="footer-logo">
+        <img src="bank_logo.png" alt="KostaBank logo">
+        <h1>KostaBank</h1>
+    </figure>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="restBankApi.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
