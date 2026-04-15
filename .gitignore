@@ -1,3 +1,10 @@
+### Gradle ###
+build/
+.gradle/
+
+### Logs ###
+logs/
+
 ### IntelliJ IDEA ###
 out/
 !**/src/main/**/out/
