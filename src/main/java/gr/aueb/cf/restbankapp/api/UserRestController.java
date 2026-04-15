@@ -6,6 +6,7 @@ import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.ValidationException;
 //import gr.aueb.cf.restbankapp.dto.RoleReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.ErrorResponseDTO;
+import gr.aueb.cf.restbankapp.dto.PasswordChangeDTO;
 import gr.aueb.cf.restbankapp.dto.UserInsertDTO;
 import gr.aueb.cf.restbankapp.dto.UserReadOnlyDTO;
 //import gr.aueb.cf.restbankapp.service.IRoleService;
@@ -133,4 +134,12 @@ public class UserRestController {
         return ResponseEntity.ok(userService.getUserByUUIDDeletedFalse(uuid));
     }
 
+
+    @PutMapping("/{uuid}/password")
+    public ResponseEntity<Void> changePassword(@PathVariable String uuid, @RequestBody PasswordChangeDTO dto)
+            throws EntityNotFoundException, EntityInvalidArgumentException {
+
+        userService.changePassword(uuid, dto.currentPassword(), dto.newPassword());
+        return ResponseEntity.noContent().build();
+    }
 }

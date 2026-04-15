@@ -14,5 +14,7 @@ public interface IUserService {
 
     UserReadOnlyDTO getUserByUUID(UUID uuid) throws EntityNotFoundException;
     UserReadOnlyDTO getUserByUUIDDeletedFalse(UUID uuid) throws EntityNotFoundException;
+    void changePassword(String uuid, String currentPassword, String newPassword)
+            throws EntityNotFoundException, EntityInvalidArgumentException;
     boolean isUserExists(String username);
 }
