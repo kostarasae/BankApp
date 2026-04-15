@@ -103,11 +103,10 @@ CREATE TABLE attachments (
 
 CREATE TABLE personal_information (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    afm VARCHAR(255) NOT NULL,
-    identity_number VARCHAR(255) NOT NULL,
+    id_number VARCHAR(255) NOT NULL,
     place_of_birth VARCHAR(255) NOT NULL,
     municipality_of_registration VARCHAR(255) NOT NULL,
-    afm_file_id BIGINT,
+    id_file_id BIGINT,
 
     created_at DATETIME NOT NULL,
     updated_at DATETIME NOT NULL,
@@ -115,11 +114,10 @@ CREATE TABLE personal_information (
     deleted_at DATETIME NULL,
 
     CONSTRAINT pk_personal_information PRIMARY KEY (id),
-    CONSTRAINT uk_personal_information_afm UNIQUE (afm),
-    CONSTRAINT uk_personal_information_identity UNIQUE (identity_number),
-    CONSTRAINT uk_personal_information_afm_file UNIQUE (afm_file_id),
+    CONSTRAINT uk_personal_information_id_number UNIQUE (id_number),
+    CONSTRAINT uk_personal_information_id_file UNIQUE (id_file_id),
 
-    CONSTRAINT fk_personal_information_attachments FOREIGN KEY (afm_file_id)
+    CONSTRAINT fk_personal_information_id_file FOREIGN KEY (id_file_id)
         REFERENCES attachments(id)
         ON DELETE SET NULL
         ON UPDATE CASCADE,
@@ -152,6 +150,7 @@ CREATE TABLE customers (
     firstname VARCHAR(255) NOT NULL,
     lastname VARCHAR(255) NOT NULL,
     vat VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NULL,
     region_id BIGINT,
     account_id BIGINT,
     user_id BIGINT NOT NULL,
@@ -165,6 +164,7 @@ CREATE TABLE customers (
     CONSTRAINT pk_customers PRIMARY KEY (id),
     CONSTRAINT uk_customers_uuid UNIQUE (uuid),
     CONSTRAINT uk_customers_vat UNIQUE (vat),
+    CONSTRAINT uk_customers_email UNIQUE (email),
 
     -- enforce 1-1
     CONSTRAINT uk_customers_user_id UNIQUE (user_id),
@@ -197,4 +197,40 @@ CREATE TABLE customers (
     INDEX idx_customers_deleted_at (deleted_at),
     INDEX idx_customers_user_id (user_id),
     INDEX idx_customers_personal_info_id (personal_info_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE customers_accounts (
+    customer_id BIGINT NOT NULL,
+    account_id BIGINT NOT NULL,
+    CONSTRAINT pk_customers_accounts PRIMARY KEY (customer_id, account_id),
+
+    CONSTRAINT pk_customers_accounts_role
+        FOREIGN KEY (customer_id) REFERENCES customers(id)
+        ON DELETE CASCADE,
+
+    CONSTRAINT pk_customers_accounts_capability
+        FOREIGN KEY (account_id) REFERENCES accounts(id)
+        ON DELETE CASCADE,
+
+    INDEX idx_customers_accounts_customers_id (customer_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+CREATE TABLE transactions (
+    id               BIGINT NOT NULL AUTO_INCREMENT,
+    iban             VARCHAR(27) NOT NULL,
+    amount           DECIMAL(15,2) NOT NULL,
+    type             ENUM('DEPOSIT','WITHDRAWAL','TRANSFER') NOT NULL,
+    description      VARCHAR(255) NULL,
+    transaction_date DATE NOT NULL,
+    transaction_time TIME NOT NULL,
+
+    CONSTRAINT pk_transactions PRIMARY KEY (id),
+
+    CONSTRAINT fk_transactions_accounts FOREIGN KEY (iban)
+        REFERENCES accounts(iban)
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE,
+
+    INDEX idx_transactions_iban (iban),
+    INDEX idx_transactions_date (transaction_date)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
