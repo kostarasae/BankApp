@@ -8,11 +8,8 @@ import lombok.Builder;
 @Builder
 public record PersonalInfoInsertDTO(
         @NotNull
-        @Pattern(regexp = "\\d{11}")
-        String afm,
-
-        @NotBlank
-        String identityNumber,
+        @Pattern(regexp = "[Α-ΩA-Z]{1,2}\\d{6,7}", message = "ID number must be 1-2 uppercase letters followed by 6-7 digits")
+        String idNumber,
 
         @NotBlank
         String placeOfBirth,

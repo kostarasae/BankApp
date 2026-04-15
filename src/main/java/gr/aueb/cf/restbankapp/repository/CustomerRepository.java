@@ -18,7 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     Optional<Customer> findByUuid(UUID uuid);
     Optional<Customer> findByVat(String vat);
-    Optional<Customer> findByPersonalInfo_Afm(String afm);
+    Optional<Customer> findByPersonalInfo_IdNumber(String idNumber);
 
     @EntityGraph(attributePaths = {"personalInfo", "region"})
     Page<Customer> findAllByDeletedFalse(Pageable pageable);
@@ -33,7 +33,6 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
         r.name AS periochi,
         t.firstname AS onoma,
         t.lastname AS eponymo,
-        pi.afm AS afm,
         t.vat AS vat,
         CASE WHEN t.deleted = 1 THEN 'ΔΙΕΓΡΑΜΜΕΝΟΣ' ELSE 'ΕΝΕΡΓΟΣ' END AS katastasi,
         CASE 

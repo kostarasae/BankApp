@@ -9,6 +9,5 @@ import java.util.Optional;
 public interface PersonalInfoRepository extends JpaRepository<PersonalInfo, Long>,
         JpaSpecificationExecutor<PersonalInfo> {
 
-    Optional<PersonalInfo> findByAfm(String afm);
-    Optional<PersonalInfo> findByIdentityNumber(String identityNumber);
+    Optional<PersonalInfo> findByIdNumber(String idNumber);
 }

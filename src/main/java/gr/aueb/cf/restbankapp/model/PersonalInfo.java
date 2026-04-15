@@ -18,11 +18,8 @@ public class PersonalInfo extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
-    private String afm;
-
-    @Column(name = "identity_number", unique = true, nullable = false)
-    private String identityNumber;
+    @Column(name = "id_number", unique = true, nullable = false)
+    private String idNumber;
 
     @Column(name = "place_of_birth", nullable = false)
     private String placeOfBirth;
@@ -31,14 +28,14 @@ public class PersonalInfo extends AbstractEntity {
     private String municipalityOfRegistration;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "afm_file_id", unique = true)
-    private Attachment afmFile;
+    @JoinColumn(name = "id_file_id", unique = true)
+    private Attachment idFile;
 
-    public void addAfmFile(Attachment attachment) {
-        this.afmFile = attachment;
+    public void addIdFile(Attachment attachment) {
+        this.idFile = attachment;
     }
 
-    public void removeAfmFile() {
-        this. afmFile = null;
+    public void removeIdFile() {
+        this.idFile = null;
     }
 }

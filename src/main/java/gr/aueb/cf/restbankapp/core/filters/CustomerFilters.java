@@ -13,7 +13,7 @@ import java.util.UUID;
 public class CustomerFilters {
     private UUID uuid;
     private String vat;
-    private String afm;
+    private String idNumber;
     private String lastname;
     private boolean deleted;
     private String region;
