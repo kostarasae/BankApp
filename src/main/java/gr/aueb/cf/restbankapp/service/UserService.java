@@ -83,6 +83,28 @@ public class UserService implements IUserService {
     }
 
     @Override
+    @PreAuthorize("#uuid == authentication.principal.uuid")
+    @Transactional
+    public void changePassword(String uuid, String currentPassword, String newPassword)
+            throws EntityNotFoundException, EntityInvalidArgumentException {
+        try {
+            User user = userRepository.findByUuidAndDeletedFalse(UUID.fromString(uuid))
+                    .orElseThrow(() -> new EntityNotFoundException("User", "User with uuid=" + uuid + " not found"));
+            if (passwordEncoder.matches(currentPassword, user.getPassword())) {
+                user.setPassword(passwordEncoder.encode(newPassword));
+            } else {
+                throw new EntityInvalidArgumentException("User", "Wrong password provided for user with uuid=" + uuid);
+            }
+        } catch (EntityNotFoundException e) {
+            log.error("Change password failed. User with uuid={} not found", uuid);
+            throw e;
+        } catch (EntityInvalidArgumentException e) {
+            log.error("Change password failed. Incorrect current password for user with uuid={}", uuid);
+            throw e;
+        }
+    }
+
+    @Override
     @Transactional(readOnly = true)
     public boolean isUserExists(String username) {
         return userRepository.findByUsername(username).isPresent();
