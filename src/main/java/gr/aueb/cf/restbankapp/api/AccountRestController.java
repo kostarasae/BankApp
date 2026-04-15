@@ -17,6 +17,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.math.BigDecimal;
 import java.net.URI;
+import java.util.List;
 
 /**
  * Facade Design Pattern (simplifies access to subsystems)
@@ -33,7 +34,7 @@ public class AccountRestController {
     public ResponseEntity<AccountReadOnlyDTO> createNewAccount(
             @Valid @RequestBody AccountInsertDTO accountInsertDTO,
             BindingResult bindingResult)
-            throws EntityAlreadyExistsException, ValidationException {
+            throws EntityAlreadyExistsException, ValidationException, EntityNotFoundException, EntityInvalidArgumentException {
 
         accountValidator.validate(accountInsertDTO, bindingResult);
 
@@ -83,15 +84,7 @@ public class AccountRestController {
 
         AccountReadOnlyDTO accountReadOnlyDTO = accountService.deposit(depositDTO);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{deposit}")
-                .buildAndExpand(accountReadOnlyDTO.iban())
-                .toUri();
-
-        return ResponseEntity
-                .created(location)
-                .body(accountReadOnlyDTO);
+        return ResponseEntity.ok(accountReadOnlyDTO);
     }
 
     @PostMapping("/withdraw")
@@ -108,32 +101,11 @@ public class AccountRestController {
 
         AccountReadOnlyDTO accountReadOnlyDTO = accountService.withdraw(withdrawDTO);
 
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .path("/{withdraw}")
-                .buildAndExpand(accountReadOnlyDTO.iban())
-                .toUri();
-
-        return ResponseEntity
-                .created(location)
-                .body(accountReadOnlyDTO);
-    }
-
-    public void validateIban(String iban, BindingResult bindingResult) {
-        if (iban == null || iban.isBlank()) {
-            bindingResult.rejectValue("iban", "invalid", "IBAN is invalid");
-        }
+        return ResponseEntity.ok(accountReadOnlyDTO);
     }
 
     @GetMapping
-    public BigDecimal getBalance(
-            @Valid @RequestBody String iban, BindingResult bindingResult)
-            throws EntityNotFoundException, ValidationException
-    {
-        validateIban(iban, bindingResult);
-        if (bindingResult.hasErrors()) {
-            throw new ValidationException("Account", "Invalid account data", bindingResult);
-        }
-        return accountService.getBalance(iban);
+    public ResponseEntity<List<AccountReadOnlyDTO>> getAllAccounts() {
+        return ResponseEntity.ok(accountService.getAllAccounts());
     }
 }
