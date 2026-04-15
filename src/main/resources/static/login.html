@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="el">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>KostaBank</title>
+</head>
+
+<body>
+
+<header class="site-header">
+    <div class="header-logo">
+        <figure class="img">
+            <img src="bank_logo.png" alt="KostaBank logo">
+            <h1>KostaBank</h1>
+        </figure>
+    </div>
+</header>
+
+<main class="container">
+    <form class="form" id="loginForm">
+        <fieldset>
+            <div class="form-row">
+                <div class="form-col">
+                    <label class="form-label" for="username">Όνομα Χρήστη</label>
+                    <input class="form-input" type="text" id="username" required>
+                    <label class="form-label" for="password">Κωδικός Πρόσβασης</label>
+                    <input class="form-input" type="password" id="password" required>
+                </div>
+            </div>
+        </fieldset>
+        <p id="loginError" class="error"></p>
+        <button type="submit" class="btn secondary">Σύνδεση</button>
+    </form>
+</main>
+
+<footer class="site-footer">
+    <figure class="footer-logo">
+        <img src="bank_logo.png" alt="KostaBank logo">
+        <h1>KostaBank</h1>
+    </figure>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="restBankApi.js"></script>
+<script src="login.js"></script>
+</body>
+</html>
