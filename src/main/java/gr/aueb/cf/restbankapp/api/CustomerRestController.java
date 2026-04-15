@@ -23,7 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import java.net.URI;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -70,6 +73,10 @@ public class CustomerRestController {
         }
 
         customerInsertValidator.validate(customerInsertDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("Customer", "Invalid customer data", bindingResult);
+        }
 
         CustomerReadOnlyDTO customerReadOnlyDTO = customerService.saveCustomer(customerInsertDTO);
 
@@ -135,8 +142,8 @@ public class CustomerRestController {
     }
 
     @Operation(
-            summary = "Upload AFM attachment file for a customer",
-            description = "Uploads a customer's AFM document file. Replaces existing file if present."
+            summary = "Upload identity card file for a customer",
+            description = "Uploads a customer's identity card document. Replaces existing file if present."
     )
     @ApiResponses({
             @ApiResponse(
@@ -161,13 +168,13 @@ public class CustomerRestController {
             )
     })
 
-    @PostMapping("/{uuid}/afm-file")
-    public ResponseEntity<Void> uploadAfmFile(
+    @PostMapping("/{uuid}/id-file")
+    public ResponseEntity<Void> uploadIdFile(
             @PathVariable UUID uuid,
-            @RequestParam("afmFile") MultipartFile afmFile
+            @RequestParam("idFile") MultipartFile idFile
     ) throws EntityNotFoundException, FileUploadException {
 
-        customerService.saveAfmFile(uuid, afmFile);
+        customerService.saveIdFile(uuid, idFile);
         return ResponseEntity.noContent().build();
     }
 
@@ -249,5 +256,13 @@ public class CustomerRestController {
             throws EntityNotFoundException {
         CustomerReadOnlyDTO customerReadOnlyDTO = customerService.deleteCustomerByUUID(uuid);
         return ResponseEntity.ok(customerReadOnlyDTO);
+    }
+
+    @GetMapping("/{uuid}/accounts")
+    @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or authentication.principal.customer?.uuid?.toString() == #uuid")
+    public ResponseEntity<List<AccountReadOnlyDTO>> getCustomerAccounts(@PathVariable String uuid) 
+    throws EntityNotFoundException {
+        List<AccountReadOnlyDTO> accounts = customerService.getCustomerAccountsNotDeleted(uuid);
+        return ResponseEntity.ok(accounts);
     }
 }

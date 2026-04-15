@@ -8,6 +8,7 @@ import gr.aueb.cf.restbankapp.core.filters.CustomerFilters;
 import gr.aueb.cf.restbankapp.dto.CustomerInsertDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerUpdateDTO;
+import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.*;
 import gr.aueb.cf.restbankapp.model.static_data.Region;
@@ -62,27 +63,20 @@ public class CustomerServiceImpl implements ICustomerService {
             if (dto.vat() != null && customerRepository.findByVat(dto.vat()).isPresent()) {
                 throw new EntityAlreadyExistsException("Customer", "Customer with vat=" + dto.vat() + " already exists");
             }
-            if (personalInfoRepository.findByAfm(dto.personalInfoInsertDTO().afm()).isPresent()) {
-                throw new EntityAlreadyExistsException("AFM", "User with AFM " + dto.personalInfoInsertDTO().afm() + " already exists");
-            }
             if (userRepository.findByUsername(dto.userInsertDTO().username()).isPresent()) {
                 throw new EntityAlreadyExistsException("Username", "User with username " + dto.userInsertDTO().username() + " already exists");
             }
-            if (personalInfoRepository.findByIdentityNumber(dto.personalInfoInsertDTO().identityNumber()).isPresent()) {
-                throw new EntityAlreadyExistsException("IdentityNumber", "User with identity number " + dto.personalInfoInsertDTO().identityNumber() + " already exists");
+            if (personalInfoRepository.findByIdNumber(dto.personalInfoInsertDTO().idNumber()).isPresent()) {
+                throw new EntityAlreadyExistsException("IdNumber", "User with ID number " + dto.personalInfoInsertDTO().idNumber() + " already exists");
             }
 
             Region region = regionRepository.findById(dto.regionId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Region", "Region id=" + dto.regionId() + " invalid"));
 
-//            final Long customerRoleId = 3L;    // Πάντα ο ρόλος είναι customer - TODO να αλλάξει το DTO
-//            Role role = roleRepository.findById(customerRoleId)
-//                    .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + customerRoleId + " invalid"));
             Role role = roleRepository.findById(dto.userInsertDTO().roleId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + dto.userInsertDTO().roleId() + " invalid"));
 
             Customer customer = mapper.mapToCustomerEntity(dto);
-//            User user = customer.getUser();
             User user = mapper.mapToUserEntity(dto.userInsertDTO());
             user.setPassword(passwordEncoder.encode(dto.userInsertDTO().password()));
             region.addCustomer(customer);
@@ -143,9 +137,9 @@ public class CustomerServiceImpl implements ICustomerService {
                 customer.setVat(dto.vat());
             }
 
-            if (!customer.getPersonalInfo().getIdentityNumber().equals(dto.personalInfoUpdateDTO().identityNumber()) &&
-                    personalInfoRepository.findByIdentityNumber(dto.personalInfoUpdateDTO().identityNumber()).isPresent()) {
-                throw new EntityAlreadyExistsException("Customer", "Customer with identity number " + dto.personalInfoUpdateDTO().identityNumber() + " already exists");
+            if (!customer.getPersonalInfo().getIdNumber().equals(dto.personalInfoUpdateDTO().idNumber()) &&
+                    personalInfoRepository.findByIdNumber(dto.personalInfoUpdateDTO().idNumber()).isPresent()) {
+                throw new EntityAlreadyExistsException("Customer", "Customer with ID number " + dto.personalInfoUpdateDTO().idNumber() + " already exists");
             }
 
             if (!Objects.equals(dto.regionId(), customer.getRegion().getId())) {
@@ -244,9 +238,9 @@ public class CustomerServiceImpl implements ICustomerService {
                 return singleResultPage(customer, pageable);
             }
 
-            if (filters.getAfm() != null) {
-                Customer customer = customerRepository.findByPersonalInfo_Afm(filters.getAfm())
-                        .orElseThrow(() -> new EntityNotFoundException("Customer", "afm=" + filters.getAfm() + " not found"));
+            if (filters.getIdNumber() != null) {
+                Customer customer = customerRepository.findByPersonalInfo_IdNumber(filters.getIdNumber())
+                        .orElseThrow(() -> new EntityNotFoundException("Customer", "idNumber=" + filters.getIdNumber() + " not found"));
                 return singleResultPage(customer, pageable);
             }
 
@@ -276,18 +270,17 @@ public class CustomerServiceImpl implements ICustomerService {
             backoff = @Backoff(delay = 2000, multiplier = 2, maxDelay = 10000)
     )
     @Transactional(rollbackFor = EntityNotFoundException.class)
-    public void saveAfmFile(UUID uuid, MultipartFile afmFile)
+    public void saveIdFile(UUID uuid, MultipartFile idFile)
             throws FileUploadException, EntityNotFoundException {
         try {
-            String originalFilename = afmFile.getOriginalFilename();
+            String originalFilename = idFile.getOriginalFilename();
             String savedName = UUID.randomUUID() + getFileExtension(originalFilename);
 
             String uploadDirectory = uploadDir;
             Path filePath = Paths.get(uploadDirectory + savedName);
 
             Files.createDirectories(filePath.getParent());
-            //        Files.write(filePath, afmFile.getBytes());
-            afmFile.transferTo(filePath);  // safe for large files, more efficient
+            idFile.transferTo(filePath);  // safe for large files, more efficient
 
             Attachment attachment = new Attachment();
             attachment.setFilename(originalFilename);
@@ -295,8 +288,7 @@ public class CustomerServiceImpl implements ICustomerService {
             attachment.setFilePath(filePath.toString());
 
             Tika tika = new Tika();
-            String contentType = tika.detect(afmFile.getBytes());
-//            attachment.setContentType(afmFile.getContentType());
+            String contentType = tika.detect(idFile.getBytes());
             attachment.setContentType(contentType);
             attachment.setExtension(getFileExtension(originalFilename));
 
@@ -305,20 +297,20 @@ public class CustomerServiceImpl implements ICustomerService {
 
             PersonalInfo personalInfo = customer.getPersonalInfo();
 
-            if (personalInfo.getAfmFile() != null) {
-                Files.deleteIfExists(Path.of(personalInfo.getAfmFile().getFilePath()));
-                personalInfo.removeAfmFile();  // orphanRemoval handles DB deletion
+            if (personalInfo.getIdFile() != null) {
+                Files.deleteIfExists(Path.of(personalInfo.getIdFile().getFilePath()));
+                personalInfo.removeIdFile();  // orphanRemoval handles DB deletion
             }
 
-            personalInfo.addAfmFile(attachment);
+            personalInfo.addIdFile(attachment);
             customerRepository.save(customer);
-            log.info("Attachment for customer with afm={} saved", personalInfo.getAfm());
+            log.info("ID file for customer uuid={} saved", uuid);
         } catch (EntityNotFoundException e) {
-            log.error("Attachment for customer with afm={} not found", uuid, e);
+            log.error("Customer with uuid={} not found when saving ID file", uuid, e);
             throw e;
         } catch (IOException | HttpServerErrorException e) {
-            log.error("Error saving attachment for customer with afm={}", uuid, e);
-            throw new FileUploadException("CustomerAfm", "Error saving attachment for customer with afm=" + uuid);
+            log.error("Error saving ID file for customer uuid={}", uuid, e);
+            throw new FileUploadException("CustomerIdFile", "Error saving ID file for customer with uuid=" + uuid);
         }
     }
 
@@ -327,5 +319,21 @@ public class CustomerServiceImpl implements ICustomerService {
             return filename.substring(filename.lastIndexOf("."));
         }
         return "";
+    }
+
+    @Override
+    public List<AccountReadOnlyDTO> getCustomerAccountsNotDeleted(String uuid) throws EntityNotFoundException {
+        try {
+            Customer customer = customerRepository.findByUuidAndDeletedFalse(UUID.fromString(uuid))
+                    .orElseThrow(() -> new EntityNotFoundException("Customer","Customer with uuid=" + uuid + " not found"));
+            log.debug("Get accounts for customer uuid={} returned successfully", uuid);
+            return customer.getAccounts().stream()
+                    .filter(account -> !account.isDeleted())
+                    .map(mapper::mapToAccountReadOnlyDTO)
+                    .toList();
+        } catch (EntityNotFoundException e) {
+            log.error("Get accounts for customer uuid={} failed. Customer not found", uuid, e);
+            throw e;
+        }
     }
 }

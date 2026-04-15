@@ -5,6 +5,7 @@ import gr.aueb.cf.restbankapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.FileUploadException;
 import gr.aueb.cf.restbankapp.core.filters.CustomerFilters;
+import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerInsertDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.CustomerUpdateDTO;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface ICustomerService {
@@ -33,6 +35,8 @@ public interface ICustomerService {
             throws EntityNotFoundException;
     boolean isCustomerExists(String vat);
 
-    void saveAfmFile(UUID uuid, MultipartFile afmFile)
+    void saveIdFile(UUID uuid, MultipartFile idFile)
             throws FileUploadException, EntityNotFoundException;
+
+    List<AccountReadOnlyDTO> getCustomerAccountsNotDeleted(String uuid) throws EntityNotFoundException;
 }
