@@ -8,9 +8,9 @@ import java.math.BigDecimal;
 public record AccountInsertDTO(
 
         @NotNull
-        AccountType type,
+        AccountType accountType,
 
-        BigDecimal balance,
+        BigDecimal initialDeposit,
         
         @NotNull
         String customerUuid)  {

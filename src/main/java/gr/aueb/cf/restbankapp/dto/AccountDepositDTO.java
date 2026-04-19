@@ -9,6 +9,8 @@ public record AccountDepositDTO (
         @NotNull
         String iban,
 
+        String description,
+
         @NotNull
         BigDecimal amount) {
 }

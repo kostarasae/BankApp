@@ -53,7 +53,7 @@ public class AccountValidator implements Validator {
             );
         }
 
-        if (dto.type() == null) {
+        if (dto.accountType() == null) {
             log.warn("Validation failed. Account type is null");
             errors.rejectValue(
                     "type",
@@ -62,8 +62,8 @@ public class AccountValidator implements Validator {
             );
         }
 
-        if (dto.balance() == null || dto.balance().compareTo(BigDecimal.ZERO) < 0) {
-            log.warn("Validation failed. Negative balance: {}", dto.balance());
+        if (dto.initialDeposit() == null || dto.initialDeposit().compareTo(BigDecimal.ZERO) < 0) {
+            log.warn("Validation failed. Negative balance: {}", dto.initialDeposit());
             errors.rejectValue(
                     "balance",
                     "balance.account.negative",
