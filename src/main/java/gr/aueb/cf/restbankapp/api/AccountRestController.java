@@ -1,10 +1,7 @@
 package gr.aueb.cf.restbankapp.api;
 
 import gr.aueb.cf.restbankapp.core.exceptions.*;
-import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
-import gr.aueb.cf.restbankapp.dto.AccountInsertDTO;
-import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
-import gr.aueb.cf.restbankapp.dto.AccountWithdrawDTO;
+import gr.aueb.cf.restbankapp.dto.*;
 import gr.aueb.cf.restbankapp.service.IAccountService;
 import gr.aueb.cf.restbankapp.validation.AccountValidator;
 import jakarta.validation.Valid;
@@ -15,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -71,7 +67,6 @@ public class AccountRestController {
     }
 
     @PostMapping("/deposit")
-    @PreAuthorize("hasAuthority('CAN_DEPOSIT')")
     public ResponseEntity<AccountReadOnlyDTO> deposit(
             @Valid @RequestBody AccountDepositDTO depositDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, ValidationException
@@ -88,7 +83,6 @@ public class AccountRestController {
     }
 
     @PostMapping("/withdraw")
-    @PreAuthorize("hasAuthority('CAN_WITHDRAW')")
     public ResponseEntity<AccountReadOnlyDTO> withdraw(
             @Valid @RequestBody AccountWithdrawDTO withdrawDTO, BindingResult bindingResult)
             throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException, ValidationException
@@ -104,8 +98,30 @@ public class AccountRestController {
         return ResponseEntity.ok(accountReadOnlyDTO);
     }
 
+    @PostMapping("/transfer")
+    public ResponseEntity<AccountReadOnlyDTO> transfer(
+            @Valid @RequestBody AccountTransferDTO transferDTO, BindingResult bindingResult)
+            throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException, ValidationException
+    {
+        accountValidator.validate(transferDTO, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("Account", "Invalid account data", bindingResult);
+        }
+
+        AccountReadOnlyDTO accountReadOnlyDTO = accountService.transfer(transferDTO);
+
+        return ResponseEntity.ok(accountReadOnlyDTO);
+    }
+
     @GetMapping
     public ResponseEntity<List<AccountReadOnlyDTO>> getAllAccounts() {
         return ResponseEntity.ok(accountService.getAllAccounts());
+    }
+
+    @GetMapping("/{iban}/transactions")
+    @PreAuthorize("hasAuthority('VIEW_ONLY_ACCOUNT')")
+    public ResponseEntity<List<TransactionReadOnlyDTO>> getTransactions(@PathVariable String iban) {
+        return ResponseEntity.ok(accountService.getTransactions(iban));
     }
 }
