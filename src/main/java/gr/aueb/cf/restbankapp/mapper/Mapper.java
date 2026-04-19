@@ -7,6 +7,7 @@ import gr.aueb.cf.restbankapp.model.static_data.Region;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Component
 public class Mapper {
@@ -25,6 +26,7 @@ public class Mapper {
         customer.setLastname(dto.lastname());
         customer.setVat(dto.vat());
         customer.setEmail(dto.email());
+        customer.setPhone(dto.phone());
 
         UserInsertDTO userDTO = dto.userInsertDTO();
         User user = new User();
@@ -37,6 +39,9 @@ public class Mapper {
         PersonalInfo personalInfo = new PersonalInfo();
         personalInfo.setIdNumber(personalInfoDTO.idNumber());
         personalInfo.setPlaceOfBirth(personalInfoDTO.placeOfBirth());
+        personalInfo.setDateOfBirth(personalInfoDTO.dateOfBirth());
+        personalInfo.setHomeAddress(personalInfoDTO.homeAddress());
+        personalInfo.setGender(personalInfoDTO.gender());
         personalInfo.setMunicipalityOfRegistration(personalInfoDTO
                 .municipalityOfRegistration());
         customer.setPersonalInfo(personalInfo);  // Set PersonalInfo entity to Customer
@@ -56,10 +61,14 @@ public class Mapper {
     }
 
     public Account mapToAccountModelEntity(AccountInsertDTO dto) {
-        return AccountFactory.create(dto.type(), dto.balance(), dto.customerUuid());
+        return AccountFactory.create(dto.accountType(), dto.initialDeposit(), dto.customerUuid());
     }
 
     public AccountReadOnlyDTO mapToAccountReadOnlyDTO(Account account) {
         return new AccountReadOnlyDTO(account.getIban(), account.getBalance());
+    }
+
+    public TransactionReadOnlyDTO mapToTransactionReadOnlyDTO(Transaction t) {
+        return new TransactionReadOnlyDTO(t.getCreatedAt(), t.getType(), t.getAmount(), t.getDescription());
     }
 }

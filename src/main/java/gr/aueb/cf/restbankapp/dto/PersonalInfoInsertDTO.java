@@ -15,5 +15,14 @@ public record PersonalInfoInsertDTO(
         String placeOfBirth,
 
         @NotBlank
-        String municipalityOfRegistration
+        String dateOfBirth,
+
+        @NotBlank
+        String municipalityOfRegistration,
+
+        @NotBlank
+        String homeAddress,
+
+        @NotBlank
+        String gender
 ) {}

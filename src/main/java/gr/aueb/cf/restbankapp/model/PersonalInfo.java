@@ -24,6 +24,15 @@ public class PersonalInfo extends AbstractEntity {
     @Column(name = "place_of_birth", nullable = false)
     private String placeOfBirth;
 
+    @Column(name = "date_of_birth", nullable = false)
+    private String dateOfBirth;
+
+    @Column(name = "home_address", nullable = false)
+    private String homeAddress;
+
+    @Column(name = "gender")
+    private String gender;
+
     @Column(name = "municipality_of_registration", nullable = false)
     private String municipalityOfRegistration;
 
