@@ -124,4 +124,24 @@ public class AccountRestController {
     public ResponseEntity<List<TransactionReadOnlyDTO>> getTransactions(@PathVariable String iban) {
         return ResponseEntity.ok(accountService.getTransactions(iban));
     }
+
+    @GetMapping("/{iban}/fee")
+    public ResponseEntity<FeeDTO> getAccountFee(@PathVariable String iban)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok(accountService.getAccountFee(iban));
+    }
+
+    @GetMapping("/{iban}/owner")
+    @PreAuthorize("hasAuthority('CAN_TRANSFER')")
+    public ResponseEntity<IrisRecipientDTO> getAccountOwner(@PathVariable String iban)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok(accountService.getAccountOwner(iban));
+    }
+
+    @GetMapping("/phone/{phone}")
+    @PreAuthorize("hasAuthority('CAN_TRANSFER')")
+    public ResponseEntity<IrisRecipientDTO> getAccountByPhone(@PathVariable String phone)
+            throws EntityNotFoundException {
+        return ResponseEntity.ok(accountService.getAccountByPhone(phone));
+    }
 }

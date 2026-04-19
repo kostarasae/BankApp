@@ -30,4 +30,10 @@ public interface IAccountService {
     public boolean isAccountExists(String iban);
 
     List<AccountReadOnlyDTO> getAllAccounts();
+
+    IrisRecipientDTO getAccountByPhone(String phone) throws EntityNotFoundException;
+
+    IrisRecipientDTO getAccountOwner(String iban) throws EntityNotFoundException;
+
+    FeeDTO getAccountFee(String iban) throws EntityNotFoundException;
 }
