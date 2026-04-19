@@ -16,12 +16,16 @@ public record CustomerInsertDTO (
         String lastname,
 
         @NotNull
-        @Pattern(regexp = "\\d{9,}")
+        @Pattern(regexp = "\\d{9,}") // at least 9 digits
         String vat,
 
         @NotNull
         @Pattern(regexp = "^[\\w.-]+@[\\w.-]+\\.\\w{2,}$")
         String email,
+
+        @NotNull
+        @Pattern(regexp = "69\\d{7}") // starts with 69 and has 10 digits
+        String phone,
 
         @NotNull
         Long regionId,

@@ -30,6 +30,9 @@ public class Customer extends AbstractEntity {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String phone;
+
     private String firstname;
     private String lastname;
 
