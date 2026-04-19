@@ -9,6 +9,8 @@ public record AccountWithdrawDTO(
         @NotNull
         String iban,
 
+        String description,
+
         @NotNull
         BigDecimal amount)  {
 }
