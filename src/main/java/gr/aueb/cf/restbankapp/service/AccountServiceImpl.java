@@ -6,8 +6,11 @@ import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.Account;
 import gr.aueb.cf.restbankapp.model.Customer;
 import gr.aueb.cf.restbankapp.core.factory.AccountFactory;
+import gr.aueb.cf.restbankapp.model.Transaction;
+import gr.aueb.cf.restbankapp.model.TransactionType;
 import gr.aueb.cf.restbankapp.repository.AccountRepository;
 import gr.aueb.cf.restbankapp.repository.CustomerRepository;
+import gr.aueb.cf.restbankapp.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,6 +28,7 @@ public class AccountServiceImpl implements IAccountService {
 
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
+    private final TransactionRepository transactionRepository;
     private final Mapper mapper;
 
     @Override
@@ -33,7 +37,7 @@ public class AccountServiceImpl implements IAccountService {
     public AccountReadOnlyDTO createNewAccount(AccountInsertDTO accountInsertDTO)
             throws EntityNotFoundException {
         try {
-            Account account = AccountFactory.create(accountInsertDTO.type(), accountInsertDTO.balance(), accountInsertDTO.customerUuid());
+            Account account = AccountFactory.create(accountInsertDTO.accountType(), accountInsertDTO.initialDeposit(), accountInsertDTO.customerUuid());
             // Save account to database
             accountRepository.save(account);            
             Customer customer = customerRepository.findByUuid(UUID.fromString(accountInsertDTO.customerUuid())) .orElseThrow(() -> 
@@ -73,6 +77,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @PreAuthorize("hasAuthority('CAN_DEPOSIT')")
+    @Transactional(rollbackFor = { EntityNotFoundException.class, NegativeAmountException.class })
     @Override
     public synchronized AccountReadOnlyDTO deposit(AccountDepositDTO depositDTO)
             throws EntityNotFoundException, NegativeAmountException {
@@ -85,6 +90,12 @@ public class AccountServiceImpl implements IAccountService {
             account.setBalance(account.getBalance().add(depositDTO.amount()));
             accountRepository.save(account);
             log.info("Amount of {} has been deposit to account with iban={} successfully", depositDTO.amount(), depositDTO.iban());
+            Transaction transaction = new Transaction();
+            transaction.setIban(depositDTO.iban());
+            transaction.setAmount(depositDTO.amount());
+            transaction.setType(TransactionType.DEPOSIT);
+            transaction.setDescription(depositDTO.description());
+            transactionRepository.save(transaction);
             return mapper.mapToAccountReadOnlyDTO(account);
         } catch (EntityNotFoundException e) {
             log.error("The account with iban={} was not found", depositDTO.iban());
@@ -96,6 +107,7 @@ public class AccountServiceImpl implements IAccountService {
     }
 
     @PreAuthorize("hasAuthority('CAN_WITHDRAW')")
+    @Transactional(rollbackFor = { EntityNotFoundException.class, NegativeAmountException.class, InsufficientBalanceException.class })
     @Override
     public synchronized AccountReadOnlyDTO withdraw(AccountWithdrawDTO withdrawDTO)
             throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException {
@@ -113,6 +125,12 @@ public class AccountServiceImpl implements IAccountService {
             account.setBalance(predictedBalance);
             accountRepository.save(account);
             log.info("Amount of {} has been withdrawn from account with iban={} successfully", withdrawDTO.amount(), withdrawDTO.iban());
+            Transaction transaction = new Transaction();
+            transaction.setIban(withdrawDTO.iban());
+            transaction.setAmount(withdrawDTO.amount());
+            transaction.setType(TransactionType.WITHDRAWAL);
+            transaction.setDescription(withdrawDTO.description());
+            transactionRepository.save(transaction);
             return mapper.mapToAccountReadOnlyDTO(account);
         } catch (EntityNotFoundException e) {
             log.error("The account with iban={} was not found", withdrawDTO.iban());
@@ -126,7 +144,59 @@ public class AccountServiceImpl implements IAccountService {
         }
     }
 
-    @PreAuthorize("hasAuthority('VIEW_ACCOUNT')")
+    @PreAuthorize("hasAuthority('CAN_TRANSFER')")
+    @Transactional(rollbackFor = { EntityNotFoundException.class, NegativeAmountException.class, InsufficientBalanceException.class })
+    @Override
+    public synchronized AccountReadOnlyDTO transfer(AccountTransferDTO transferDTO)
+            throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException {
+        try {
+            Account sourceAccount = accountRepository.findByIban(transferDTO.myIban())
+                    .orElseThrow(() -> new EntityNotFoundException("Account", "Source account with iban " + transferDTO.myIban() + " not found"));
+            Account destinationAccount = accountRepository.findByIban(transferDTO.toIban())
+                    .orElseThrow(() -> new EntityNotFoundException("Account", "Destination account with iban " + transferDTO.toIban() + " not found"));
+            if (transferDTO.amount().signum() < 0) {
+                throw new NegativeAmountException("Account", "Negative transfer amount " + transferDTO.amount() + " was not accepted");
+            }
+            BigDecimal finalAmount = sourceAccount.getFeeStrategy().calculateFee(transferDTO.amount());
+            BigDecimal predictedBalance = sourceAccount.getBalance().subtract(finalAmount);
+            if (sourceAccount.violatesRules(predictedBalance))
+                throw new InsufficientBalanceException("Account", "Invalid transfer from account with iban " + transferDTO.myIban()
+                        + ". Amount of " + transferDTO.amount() + " exceeds balance");
+            sourceAccount.setBalance(predictedBalance);
+            destinationAccount.setBalance(destinationAccount.getBalance().add(transferDTO.amount()));
+            accountRepository.save(sourceAccount);
+            accountRepository.save(destinationAccount);
+            log.info("Amount of {} has been transferred from account with iban={} to account with iban={} successfully",
+                    transferDTO.amount(), transferDTO.myIban(), transferDTO.toIban());
+            Transaction transaction = new Transaction();
+            transaction.setIban(transferDTO.myIban());
+            transaction.setAmount(transferDTO.amount());
+            transaction.setType(TransactionType.TRANSFER);
+            transaction.setDescription(transferDTO.description());
+            transactionRepository.save(transaction);
+            return mapper.mapToAccountReadOnlyDTO(sourceAccount);
+        } catch (EntityNotFoundException e) {
+            log.error("The account with iban={} was not found", e.getMessage().contains("Source") ? transferDTO.myIban() : transferDTO.toIban());
+            throw e;
+        } catch (NegativeAmountException e) {
+            log.error("Negative transfer amount={} was not accepted", transferDTO.amount());
+            throw e;
+        } catch (InsufficientBalanceException e) {
+            log.error("The amount={} is greater than the balance of the account with iban={}", transferDTO.amount(), transferDTO.myIban());
+            throw e;
+        }
+    }
+
+    @PreAuthorize("hasAnyAuthority('VIEW_ACCOUNT', 'VIEW_ONLY_ACCOUNT')")
+    @Override
+    public synchronized List<TransactionReadOnlyDTO> getTransactions(String iban) {
+        return transactionRepository.findByIbanOrderByCreatedAtDesc(iban)
+                .stream()
+                .map(mapper::mapToTransactionReadOnlyDTO)
+                .toList();
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_ONLY_ACCOUNT')")
     @Override
     public synchronized BigDecimal getBalance(String iban) throws EntityNotFoundException {
         try {

@@ -2,6 +2,7 @@ package gr.aueb.cf.restbankapp.service;
 
 import gr.aueb.cf.restbankapp.core.exceptions.*;
 import gr.aueb.cf.restbankapp.dto.*;
+import gr.aueb.cf.restbankapp.model.Transaction;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -17,6 +18,9 @@ public interface IAccountService {
 
     AccountReadOnlyDTO deposit(AccountDepositDTO depositDTO) throws EntityNotFoundException, NegativeAmountException;
     AccountReadOnlyDTO withdraw(AccountWithdrawDTO withdrawDTO) throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException;
+    AccountReadOnlyDTO transfer(AccountTransferDTO transferDTO) throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException;
+
+    List<TransactionReadOnlyDTO> getTransactions(String iban);
 
     BigDecimal getBalance(String iban) throws EntityNotFoundException;
 
