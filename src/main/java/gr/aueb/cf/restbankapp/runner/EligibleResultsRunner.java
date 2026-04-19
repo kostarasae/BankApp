@@ -25,7 +25,7 @@ public class EligibleResultsRunner implements CommandLineRunner {
             eligibleService.generateReport(jobId);  // fires async, app continues starting
         } else if (args.length > 0 && args[0].equals("--get-status")) {
             log.info("Get job status with job id={}", jobId);
-            eligibleService.getJobStatus(jobId);
+            log.info("Job status: {}", eligibleService.getJobStatus(jobId));
         }
     }
 }
