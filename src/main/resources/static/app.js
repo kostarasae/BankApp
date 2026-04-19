@@ -33,10 +33,11 @@ overlay.addEventListener('click', () => {
 });
 
 
+// Load profile data
 async function loadProfile() {
     const profileContainer = document.querySelector('.profile-info');
     profileContainer.textContent = 'Φόρτωση...';
-    const uuid = sessionStorage.getItem('uuid');
+    const uuid = sessionStorage.getItem('customerUuid');
     if (!uuid) {
         console.error('No UUID found in sessionStorage');
         profileContainer.textContent = 'Σφάλμα φόρτωσης προφίλ';
@@ -49,7 +50,7 @@ async function loadProfile() {
             <p><strong>Επώνυμο:</strong> ${customer.lastname}</p>
             <p><strong>Περιοχή:</strong> ${customer.region}</p>
             <p><strong>ΑΦΜ:</strong> ${customer.vat}</p>
-            <p><strong>eMail:</strong> ${customer.email}</p>
+            <p><strong>Email:</strong> ${customer.email}</p>
             <p><strong>Αριθμός Ταυτότητας:</strong> ${customer.personalInfo.idNumber}</p>
             <p><strong>Τόπος Γέννησης:</strong> ${customer.personalInfo.placeOfBirth}</p>
             <p><strong>Δήμος Καταγωγής:</strong> ${customer.personalInfo.municipalityOfRegistration}</p>
@@ -76,6 +77,21 @@ function navigateToPanel(targetId) {
     if (targetId === 'panel-profile') {
         loadProfile();
     }
+    if (targetId === 'panel-cards') {
+        loadCard();
+    }
+}
+
+async function loadCard() {
+    const uuid = sessionStorage.getItem('customerUuid');
+    if (!uuid) return;
+    try {
+        const customer = await getCustomer(uuid);
+        document.getElementById('cardHolder').textContent =
+            `${customer.firstname} ${customer.lastname}`.toUpperCase();
+    } catch (error) {
+        console.error('Error loading card holder:', error);
+    }
 }
 
 menuItems.forEach(item => {
@@ -94,154 +110,65 @@ document.querySelectorAll('.card').forEach(card => {
 });
 
 
-// ===== GLOBAL STATE =====
-let hoverIndex = -1;
-let renderDonut = null;
 
-drawDonut("incomeExpensePie", 1, 1, "Συναλλαγές", true);
+// ===== ACCOUNTS =====
 
-// ===== DONUT =====
-function drawDonut(canvasId, income, expenses, centerText = "Συναλλαγές", neutral = false) {
-    const canvas = document.getElementById(canvasId);
-    if (!canvas) return;
-    const ctx = canvas.getContext("2d");
+document.querySelector('#panel-create form').addEventListener('submit', async function(e) {
+    e.preventDefault();
 
-    const neutralColor = "#c8d0e0";
-    const total = neutral ? 2 : (income + expenses);
-    const data = neutral
-        ? [{ value: 1, color: neutralColor }, { value: 1, color: neutralColor }]
-        : [
-            { value: expenses, color: "#6e8ff0", label: "Έξοδα" },
-            { value: income, color: "#1f3c88", label: "Έσοδα" }
-          ];
+    const customerData = {
+        userInsertDTO: {
+            username: document.getElementById('username').value,
+            password: document.getElementById('password').value,
+            roleId:   2   // default: regular user
+        },
 
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
-    const baseRadius = 115;
-    const hoverRadius = 125;
-    const innerRadius = baseRadius * 0.6;
+        firstname:  document.getElementById('ownerName').value,
+        lastname:   document.getElementById('ownerSurname').value,
+        vat:        document.getElementById('ownerVat').value,
+        email:      document.getElementById('ownerEmail').value,
+        phone:      document.getElementById('ownerPhone').value,
+        regionId:    Number(document.getElementById('ownerRegion').value),
 
-    const targets = [
-        -Math.PI / 2,
-        Math.PI / 2
-    ];
+        personalInfoInsertDTO: {
+            idNumber:                   document.getElementById('ownerIdNumber').value,
+            placeOfBirth:               document.getElementById('ownerPlaceOfBirth').value,
+            dateOfBirth:                document.getElementById('ownerDob').value,
+            municipalityOfRegistration: document.getElementById('ownerMunicipalityOfRegistration').value,
+            homeAddress:                document.getElementById('ownerAddress').value,
+            gender:                     document.querySelector('input[name="gender"]:checked')?.value,
+        }
+    };
 
-    const slices = data.map((slice, i) => {
-        const angle = (slice.value / total) * Math.PI * 2;
-        const center = targets[i];
-        return {
-            start: center - angle / 2,
-            end: center + angle / 2,
-            color: slice.color,
-            value: slice.value
+    if (document.getElementById('checkboxTerms').checked === false) {
+        document.getElementById('accountCreationStatus').textContent = 'Παρακαλώ αποδεχτείτε τους όρους και προϋποθέσεις';
+        return;
+    }
+
+    try {
+        const customer = await createCustomer(customerData);
+        
+        await uploadIdFile(customer.uuid, document.getElementById('ownerIdFile').files[0]);
+
+        const accountData = {
+            accountType: document.getElementById('accountType').value,
+            initialDeposit: Number(document.getElementById('initialDeposit').value),
+            customerUuid: customer.uuid
         };
-    });
 
-    function isAngleBetween(a, start, end) {
-        if (start <= end) return a >= start && a <= end;
-        return a >= start || a <= end;
+        await createAccount(accountData);
+
+    } catch (error) {
+        console.error('Account creation failed:', error);
+        document.getElementById('accountCreationStatus').textContent = 'Η δημιουργία λογαριασμού απέτυχε: ' + error.message;
+        return;
     }
-
-    function render() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-        slices.forEach((slice, i) => {
-            const mid = (slice.start + slice.end) / 2;
-            const radius = i === hoverIndex ? hoverRadius : baseRadius;
-
-            ctx.beginPath();
-            ctx.moveTo(centerX, centerY);
-            ctx.arc(centerX, centerY, radius, slice.start, slice.end);
-            ctx.closePath();
-            ctx.fillStyle = slice.color;
-            ctx.fill();
-
-            const tx = centerX + Math.cos(mid) * radius * 0.75;
-            const ty = centerY + Math.sin(mid) * radius * 0.75;
-
-            if (!neutral) {
-                ctx.fillStyle = "#fff";
-                ctx.font = "bold 14px Arial";
-                ctx.textAlign = "center";
-                ctx.textBaseline = "middle";
-                ctx.fillText(slice.value.toFixed(2) + "€", tx, ty);
-            }
-        });
-
-        // hole
-        ctx.beginPath();
-        ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
-        ctx.fillStyle = "#fff";
-        ctx.fill();
-
-        ctx.fillStyle = "#222";
-        ctx.font = "bold 18px Arial";
-        ctx.fillText(centerText, centerX, centerY);
-
-        updateLegend(hoverIndex);
-    }
-
-    renderDonut = render;
-    render();
-
-    if (neutral) return;
-
-    // ===== CANVAS EVENTS =====
-    canvas.addEventListener("mousemove", e => {
-        const rect = canvas.getBoundingClientRect();
-        const x = e.clientX - rect.left - centerX;
-        const y = e.clientY - rect.top - centerY;
-
-        const dist = Math.hypot(x, y);
-        if (dist < innerRadius || dist > hoverRadius) {
-            if (hoverIndex !== -1) {
-                hoverIndex = -1;
-                render();
-            }
-            return;
-        }
-
-        const angle = Math.atan2(y, x);
-        let found = -1;
-
-        slices.forEach((s, i) => {
-            if (isAngleBetween(angle, s.start, s.end)) found = i;
-        });
-
-        if (found !== hoverIndex) {
-            hoverIndex = found;
-            render();
-        }
-    });
-
-    canvas.addEventListener("mouseleave", () => {
-        hoverIndex = -1;
-        render();
-    });
-}
-
-// ===== LEGEND =====
-function updateLegend(active) {
-    document.querySelectorAll(".legend-item").forEach(el => {
-        const i = Number(el.dataset.index);
-        el.classList.toggle("active", i === active);
-    });
-}
-
-document.querySelectorAll(".legend-item").forEach(el => {
-    el.addEventListener("mouseenter", () => {
-        hoverIndex = Number(el.dataset.index);
-        renderDonut();
-    });
-
-    el.addEventListener("mouseleave", () => {
-        hoverIndex = -1;
-        renderDonut();
-    });
 });
 
 
+
 // ===== DASHBOARD =====
+
 const accountSelect = document.getElementById('accountSelect');
 accountSelect.addEventListener('change', async function() {
     const iban = accountSelect.value;
@@ -259,14 +186,14 @@ function updateTransactionsTable(transactions) {
         tbody.appendChild(tr);
         return;
     }
+    const typeLabel = { DEPOSIT: 'Κατάθεση', WITHDRAWAL: 'Ανάληψη', TRANSFER: 'Μεταφορά' };
     transactions.forEach(transaction => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-        <td>${transaction.date}</td>
-        <td>${transaction.time}</td>
-        <td>${transaction.info}</td>
-        <td>${transaction.type}</td>
-        <td>${transaction.amount > 0 ? '+' : '-'}${transaction.amount.toFixed(2)}</td>`;
+        <td>${new Date(transaction.timestamp).toLocaleString('el-GR', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</td>
+        <td>${typeLabel[transaction.type] ?? transaction.type}</td>
+        <td>${transaction.type === 'DEPOSIT' ? '+' : '-'}${transaction.amount.toFixed(2)}</td>
+        <td>${transaction.description}</td>`;
         tbody.appendChild(tr);
     });
 }
@@ -306,9 +233,9 @@ async function loadDashboard(iban) {
         let incomeSum = 0;
         let outcomeSum = 0;
         transactions.forEach(transaction => {
-            if (transaction.type === "Κατάθεση") {
+            if (transaction.type === "DEPOSIT") {
                 incomeSum += transaction.amount;
-            } else if (transaction.type === "Ανάληψη") {
+            } else if (transaction.type === "WITHDRAWAL" || transaction.type === "TRANSFER") {
                 outcomeSum += transaction.amount;
             }
         });
@@ -332,6 +259,7 @@ document.querySelector('[data-target="panel-dashboard"]').addEventListener('clic
 });
 
 
+
 // ===== PAYMENTS =====
 
 const paymentBtn = document.getElementById('paymentBtn');
@@ -344,66 +272,104 @@ transferBtn.addEventListener('click', () => handleTransfer());
 depositBtn.addEventListener('click', () => handleAtmTransaction('deposit'));
 withdrawBtn.addEventListener('click', () => handleAtmTransaction('withdraw'));
 
+
 async function handlePayment() {
     const statusContainer = document.querySelector('.payment-status');
+    const myIban = sessionStorage.getItem('iban');
+    const select = document.getElementById('provider');
+    const provider = select.options[select.selectedIndex].text;
+    const toPaymentIdContainer = document.getElementById('paymentId');
+    const amountInput = document.getElementById('paymentAmount');
+    const amount = Number(amountInput.value);
+    
+    statusContainer.textContent = 'Λειτουργία σε εξέλιξη...';
+
+    if (!toPaymentIdContainer.value) { statusContainer.textContent = 'Εισάγετε ID παραλήπτη'; return; }
+    if (!amount || amount <= 0) { statusContainer.textContent = 'Εισάγετε έγκυρο ποσό'; return; }
+
     try {
         paymentBtn.disabled = true;
-        statusContainer.textContent = '';
-        statusContainer.textContent = 'Λειτουργία σε εξέλιξη...';
-        const myIban = sessionStorage.getItem('iban');
-        const description = document.getElementById('paymentId').value;
-        const amountInput = document.getElementById('paymentAmount');
-        await withdraw(myIban, description, Number(amountInput.value));
+        await withdraw(myIban, toPaymentIdContainer.value, provider, amount);
+
+        statusContainer.textContent = 'Η πληρωμή ολοκληρώθηκε';
+        select.selectedIndex = 0;
+        toPaymentIdContainer.value = '';
         amountInput.value = '';
+
+        loadDashboard(myIban);
+
     } catch (error) {
         console.error('Payment failed: ' + error.message);
         statusContainer.textContent = 'Η πληρωμή απέτυχε: ' + error.message;
+
     } finally {
         paymentBtn.disabled = false;
     }
 }
 
+
 async function handleTransfer() {
     const statusContainer = document.querySelector('.transfer-status');
+    const myIban = sessionStorage.getItem('iban');
+    const toIbanContainer = document.getElementById('recipientIban');
+    const descriptionContainer = document.getElementById('transferDescription');
+    const amountInput = document.getElementById('transferAmount');
+    
+    statusContainer.textContent = 'Λειτουργία σε εξέλιξη...';
+
+    if (!toIbanContainer.value) { statusContainer.textContent = 'Εισάγετε IBAN παραλήπτη'; return; }
+    if (!amountInput || Number(amountInput.value) <= 0) { statusContainer.textContent = 'Εισάγετε έγκυρο ποσό'; return; }
+
     try {
         transferBtn.disabled = true;
-        statusContainer.textContent = '';
-        statusContainer.textContent = 'Λειτουργία σε εξέλιξη...';
-        const myIban = sessionStorage.getItem('iban');
-        const description = document.getElementById('recipientIban').value;
-        const amountInput = document.getElementById('transferAmount');
-        await withdraw(myIban, description, Number(amountInput.value));
+        await withdraw(myIban, toIbanContainer.value, descriptionContainer.value, Number(amountInput.value));
+
+        statusContainer.textContent = 'Η μεταφορά ολοκληρώθηκε';
         amountInput.value = '';
+        toIbanContainer.value = '';
+        descriptionContainer.value = '';
+
+        loadDashboard(myIban);
+
     } catch (error) {
         console.error('Transfer failed: ' + error.message);
         statusContainer.textContent = 'Η μεταφορά απέτυχε: ' + error.message;
+
     } finally {
         transferBtn.disabled = false;
     }
 }
 
+
 async function handleAtmTransaction(type) {
     const statusContainer = document.querySelector('.atm-status');
-    statusContainer.textContent = '';
+    const myIban = sessionStorage.getItem('iban');
+    const toIban = null;
+    const select = document.getElementById('atm');
+    const description = select.options[select.selectedIndex].text;
+    const amountInput = document.getElementById('atmAmount');
+    const amount = Number(amountInput.value);
+    
     statusContainer.textContent = 'Λειτουργία σε εξέλιξη...';
-
-    const description = document.getElementById('atm').value;
-    const input = document.getElementById('atmAmount');
-    const amount = Number(input.value);
 
     if (!description) { statusContainer.textContent = 'Επιλέξτε ATM'; return; }
     if (!amount || amount <= 0) { statusContainer.textContent = 'Εισάγετε έγκυρο ποσό'; return; }
 
-    depositBtn.disabled = withdrawBtn.disabled = true;
-
     try {
-        const iban = sessionStorage.getItem('iban');
+        depositBtn.disabled = withdrawBtn.disabled = true;
+
         if (type === 'deposit') {
-            await deposit(iban, description, amount);
+            await deposit(myIban, description, amount);
+            statusContainer.textContent = 'Η κατάθεση ολοκληρώθηκε';
         } else {
-            await withdraw(iban, description, amount);
+            await withdraw(myIban, toIban, description, amount);
+            statusContainer.textContent = 'Η ανάληψη ολοκληρώθηκε';
         }
-        input.value = '';
+
+        select.selectedIndex = 0;
+        amountInput.value = '';
+
+        loadDashboard(myIban);
 
     } catch (error) {
         if (type === 'deposit') {
@@ -418,108 +384,6 @@ async function handleAtmTransaction(type) {
     }
 }
 
-
-// ===== S&P 500 CHART =====
-let sp500Chart = null;
-let activePeriod = '1Y';
-const TRADING_DAYS = { '1W': 5, '1M': 22, '3M': 66, '1Y': 252 };
-
-function generateSP500(tradingDays) {
-    const endPrice = 5247.32;
-    const startPrice = endPrice / Math.pow(1.10, tradingDays / 252);
-    const prices = [];
-    const labels = [];
-    const today = new Date();
-    const tradingDates = [];
-
-    for (let i = Math.ceil(tradingDays * 1.5) + 5; i >= 0; i--) {
-        const d = new Date(today);
-        d.setDate(today.getDate() - i);
-        if (d.getDay() !== 0 && d.getDay() !== 6) tradingDates.push(d);
-    }
-    const days = tradingDates.slice(-tradingDays);
-
-    for (let i = 0; i < tradingDays; i++) {
-        const t = i / Math.max(tradingDays - 1, 1);
-        const trend = startPrice + (endPrice - startPrice) * t;
-        const noise = Math.sin(i * 0.31) * 90 + Math.sin(i * 0.073) * 220 +
-                      Math.cos(i * 0.17) * 130 + Math.sin(i * 1.8) * 45;
-        prices.push(+(trend + noise).toFixed(2));
-
-        const d = days[i];
-        if (!d) { labels.push(''); continue; }
-        if (tradingDays <= 5) {
-            labels.push(d.toLocaleDateString('el-GR', { weekday: 'short', day: 'numeric' }));
-        } else if (tradingDays <= 22) {
-            labels.push(d.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' }));
-        } else {
-            const step = Math.ceil(tradingDays / 8);
-            labels.push(i % step === 0 ? d.toLocaleDateString('el-GR', { day: 'numeric', month: 'short' }) : '');
-        }
-    }
-    return { prices, labels };
-}
-
-function renderSP500(period) {
-    activePeriod = period;
-    const { prices, labels } = generateSP500(TRADING_DAYS[period]);
-    const first = prices[0];
-    const last = prices[prices.length - 1];
-    const change = last - first;
-    const pct = (change / first) * 100;
-    const isUp = change >= 0;
-    const color = isUp ? '#2e7d32' : '#c62828';
-
-    document.getElementById('stockPrice').textContent =
-        last.toLocaleString('el-GR', { minimumFractionDigits: 2 }) + ' pts';
-    const changeEl = document.getElementById('stockChange');
-    changeEl.textContent = (isUp ? '+' : '') + change.toFixed(2) +
-        ' (' + (isUp ? '+' : '') + pct.toFixed(2) + '%)';
-    changeEl.style.color = color;
-
-    if (sp500Chart) sp500Chart.destroy();
-    sp500Chart = new Chart(document.getElementById('sp500Chart'), {
-        type: 'line',
-        data: {
-            labels,
-            datasets: [{
-                data: prices,
-                borderColor: color,
-                backgroundColor: isUp ? 'rgba(46,125,50,0.08)' : 'rgba(198,40,40,0.08)',
-                borderWidth: 2,
-                pointRadius: 0,
-                fill: true,
-                tension: 0.35
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: { display: false },
-                tooltip: {
-                    callbacks: {
-                        label: ctx => ctx.parsed.y.toLocaleString('el-GR', { minimumFractionDigits: 2 }) + ' pts'
-                    }
-                }
-            },
-            scales: {
-                x: { grid: { display: false }, ticks: { maxRotation: 0 } },
-                y: {
-                    ticks: { callback: v => v.toLocaleString('el-GR', { minimumFractionDigits: 0 }) + ' pts' },
-                    grid: { color: 'rgba(0,0,0,0.06)' }
-                }
-            }
-        }
-    });
-}
-
-document.querySelectorAll('.btn-period').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.btn-period').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        renderSP500(btn.dataset.period);
-    });
-});
 
 
 // ===== LOAN CALCULATOR =====
@@ -552,30 +416,6 @@ document.getElementById('loanForm').addEventListener('submit', e => {
 });
 
 
-// ===== ACCOUNTS =====
-document.querySelector('#panel-create form').addEventListener('submit', async function(e) {
-    e.preventDefault();
-
-    const customerData = {
-        firstname: document.getElementById('ownerName').value,
-        lastname:  document.getElementById('ownerSurname').value,
-        vat:       document.getElementById('ownerVat').value,
-        regionId:  1,   // TODO: replace with real region selector
-        userInsertDTO: {
-            username: document.getElementById('username').value,
-            password: document.getElementById('password').value,
-            roleId:   2   // default: regular user
-        },
-        personalInfoInsertDTO: {
-            idNumber:                    document.getElementById('ownerIdNumber').value,
-            placeOfBirth:               document.getElementById('ownerPlaceOfBirth').value,
-            municipalityOfRegistration: document.getElementById('ownerMunicipalityOfRegistration').value
-        }
-    };
-
-    await createCustomer(customerData);
-});
-
 
 // ===== SETTINGS =====
 const newPasswordForm = document.getElementById('newPasswordForm');
@@ -606,4 +446,9 @@ newPasswordForm.addEventListener('submit', async function(e) {
     statusContainer.textContent = 'Ο κωδικός άλλαξε επιτυχώς!';
     setTimeout(() => { statusContainer.textContent = ''; }, 3000);
     newPasswordForm.reset();
+});
+
+document.querySelector('[data-target="panel-logout"]').addEventListener('click', function() {
+    sessionStorage.clear();
+    window.location.href = 'login.html';
 });
