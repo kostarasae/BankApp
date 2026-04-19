@@ -32,11 +32,11 @@
     <aside class="sidebar">
         <nav>
             <ul>
-                <li data-target="panel-dashboard">
-                    <span class="icon">🏠</span> Προεπισκόπηση
-                </li>
                 <li data-target="panel-create">
                     <span class="icon">➕</span> Λογαριασμοί
+                </li>
+                <li data-target="panel-dashboard">
+                    <span class="icon">🏠</span> Προεπισκόπηση
                 </li>
                 <li data-target="panel-payments">
                     <span class="icon">💸</span> Πληρωμές
@@ -59,6 +59,9 @@
                 <li data-target="panel-settings">
                     <span class="icon">⚙️</span> Ρυθμίσεις
                 </li>
+                <li data-target="panel-logout">
+                    <span class="icon">🚪</span> Αποσύνδεση
+                </li>
             </ul>
         </nav>
     </aside>
@@ -68,61 +71,6 @@
 
     
     <div class="workspace">
-
-        <!-- Προεπισκόπηση -->
-        <section class="panel active" id="panel-dashboard">
-
-            <section class="card pie-card">
-                <h2>Κατανομή Εσόδων / Εξόδων</h2>
-                <div class="dashboard-top">
-                    <div class="account-selector">
-                        <label class="form-label" for="accountSelect">Ενεργός Λογαριασμός</label>
-                        <select class="form-select" id="accountSelect">
-                        </select>
-                    </div>
-                    <div class="pie-wrapper">
-                        <canvas id="incomeExpensePie" width="260" height="260"></canvas>
-                        <div id="legend">
-                            <div class="legend-item" data-index="0">
-                                <span class="dot expense"></span>
-                                Έξοδα
-                            </div>
-                            <div class="legend-item" data-index="1">
-                                <span class="dot income"></span>
-                                Έσοδα
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Συναλλαγές -->
-            <section class="card transactions" id="transactions">
-                <h2>Συναλλαγές</h2>
-                <div>
-                    <table class="transactions-table" data-account-id="12345">
-                        <thead>
-                            <tr>
-                                <th>Ημερομηνία</th>
-                                <th>Ώρα</th>
-                                <th>Περιγραφή</th>
-                                <th>Τύπος</th>
-                                <th>Ποσό (€)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="transactionRows">
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            
-            <!-- Υπόλοιπο -->
-            <section class="card balance-section" id="balance">
-                <h2>Υπόλοιπο</h2>
-                <p class="balance-amount">0.00 €</p>
-            </section>
-        
-        </section>
 
         <!-- Λογαριασμοί -->
         <section class="panel" id="panel-create">
@@ -168,7 +116,7 @@
                             </div>
                             <div class="form-col">
                                 <label class="form-label" for="ownerPlaceOfBirth">Μέρος Γέννησης</label>
-                                <input class="form-input" type="text" id="ownerPlaceOfBirth" name="ownerPlaceOfBirth" placeholder="Π.χ. Αθήνα" required>
+                                <input class="form-input" type="text" id="ownerPlaceOfBirth" name="ownerPlaceOfBirth" placeholder="Π.χ. Ηράκλειο" required>
                             </div>
                             <div class="form-col">
                                 <label class="form-label" for="ownerMunicipalityOfRegistration">Δήμος Εγγραφής</label>
@@ -192,14 +140,14 @@
                                 <input class="form-input" type="date" id="ownerDob" name="ownerDob" required>
                             </div>
                             <div class="form-col">
-                                <label class="form-label" for="ownerVat">Αριθμός Φορολογικής Εγγραφής</label>
+                                <label class="form-label" for="ownerVat">Αριθμός Φορολογικού Μητρώου</label>
                                 <input class="form-input" type="text" id="ownerVat" name="ownerVat" placeholder="Π.χ. 123456789" pattern="\d{9,}" required>
                             </div>
                         </div>
                         <div class="form-row">
                             <div class="form-col">
                                 <label class="form-label" for="ownerAddress">Διεύθυνση Κατοικίας</label>
-                                <input class="form-input" type="text" id="ownerAddress" name="ownerAddress" placeholder="Οδός Ερμού 123, Αθήνα">
+                                <input class="form-input" type="text" id="ownerAddress" name="ownerAddress" placeholder="Ερμού 123, Αθήνα">
                             </div>
                             <div class="form-col">
                                 <label class="form-label" for="ownerEmail">Email</label>
@@ -210,21 +158,97 @@
                                 <input class="form-input" type="tel" id="ownerPhone" name="ownerPhone" placeholder="+30 69xxxxxxxx" pattern="[+]{1}[0-9]{11}">
                             </div>
                         </div>
+                        <div class="form-row">
+                            <div class="form-col">
+                                <label class="form-label" for="ownerRegion">Περιφέρεια</label>
+                                <select class="form-select" id="ownerRegion" name="ownerRegion" required>
+                                    <option value="">-- Επιλέξτε Περιφέρεια --</option>
+                                    <option value="1">Ανατολικής Μακεδονίας και Θράκης</option>
+                                    <option value="2">Αττικής</option>
+                                    <option value="3">Βορείου Αιγαίου</option>
+                                    <option value="4">Δυτικής Ελλάδας</option>
+                                    <option value="5">Δυτικής Μακεδονίας</option>
+                                    <option value="6">Ηπείρου</option>
+                                    <option value="7">Θεσσαλίας</option>
+                                    <option value="8">Ιονίων Νήσων</option>
+                                    <option value="9">Κεντρικής Μακεδονίας</option>
+                                    <option value="10">Κρήτης</option>
+                                    <option value="11">Νοτίου Αιγαίου</option>
+                                    <option value="12">Πελοποννήσου</option>
+                                    <option value="13">Στερεάς Ελλάδας</option>
+                                </select>
+                            </div>
+                        </div>
                     </fieldset>
                     <label class="form-label" for="accountType">Τύπος Λογαριασμού</label>
                     <select class="form-select" id="accountType" name="accountType">
                         <option value="checking">Ταμιευτηρίου</option>
                         <option value="savings">Αποταμίευσης</option>
                     </select>
-                    <label class="form-label" for="accountBalance">Αρχικό Ποσό (€)</label>
-                    <input class="form-input" type="number" id="accountBalance" name="accountBalance" placeholder="0.00" min="0" required>
-                    <label class="form-checkbox" for="terms">
-                        <input type="checkbox" id="terms" name="terms" required>
+                    <label class="form-label" for="initialDeposit">Αρχικό Ποσό (€)</label>
+                    <input class="form-input" type="number" id="initialDeposit" name="initialDeposit" placeholder="0.00" min="0" required>
+                    <label class="form-checkbox" for="checkboxTerms">
+                        <input type="checkbox" id="checkboxTerms" name="checkboxTerms" required>
                         Αποδέχομαι τους <span class="terms-text" title="Θα σας πάρουμε και τα σώβρακα...">όρους χρήσης</span>
                     </label>
+                    <p id="accountCreationStatus" class="error"></p>
                     <button class="btn primary" type="submit">Δημιουργία</button>
                 </form>
             </section>
+        </section>
+
+        <!-- Προεπισκόπηση -->
+        <section class="panel active" id="panel-dashboard">
+
+            <section class="card pie-card">
+                <h2>Κατανομή Εσόδων / Εξόδων</h2>
+                <div class="dashboard-top">
+                    <div class="account-selector">
+                        <label class="form-label" for="accountSelect">Ενεργός Λογαριασμός</label>
+                        <select class="form-select" id="accountSelect">
+                        </select>
+                    </div>
+                    <div class="pie-wrapper">
+                        <canvas id="incomeExpensePie" width="260" height="260"></canvas>
+                        <div id="legend">
+                            <div class="legend-item" data-index="0">
+                                <span class="dot expense"></span>
+                                Έξοδα
+                            </div>
+                            <div class="legend-item" data-index="1">
+                                <span class="dot income"></span>
+                                Έσοδα
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Συναλλαγές -->
+            <section class="card transactions" id="transactions">
+                <h2>Συναλλαγές</h2>
+                <div>
+                    <table class="transactions-table" data-account-id="12345">
+                        <thead>
+                            <tr>
+                                <th>Ημερομηνία</th>
+                                <th>Τύπος</th>
+                                <th>Ποσό (€)</th>
+                                <th>Περιγραφή</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionRows">
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+            
+            <!-- Υπόλοιπο -->
+            <section class="card balance-section" id="balance">
+                <h2>Υπόλοιπο</h2>
+                <p class="balance-amount">0.00 €</p>
+            </section>
+        
         </section>
 
         <!-- Πληρωμές -->
@@ -253,6 +277,8 @@
                         <legend>Τραπεζική Μεταφορά</legend>
                         <label class="form-label" for="recipientIban">IBAN Παραλήπτη</label>
                         <input class="form-input" type="text" id="recipientIban" name="recipientIban" placeholder="GR1234567890123456789012345">
+                        <label class="form-label" for="transferDescription">Περιγραφή</label>
+                        <input class="form-input" type="text" id="transferDescription" name="transferDescription" placeholder="Περιγραφή της μεταφοράς">
                         <label class="form-label" for="transferAmount">Ποσό (€)</label>
                         <input class="form-input" type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="0.01" step="0.01">
                         <button class="btn primary" id="transferBtn" type="button">Μεταφορά</button>
@@ -470,6 +496,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script src="restBankApi.js"></script>
+<script src="graphics.js"></script>
 <script src="app.js"></script>
 </body>
 </html>
