@@ -23,13 +23,16 @@ public class JwtService {
     @Value("${app.security.jwt-expiration}")
     private long jwtExpiration;
 
+    @Value("${app.security.jwt-issuer}")
+    private String jwtIssuer;
+
     public String generateToken(String username, String role) {
         var claims = new HashMap<String, Object>();
 //        claims.put("sub", username);
         claims.put("role", role);
         return Jwts
                 .builder()
-                .setIssuer("https://api.codingfactory.gr")
+                .setIssuer(jwtIssuer)
                 .setClaims(claims)
                 .setSubject(username)
                 .setIssuedAt(new Date(System.currentTimeMillis()))

@@ -20,8 +20,8 @@ public final class BankConfiguration {
     private FeeStrategy defaultCheckingFeeStrategy;
     private FeeStrategy defaultSavingsFeeStrategy;
 
-    private final BigDecimal defaultCheckingFee = BigDecimal.valueOf(0.5);
-    private final BigDecimal defaultSavingsFee = BigDecimal.valueOf(1.0);
+    private BigDecimal defaultCheckingFee = BigDecimal.valueOf(0.5);
+    private BigDecimal defaultSavingsFee = BigDecimal.valueOf(1.0);
 
     private BankConfiguration() {
         loadDefaults ();
@@ -34,7 +34,7 @@ public final class BankConfiguration {
         defaultCheckingFeeStrategy = new FeeStrategy() {
             @Override
             public BigDecimal calculateFee(BigDecimal amount) {
-                return amount.add(defaultCheckingFee);
+                return defaultCheckingFee;
             }
 
             @Override
@@ -46,7 +46,7 @@ public final class BankConfiguration {
         defaultSavingsFeeStrategy = new FeeStrategy() {
             @Override
             public BigDecimal calculateFee(BigDecimal amount) {
-                return amount.add(defaultSavingsFee);
+                return defaultSavingsFee;
             }
 
             @Override
