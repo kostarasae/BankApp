@@ -4,12 +4,10 @@ import gr.aueb.cf.restbankapp.core.exceptions.EntityAlreadyExistsException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityInvalidArgumentException;
 import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.ValidationException;
-//import gr.aueb.cf.restbankapp.dto.RoleReadOnlyDTO;
 import gr.aueb.cf.restbankapp.dto.ErrorResponseDTO;
 import gr.aueb.cf.restbankapp.dto.PasswordChangeDTO;
 import gr.aueb.cf.restbankapp.dto.UserInsertDTO;
 import gr.aueb.cf.restbankapp.dto.UserReadOnlyDTO;
-//import gr.aueb.cf.restbankapp.service.IRoleService;
 import gr.aueb.cf.restbankapp.dto.ValidationErrorResponseDTO;
 import gr.aueb.cf.restbankapp.service.IUserService;
 import gr.aueb.cf.restbankapp.validation.UserInsertValidator;
@@ -22,10 +20,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -81,7 +77,7 @@ public class UserRestController {
 
     @PostMapping
     public ResponseEntity<UserReadOnlyDTO> registerUser(@Valid @RequestBody UserInsertDTO userInsertDTO,
-                                       BindingResult bindingResult, RedirectAttributes redirectAttributes, Model model)
+                                       BindingResult bindingResult)
             throws ValidationException, EntityAlreadyExistsException, EntityInvalidArgumentException {
 
         userInsertValidator.validate(userInsertDTO, bindingResult);
