@@ -2,6 +2,7 @@ package gr.aueb.cf.restbankapp.validation;
 
 import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.restbankapp.dto.AccountInsertDTO;
+import gr.aueb.cf.restbankapp.dto.AccountTransferDTO;
 import gr.aueb.cf.restbankapp.dto.AccountWithdrawDTO;
 import gr.aueb.cf.restbankapp.service.IAccountService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,8 @@ public class AccountValidator implements Validator {
     public boolean supports(Class<?> clazz) {
         return AccountInsertDTO.class == clazz
                 || AccountDepositDTO.class == clazz
-                || AccountWithdrawDTO.class == clazz;
+                || AccountWithdrawDTO.class == clazz
+                || AccountTransferDTO.class == clazz;
     }
 
     @Override
@@ -39,6 +41,10 @@ public class AccountValidator implements Validator {
 
         if (target instanceof AccountWithdrawDTO dto) {
             validateWithdraw(dto, errors);
+        }
+
+        if (target instanceof AccountTransferDTO dto) {
+            validateTransfer(dto, errors);
         }
     }
 
@@ -111,6 +117,29 @@ public class AccountValidator implements Validator {
                     "amount.account.negative",
                     "Withdraw amount should not be negative"
             );
+        }
+    }
+
+    private void validateTransfer(AccountTransferDTO dto, Errors errors) {
+
+        if (dto.myIban() == null || !dto.myIban().trim().matches("GR\\d{3,25}")) {
+            log.warn("Transfer failed. Invalid source IBAN: {}", dto.myIban());
+            errors.rejectValue("myIban", "myIban.account.invalid", "Invalid source IBAN");
+        }
+
+        if (dto.toIban() == null || !dto.toIban().trim().matches("GR\\d{3,25}")) {
+            log.warn("Transfer failed. Invalid destination IBAN: {}", dto.toIban());
+            errors.rejectValue("toIban", "toIban.account.invalid", "Invalid destination IBAN");
+        }
+
+        if (dto.myIban() != null && dto.myIban().equals(dto.toIban())) {
+            log.warn("Transfer failed. Source and destination IBAN are the same: {}", dto.myIban());
+            errors.rejectValue("toIban", "toIban.account.self", "Cannot transfer to the same account");
+        }
+
+        if (dto.amount() == null || dto.amount().compareTo(BigDecimal.ZERO) <= 0) {
+            log.warn("Transfer failed. Invalid amount: {}", dto.amount());
+            errors.rejectValue("amount", "amount.account.invalid", "Transfer amount must be greater than zero");
         }
     }
 }
