@@ -319,14 +319,17 @@
         <section class="panel" id="panel-iris">
             <section class="card">
                 <h2>IRIS</h2>
-                <form class="form">
+                <form class="form" id="irisForm">
                     <fieldset>
                         <legend>Αποστολή χρημάτων μέσω IRIS</legend>
                         <label class="form-label" for="irisPhone">Αριθμός τηλεφώνου</label>
                         <input class="form-input" type="tel" id="irisPhone" name="irisPhone" placeholder="+30 69xxxxxxxx">
                         <label class="form-label" for="irisAmount">Ποσό (€)</label>
                         <input class="form-input" type="number" id="irisAmount" name="irisAmount" placeholder="0.00" min="0.01" step="0.01">
-                        <button class="btn primary" id="irisBtn" type="button">Υποβολή</button>
+                        <label class="form-label" for="irisDescription">Περιγραφή</label>
+                        <input class="form-input" type="text" id="irisDescription" name="irisDescription" placeholder="tickets, restaurant, etc.">
+                        <p class="iris-status" id="iris-status"></p>
+                        <button class="btn primary" id="irisBtn" type="submit">Υποβολή</button>
                     </fieldset>
                 </form>
             </section>

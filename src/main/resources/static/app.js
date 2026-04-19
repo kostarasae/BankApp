@@ -289,7 +289,12 @@ async function handlePayment() {
 
     try {
         paymentBtn.disabled = true;
-        await withdraw(myIban, toPaymentIdContainer.value, provider, amount);
+        const fee = await getAccountFee(myIban);
+        if (!confirm(`Θα χρεωθείτε με προμήθεια ${fee}€. Θέλετε να συνεχίσετε;`)) {
+            statusContainer.textContent = '';
+            return;
+        }
+        await withdraw(myIban, `Λογαριασμός ${provider}: ${toPaymentIdContainer.value}`, amount);
 
         statusContainer.textContent = 'Η πληρωμή ολοκληρώθηκε';
         select.selectedIndex = 0;
@@ -322,7 +327,17 @@ async function handleTransfer() {
 
     try {
         transferBtn.disabled = true;
-        await withdraw(myIban, toIbanContainer.value, descriptionContainer.value, Number(amountInput.value));
+        const fee = await getAccountFee(myIban);
+        if (!confirm(`Θα χρεωθείτε με προμήθεια ${fee}€. Θέλετε να συνεχίσετε;`)) {
+            statusContainer.textContent = '';
+            return;
+        }
+        const owner = await getAccountOwner(toIbanContainer.value);
+        const recipientName = `${owner.firstname} ${owner.lastname}`;
+        const transferDescription = descriptionContainer.value
+            ? `${descriptionContainer.value} σε ${recipientName}`
+            : `σε ${recipientName}`;
+        await withdraw(myIban, transferDescription, Number(amountInput.value));
 
         statusContainer.textContent = 'Η μεταφορά ολοκληρώθηκε';
         amountInput.value = '';
@@ -344,7 +359,6 @@ async function handleTransfer() {
 async function handleAtmTransaction(type) {
     const statusContainer = document.querySelector('.atm-status');
     const myIban = sessionStorage.getItem('iban');
-    const toIban = null;
     const select = document.getElementById('atm');
     const description = select.options[select.selectedIndex].text;
     const amountInput = document.getElementById('atmAmount');
@@ -362,7 +376,12 @@ async function handleAtmTransaction(type) {
             await deposit(myIban, description, amount);
             statusContainer.textContent = 'Η κατάθεση ολοκληρώθηκε';
         } else {
-            await withdraw(myIban, toIban, description, amount);
+            const fee = await getAccountFee(myIban);
+            if (!confirm(`Θα χρεωθείτε με προμήθεια ${fee}€. Θέλετε να συνεχίσετε;`)) {
+                statusContainer.textContent = '';
+                return;
+            }
+            await withdraw(myIban, `ATM ${description}`, amount);
             statusContainer.textContent = 'Η ανάληψη ολοκληρώθηκε';
         }
 
@@ -384,6 +403,43 @@ async function handleAtmTransaction(type) {
     }
 }
 
+
+// ===== IRIS =====
+
+document.getElementById('irisForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const myiban = sessionStorage.getItem('iban');
+    const phone = document.getElementById('irisPhone').value;
+    const amount = parseFloat(document.getElementById('irisAmount').value);
+    const description = document.getElementById('irisDescription').value;
+    if (!phone) {
+        document.getElementById('iris-status').textContent = "Εισάγετε αριθμό τηλεφώνου παραλήπτη";
+        console.error('Απαιτείται αριθμός τηλεφώνου IRIS');
+        return;
+    }
+    if (!amount || amount <= 0) {
+        document.getElementById('iris-status').textContent = "Εισάγετε έγκυρο ποσό μεταφοράς";
+        console.error('Μη έγκυρο ποσό IRIS');
+        return;
+    }
+    try {
+        document.getElementById('irisBtn').disabled = true;
+        const recipient = await getAccountByPhone(phone);
+        if (!confirm(`Αποστολή ${amount}€ σε ${recipient.firstname} ${recipient.lastname};`)) {
+            document.getElementById('iris-status').textContent = '';
+            return;
+        }
+        const irisDescription = `σε ${recipient.firstname} ${recipient.lastname}${description ? ': ' + description : ''}`;
+        await transfer(myiban, recipient.iban, irisDescription, amount);
+        document.getElementById('iris-status').textContent = 'Η μεταφορά ολοκληρώθηκε επιτυχώς';
+        setTimeout(() => loadDashboard(myiban), 2000);
+    } catch (error) {
+        document.getElementById('iris-status').textContent = "Η μεταφορά απέτυχε. Ελέγξτε τον αριθμό τηλεφώνου και το υπόλοιπό σας.";
+        console.error('Αποτυχία IRIS:', error);
+    } finally {
+        document.getElementById('irisBtn').disabled = false;
+    }
+});
 
 
 // ===== LOAN CALCULATOR =====
@@ -421,7 +477,7 @@ document.getElementById('loanForm').addEventListener('submit', e => {
 const newPasswordForm = document.getElementById('newPasswordForm');
 newPasswordForm.addEventListener('submit', async function(e) {
     e.preventDefault();
-    const uuid = sessionStorage.getItem('uuid');
+    const uuid = sessionStorage.getItem('userUuid');
     const currentPassword = document.getElementById('currentPassword').value;
     const newPassword = document.getElementById('newPassword').value;
     const confirmPassword = document.getElementById('confirmPassword').value;

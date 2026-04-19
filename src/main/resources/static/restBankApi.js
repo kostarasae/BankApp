@@ -142,18 +142,32 @@ async function deposit(iban, description, amount) {
     }
 }
 
-async function withdraw(myIban, toIban, description, amount) {
+async function withdraw(myIban, description, amount) {
     try {
-        let finalDescription = description;
-        if (toIban) {
-            finalDescription += ' to ' + toIban;
-        } else {
-            finalDescription = 'ATM ' + description;
-        }
-        const response = await axios.post(`${BASE_URL}/accounts/withdraw`, {iban: myIban, description: finalDescription, amount: amount});
+        const response = await axios.post(`${BASE_URL}/accounts/withdraw`, {iban: myIban, description: description, amount: amount});
         return response.data;
     } catch (error) {
         console.error('Error posting withdraw:', error);
+        throw error;
+    }
+}
+
+async function getAccountFee(iban) {
+    try {
+        const response = await axios.get(`${BASE_URL}/accounts/${iban}/fee`);
+        return response.data.fee; // BigDecimal number
+    } catch (error) {
+        console.error('Error fetching account fee:', error);
+        throw error;
+    }
+}
+
+async function getAccountOwner(iban) {
+    try {
+        const response = await axios.get(`${BASE_URL}/accounts/${iban}/owner`);
+        return response.data; // { iban, firstname, lastname }
+    } catch (error) {
+        console.error('Error fetching account owner:', error);
         throw error;
     }
 }
@@ -171,7 +185,7 @@ async function transfer(myIban, toIban, description, amount) {
 async function getAccountByPhone(phone) {
     try {
         const response = await axios.get(`${BASE_URL}/accounts/phone/${phone}`);
-        return response.data;
+        return response.data; // { iban, firstname, lastname }
     } catch (error) {
         console.error('Error fetching account by phone:', error);
         throw error;
@@ -180,9 +194,9 @@ async function getAccountByPhone(phone) {
 
 
 // USERS
-async function changePassword(uuid, oldPassword, newPassword) {
+async function changePassword(uuid, currentPassword, newPassword) {
     try {
-        const response = await axios.put(`${BASE_URL}/users/${uuid}/password`, {oldPassword: oldPassword, newPassword: newPassword});
+        const response = await axios.put(`${BASE_URL}/users/${uuid}/password`, {currentPassword: currentPassword, newPassword: newPassword});
         return response.data;
     } catch (error) {
         console.error('Error changing password:', error);
