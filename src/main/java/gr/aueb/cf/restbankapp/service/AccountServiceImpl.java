@@ -117,8 +117,8 @@ public class AccountServiceImpl implements IAccountService {
             if (withdrawDTO.amount().signum() < 0) {
                 throw new NegativeAmountException("Account", "Negative withdrawal amount " + withdrawDTO.amount() + " was not accepted");
             }
-            BigDecimal finalAmount = account.getFeeStrategy().calculateFee(withdrawDTO.amount());
-            BigDecimal predictedBalance = account.getBalance().subtract(finalAmount);
+            BigDecimal fee = account.getFeeStrategy().calculateFee(withdrawDTO.amount());
+            BigDecimal predictedBalance = account.getBalance().subtract(withdrawDTO.amount().add(fee));
             if (account.violatesRules(predictedBalance))
                 throw new InsufficientBalanceException("Account", "Invalid withdrawal for account with iban " + withdrawDTO.iban()
                         + ". Amount of " + withdrawDTO.amount() + " exceeds balance");
@@ -157,8 +157,8 @@ public class AccountServiceImpl implements IAccountService {
             if (transferDTO.amount().signum() < 0) {
                 throw new NegativeAmountException("Account", "Negative transfer amount " + transferDTO.amount() + " was not accepted");
             }
-            BigDecimal finalAmount = sourceAccount.getFeeStrategy().calculateFee(transferDTO.amount());
-            BigDecimal predictedBalance = sourceAccount.getBalance().subtract(finalAmount);
+            BigDecimal fee = sourceAccount.getFeeStrategy().calculateFee(transferDTO.amount());
+            BigDecimal predictedBalance = sourceAccount.getBalance().subtract(transferDTO.amount().add(fee));
             if (sourceAccount.violatesRules(predictedBalance))
                 throw new InsufficientBalanceException("Account", "Invalid transfer from account with iban " + transferDTO.myIban()
                         + ". Amount of " + transferDTO.amount() + " exceeds balance");
@@ -230,6 +230,39 @@ public class AccountServiceImpl implements IAccountService {
         return accountRepository.findAll().stream()
                 .map(mapper::mapToAccountReadOnlyDTO)
                 .toList();
+    }
+
+    @Override
+    @PreAuthorize("isAuthenticated()")
+    @Transactional(readOnly = true)
+    public FeeDTO getAccountFee(String iban) throws EntityNotFoundException {
+        Account account = accountRepository.findByIban(iban)
+                .orElseThrow(() -> new EntityNotFoundException("Account", "Account with iban=" + iban + " not found"));
+        return new FeeDTO(account.getFeeStrategy().calculateFee(BigDecimal.ZERO));
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('CAN_TRANSFER')")
+    @Transactional(readOnly = true)
+    public IrisRecipientDTO getAccountOwner(String iban) throws EntityNotFoundException {
+        Account account = accountRepository.findByIban(iban)
+                .orElseThrow(() -> new EntityNotFoundException("Account", "Account with iban=" + iban + " not found"));
+        Customer customer = account.getCustomers().stream()
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "No customer found for account with iban=" + iban));
+        return new IrisRecipientDTO(account.getIban(), customer.getFirstname(), customer.getLastname());
+    }
+
+    @Override
+    @PreAuthorize("hasAuthority('CAN_TRANSFER')")
+    @Transactional(readOnly = true)
+    public IrisRecipientDTO getAccountByPhone(String phone) throws EntityNotFoundException {
+        Customer customer = customerRepository.findByPhone(phone)
+                .orElseThrow(() -> new EntityNotFoundException("Customer", "Customer with phone=" + phone + " not found"));
+        Account account = customer.getAccounts().stream()
+                .findFirst()
+                .orElseThrow(() -> new EntityNotFoundException("Account", "No account found for customer with phone=" + phone));
+        return new IrisRecipientDTO(account.getIban(), customer.getFirstname(), customer.getLastname());
     }
 
     @Override

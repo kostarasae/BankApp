@@ -28,24 +28,19 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     boolean existsByUuidAndUser_Uuid(UUID customerUuid, UUID userUuid);
 
+    Optional<Customer> findByPhone(String phone);
+
     @Query(value = """
     SELECT
         r.name AS periochi,
         t.firstname AS onoma,
         t.lastname AS eponymo,
         t.vat AS vat,
-        CASE WHEN t.deleted = 1 THEN 'ΔΙΕΓΡΑΜΜΕΝΟΣ' ELSE 'ΕΝΕΡΓΟΣ' END AS katastasi,
-        CASE 
-            WHEN t.created_at > '2025-01-01' THEN 'ΝΕΟΣ'
-            WHEN t.created_at > '2023-01-01' THEN 'ΜΕΣΑΙΟΣ'
-            WHEN t.created_at > '2020-01-01' THEN 'ΕΜΠΕΙΡΟΣ'
-            ELSE 'ΠΑΛΙΟΣ'
-        END AS empeiria
+        'ΕΝΕΡΓΟΣ' AS katastasi
     FROM customers t
-    JOIN personal_information pi ON t.personal_info_id = pi.id
     JOIN regions r ON t.region_id = r.id
     WHERE t.deleted = 0
-    ORDER BY t.deleted DESC, r.name
+    ORDER BY r.name
     """, nativeQuery = true)
     List<CustomerStatusReportView> findAllCustomersReport();
 }
