@@ -337,7 +337,7 @@ async function handleTransfer() {
         const transferDescription = descriptionContainer.value
             ? `${descriptionContainer.value} σε ${recipientName}`
             : `σε ${recipientName}`;
-        await withdraw(myIban, transferDescription, Number(amountInput.value));
+        await transfer(myIban, toIbanContainer.value, transferDescription, Number(amountInput.value));
 
         statusContainer.textContent = 'Η μεταφορά ολοκληρώθηκε';
         amountInput.value = '';
