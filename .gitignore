@@ -35,3 +35,31 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Node / npm ###
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnp/
+.pnp.js
+
+# Optional lockfiles (add if you don't commit lockfiles)
+package-lock.json
+yarn.lock
+
+### Generated / build outputs ###
+# Tailwind generated CSS
+/src/main/resources/static/css/tailwind.css
+/src/main/resources/static/css/*.map
+
+dist/
+public/
+
+### IDEs / editors ###
+/.idea/
+*.iml
+
+### Env files ###
+.env
+.env.*.local

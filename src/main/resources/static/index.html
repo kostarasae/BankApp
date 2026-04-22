@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/tailwind.css">
     <link rel="stylesheet" href="style.css">
     <title>KostaBank</title>
 </head>
@@ -192,7 +193,7 @@
                         Αποδέχομαι τους <span class="terms-text" title="Θα σας πάρουμε και τα σώβρακα...">όρους χρήσης</span>
                     </label>
                     <p id="accountCreationStatus" class="error"></p>
-                    <button class="btn primary" type="submit">Δημιουργία</button>
+                    <button class="btn-primary" type="submit">Δημιουργία</button>
                 </form>
             </section>
         </section>
@@ -270,7 +271,7 @@
                         <input class="form-input" type="text" id="paymentId" name="paymentId" placeholder="RF1234567890123456789012345">
                         <label class="form-label" for="paymentAmount">Ποσό (€)</label>
                         <input class="form-input" type="number" id="paymentAmount" name="paymentAmount" placeholder="0.00" min="0.01" step="0.01">
-                        <button class="btn primary" id="paymentBtn" type="button">Πληρωμή</button>
+                        <button class="btn-primary" id="paymentBtn" type="button">Πληρωμή</button>
                         <p class="payment-status"></p>
                     </fieldset>
                     <fieldset>
@@ -281,7 +282,7 @@
                         <input class="form-input" type="text" id="transferDescription" name="transferDescription" placeholder="Περιγραφή της μεταφοράς">
                         <label class="form-label" for="transferAmount">Ποσό (€)</label>
                         <input class="form-input" type="number" id="transferAmount" name="transferAmount" placeholder="0.00" min="0.01" step="0.01">
-                        <button class="btn primary" id="transferBtn" type="button">Μεταφορά</button>
+                        <button class="btn-primary" id="transferBtn" type="button">Μεταφορά</button>
                         <p class="transfer-status"></p>
                     </fieldset>
                     <fieldset>
@@ -297,10 +298,10 @@
                         <input class="form-input" type="number" id="atmAmount" name="atmAmount" placeholder="0.00" min="0.01" step="0.01">
                         <div class="form-row">
                             <div class="form-col">
-                                <button class="btn primary" id="depositBtn" type="button">Κατάθεση</button>
+                                <button class="btn-primary" id="depositBtn" type="button">Κατάθεση</button>
                             </div>
                             <div class="form-col">
-                                <button class="btn secondary" id="withdrawBtn" type="button">Ανάληψη</button>
+                                <button class="btn-primary" id="withdrawBtn" type="button">Ανάληψη</button>
                             </div>
                         </div>
                         <p class="atm-status"></p>
@@ -329,7 +330,7 @@
                         <label class="form-label" for="irisDescription">Περιγραφή</label>
                         <input class="form-input" type="text" id="irisDescription" name="irisDescription" placeholder="tickets, restaurant, etc.">
                         <p class="iris-status" id="iris-status"></p>
-                        <button class="btn primary" id="irisBtn" type="submit">Υποβολή</button>
+                        <button class="btn-primary" id="irisBtn" type="submit">Υποβολή</button>
                     </fieldset>
                 </form>
             </section>
@@ -375,7 +376,7 @@
                                 <input class="form-input" type="number" id="loanMonths" min="12" max="360" step="12" value="60">
                             </div>
                         </div>
-                        <button class="btn primary" type="submit">Υπολογισμός</button>
+                        <button class="btn-primary" type="submit">Υπολογισμός</button>
                     </fieldset>
                 </form>
                 <div id="loanResult" style="display:none">
@@ -480,7 +481,7 @@
                         <label class="form-label" for="confirmPassword">Επιβεβαίωση Νέου Κωδικού</label>
                         <input class="form-input" type="password" id="confirmPassword" name="confirmPassword" required>
                         <p id="settingsStatus" class="error"></p>
-                        <button class="btn primary" id="changePasswordBtn" type="submit">Αποθήκευση Κωδικού</button>
+                        <button class="btn-primary" id="changePasswordBtn" type="submit">Αποθήκευση Κωδικού</button>
                     </fieldset>
                 </form>
             </section>
