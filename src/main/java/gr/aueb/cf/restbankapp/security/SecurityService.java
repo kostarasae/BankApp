@@ -3,7 +3,6 @@ package gr.aueb.cf.restbankapp.security;
 import gr.aueb.cf.restbankapp.model.User;
 import gr.aueb.cf.restbankapp.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
