@@ -251,19 +251,6 @@ body.menu-open .balance-amount {
 /* ===============================
    FORMS
 ================================ */
-.shell {
-    background-color: var(--bg-color);
-    border-radius: 15px;
-    padding: 20px;
-
-    transform-style: preserve-3d;
-    transform-origin: right center;
-
-    transition:
-        transform 0.8s cubic-bezier(0.19, 1, 0.22, 1),
-        box-shadow 0.4s ease;
-}
-
 .form {
     display: flex;
     flex-direction: column;
@@ -424,6 +411,24 @@ input[type="radio"]:checked + label {
 .btn:hover {
     opacity: 0.9;
     font-size: 20px;
+    transform: scale(1.01);
+}
+
+/* Fallback component class for btn-primary when built Tailwind is not present */
+.btn-primary {
+    padding: 0.625rem;       /* p-2.5 */
+    font-size: 1.125rem;     /* text-lg */
+    font-weight: 700;        /* font-bold */
+    border: 0;
+    border-radius: 0.25rem;  /* rounded */
+    cursor: pointer;
+    background-color: var(--primary-color);
+    color: var(--bg-color);
+    transition: all 0.15s ease;
+    display: inline-block;
+}
+.btn-primary:hover {
+    opacity: 0.9;
     transform: scale(1.01);
 }
 
