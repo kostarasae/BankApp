@@ -51,13 +51,15 @@ public class Mapper {
 
     public CustomerReadOnlyDTO mapToCustomerReadOnlyDTO(Customer customer) {
         PersonalInfoReadOnlyDTO personalInfoDTO = new PersonalInfoReadOnlyDTO(
-                customer.getPersonalInfo().getIdNumber(),
-                customer.getPersonalInfo().getPlaceOfBirth(),
-                customer.getPersonalInfo().getMunicipalityOfRegistration()
+            customer.getPersonalInfo().getIdNumber(),
+            customer.getPersonalInfo().getPlaceOfBirth(),
+            customer.getPersonalInfo().getMunicipalityOfRegistration(),
+            customer.getPersonalInfo().getDateOfBirth(),
+            customer.getPersonalInfo().getGender()
         );
         return new CustomerReadOnlyDTO(customer.getUuid().toString(),
-                customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getEmail(), 
-                customer.getRegion().getName(), personalInfoDTO);
+            customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getEmail(),
+            customer.getPhone(), customer.getRegion().getName(), customer.getUser().getUsername(), personalInfoDTO);
     }
 
     public Account mapToAccountModelEntity(AccountInsertDTO dto) {
