@@ -21,7 +21,7 @@ public class Customer extends AbstractEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true, nullable = false, updatable = false, columnDefinition = "BINARY(16)")
+    @Column(unique = true, nullable = false, updatable = false, columnDefinition = "UUID")
     private UUID uuid;
 
     @Column(unique = true)
