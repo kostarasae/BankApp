@@ -22,17 +22,17 @@ import java.time.Instant;
 public abstract class AbstractEntity {
 
     @CreatedDate
-    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "DATETIME")
+    @Column(name = "created_at", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
     private Instant createdAt;              // UTC
 
     @LastModifiedDate
-    @Column(name = "updated_at", nullable = false, columnDefinition = "DATETIME")
+    @Column(name = "updated_at", nullable = false, columnDefinition = "TIMESTAMP")
     private Instant updatedAt;
 
     @Column(nullable = false)
     private boolean deleted;
 
-    @Column(name = "deleted_at", columnDefinition = "DATETIME")
+    @Column(name = "deleted_at", columnDefinition = "TIMESTAMP")
     private Instant deletedAt;
 
     public void softDelete() {

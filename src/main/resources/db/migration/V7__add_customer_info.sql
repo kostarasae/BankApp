@@ -1,7 +1,0 @@
-ALTER TABLE customers
-    ADD COLUMN phone VARCHAR(255) NOT NULL;
-
-ALTER TABLE personal_information
-    ADD COLUMN date_of_birth VARCHAR(255) NOT NULL,
-    ADD COLUMN home_address VARCHAR(255) NOT NULL,
-    ADD COLUMN gender VARCHAR(255) NOT NULL;
