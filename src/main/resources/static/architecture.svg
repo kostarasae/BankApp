@@ -1,0 +1,327 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 1880" font-family="Consolas, monospace" font-size="13">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- ═══════════════ BROWSER ═══════════════ -->
+  <rect x="10" y="10" width="1180" height="390" rx="12" fill="#deeaf7" stroke="#2980b9" stroke-width="2"/>
+  <text x="590" y="36" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a5276">BROWSER</text>
+
+  <!-- login.html -->
+  <rect x="30" y="50" width="220" height="88" rx="8" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="140" y="70" text-anchor="middle" font-weight="bold" fill="#1a5276">login.html</text>
+  <text x="140" y="90" text-anchor="middle" fill="#444" font-size="11">#username · #password</text>
+  <text x="140" y="107" text-anchor="middle" fill="#444" font-size="11">submit → login()</text>
+  <text x="140" y="124" text-anchor="middle" fill="#444" font-size="11">sessionStorage + redirect</text>
+
+  <!-- index.html -->
+  <rect x="270" y="50" width="900" height="88" rx="8" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="720" y="70" text-anchor="middle" font-weight="bold" fill="#1a5276">index.html — 9 panels</text>
+  <text x="720" y="90" text-anchor="middle" fill="#444" font-size="11">Dashboard · Πληρωμές · ATM · IRIS · Λογαριασμοί · Επενδύσεις · Δάνεια · Κάρτες · Ρυθμίσεις</text>
+  <text x="720" y="107" text-anchor="middle" fill="#444" font-size="11">panels switch via data-target · scripts: restBankApi.js · app.js · graphics.js</text>
+
+  <!-- app.js -->
+  <rect x="30" y="156" width="1140" height="80" rx="8" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="600" y="174" text-anchor="middle" font-weight="bold" fill="#1a5276">app.js — controller + DOM</text>
+  <line x1="600" y1="181" x2="600" y2="232" stroke="#ccc" stroke-width="1"/>
+  <text x="50" y="198" text-anchor="start" fill="#444" font-size="11">sidebar · panel switching · drawDonut</text>
+  <text x="50" y="214" text-anchor="start" fill="#444" font-size="11">loadDashboard · updateTransactionsTable</text>
+  <text x="50" y="230" text-anchor="start" fill="#444" font-size="11">handlePayment / Transfer / ATM: getAccountFee → confirm → action</text>
+  <text x="615" y="198" text-anchor="start" fill="#444" font-size="11">panel-create: createCustomer → uploadIdFile → createAccount</text>
+  <text x="615" y="214" text-anchor="start" fill="#444" font-size="11">loadProfile(): getCustomer(uuid) → fill all fields incl. personalInfo</text>
+  <text x="615" y="230" text-anchor="start" fill="#444" font-size="11">irisForm: getAccountByPhone → confirm → transfer()</text>
+
+  <!-- restBankApi.js -->
+  <rect x="30" y="250" width="1140" height="130" rx="8" fill="white" stroke="#2980b9" stroke-width="1.5"/>
+  <text x="600" y="267" text-anchor="middle" font-weight="bold" fill="#1a5276">restBankApi.js — service layer (axios calls only)</text>
+
+  <rect x="45" y="278" width="240" height="95" rx="6" fill="#eaf4fb" stroke="#2980b9" stroke-width="1"/>
+  <text x="165" y="296" text-anchor="middle" font-weight="bold" fill="#1a5276" font-size="12">interceptors</text>
+  <text x="165" y="314" text-anchor="middle" fill="#444" font-size="11">Bearer token σε κάθε request</text>
+  <text x="165" y="330" text-anchor="middle" fill="#444" font-size="11">401 → clear token + redirect</text>
+
+  <rect x="295" y="278" width="200" height="95" rx="6" fill="#eaf4fb" stroke="#2980b9" stroke-width="1"/>
+  <text x="395" y="296" text-anchor="middle" font-weight="bold" fill="#1a5276" font-size="12">AUTH</text>
+  <text x="395" y="310" text-anchor="middle" fill="#444" font-size="11">login() → token + uuid + role</text>
+  <text x="395" y="326" text-anchor="middle" fill="#444" font-size="11">changePassword</text>
+  <text x="395" y="342" text-anchor="middle" fill="#444" font-size="11">getCustomerAccounts</text>
+
+  <rect x="505" y="278" width="200" height="95" rx="6" fill="#eaf4fb" stroke="#2980b9" stroke-width="1"/>
+  <text x="605" y="296" text-anchor="middle" font-weight="bold" fill="#1a5276" font-size="12">CUSTOMERS</text>
+  <text x="605" y="314" text-anchor="middle" fill="#444" font-size="11">createCustomer · getCustomer</text>
+  <text x="605" y="330" text-anchor="middle" fill="#444" font-size="11">uploadIdFile(uuid, file)</text>
+
+  <rect x="715" y="278" width="440" height="95" rx="6" fill="#eaf4fb" stroke="#2980b9" stroke-width="1"/>
+  <text x="935" y="296" text-anchor="middle" font-weight="bold" fill="#1a5276" font-size="12">ACCOUNTS</text>
+  <text x="730" y="314" text-anchor="start" fill="#444" font-size="11">getAccount · createAccount · deposit · withdraw</text>
+  <text x="730" y="330" text-anchor="start" fill="#444" font-size="11">getTransactions · transfer(myIban, toIban, desc, amount)</text>
+  <text x="730" y="346" text-anchor="start" fill="#444" font-size="11">getAccountFee · getAccountOwner · getAccountByPhone</text>
+
+  <g transform="translate(0,-10)">
+
+  <!-- ═══ ARROW browser → Spring Boot ═══ -->
+  <line x1="600" y1="410" x2="600" y2="497" stroke="#555" stroke-width="3" marker-end="url(#arrow)"/>
+  <rect x="390" y="420" width="420" height="36" rx="6" fill="#f8f9fa" stroke="#aaa" stroke-width="1"/>
+  <text x="600" y="435" text-anchor="middle" fill="#555" font-size="11">HTTP requests + Authorization: Bearer JWT</text>
+  <text x="600" y="450" text-anchor="middle" fill="#555" font-size="11">CORS: allowedOrigins in application.properties</text>
+
+  <g transform="translate(0,-30)">
+  <!-- ═══════════════ SPRING BOOT ═══════════════ -->
+  <rect x="10" y="527" width="1180" height="512" rx="12" fill="#fef3e2" stroke="#e67e22" stroke-width="2"/>
+  <text x="590" y="551" text-anchor="middle" font-size="16" font-weight="bold" fill="#784212">SPRING BOOT  :8080</text>
+
+  <!-- Security Filter Chain -->
+  <rect x="30" y="560" width="1140" height="102" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="600" y="578" text-anchor="middle" font-weight="bold" fill="#784212">Security Filter Chain  —  τρέχει σε κάθε request, πριν φτάσει στον controller</text>
+  <text x="330" y="598" text-anchor="middle" fill="#444" font-size="11">① JwtAuthenticationFilter  (authentication)</text>
+  <text x="330" y="615" text-anchor="middle" fill="#444" font-size="11">διαβάζει Bearer token → validate → SecurityContextHolder</text>
+  <text x="330" y="632" text-anchor="middle" fill="#444" font-size="11">άκυρο / απών token → συνεχίζει χωρίς auth</text>
+  <text x="870" y="598" text-anchor="middle" fill="#444" font-size="11">② SecurityConfiguration  (authorization)</text>
+  <text x="870" y="615" text-anchor="middle" fill="#444" font-size="11">ελέγχει SecurityContext: no auth → 401 · no permission → 403</text>
+  <text x="870" y="632" text-anchor="middle" fill="#444" font-size="11">permitAll: /auth/** · /customers · /users · static · eligible/** → ADMIN</text>
+
+  <!-- Auth + User Controller -->
+  <rect x="30" y="678" width="235" height="172" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="148" y="697" text-anchor="middle" font-weight="bold" fill="#784212">AuthController</text>
+  <text x="148" y="715" text-anchor="middle" fill="#444" font-size="11">POST /auth/authenticate</text>
+  <text x="148" y="732" text-anchor="middle" fill="#444" font-size="11">→ {token, uuid, role, customerUuid}</text>
+  <text x="148" y="754" text-anchor="middle" font-weight="bold" fill="#784212" font-size="12">UserRestController</text>
+  <text x="148" y="772" text-anchor="middle" fill="#444" font-size="11">POST /users</text>
+  <text x="148" y="789" text-anchor="middle" fill="#444" font-size="11">GET  /users/{uuid}</text>
+  <text x="148" y="806" text-anchor="middle" fill="#444" font-size="11">PUT  /users/{uuid}/password → 204</text>
+
+  <!-- Customer Controller -->
+  <rect x="280" y="678" width="275" height="172" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="418" y="697" text-anchor="middle" font-weight="bold" fill="#784212">CustomerRestController</text>
+  <text x="418" y="715" text-anchor="middle" fill="#444" font-size="11">POST · GET · PUT · DELETE /customers/{uuid}</text>
+  <text x="418" y="732" text-anchor="middle" fill="#444" font-size="11">GET /customers/{uuid}/accounts</text>
+  <text x="418" y="749" text-anchor="middle" fill="#444" font-size="11">POST /customers/{uuid}/id-file</text>
+  <text x="418" y="766" text-anchor="middle" fill="#444" font-size="11">SecurityService: isOwnCustomerProfile</text>
+
+  <!-- Account Controller -->
+  <rect x="570" y="678" width="600" height="155" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="870" y="697" text-anchor="middle" font-weight="bold" fill="#784212">AccountRestController</text>
+  <text x="590" y="715" text-anchor="start" fill="#444" font-size="11">POST   /accounts  ·  GET /accounts  ·  DELETE /accounts/{iban}</text>
+  <text x="590" y="731" text-anchor="start" fill="#444" font-size="11">POST   /accounts/deposit  ·  POST /accounts/withdraw</text>
+  <text x="590" y="747" text-anchor="start" fill="#444" font-size="11">GET    /accounts/{iban}/transactions  ·  POST /accounts/transfer</text>
+  <text x="590" y="763" text-anchor="start" fill="#444" font-size="11">GET    /accounts/{iban}/fee  ·  GET /accounts/{iban}/owner  ·  GET /accounts/phone/{phone}  (CAN_TRANSFER)</text>
+  <text x="590" y="779" text-anchor="start" fill="#444" font-size="11">AccountValidator: insert · deposit · withdraw · transfer</text>
+
+  <!-- Services -->
+  <rect x="30" y="848" width="1140" height="98" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="600" y="867" text-anchor="middle" font-weight="bold" fill="#784212">Services</text>
+  <text x="50" y="886" text-anchor="start" fill="#444" font-size="11">AuthenticationService · JwtService (HS256, expiry) · CustomerServiceImpl · AccountServiceImpl</text>
+  <text x="50" y="903" text-anchor="start" fill="#444" font-size="11">User: UserDetails → ROLE_x + capabilities · @PostLoad feeStrategy · BankConfigurationSetup: fees from properties</text>
+  <text x="50" y="920" text-anchor="start" fill="#444" font-size="11">deposit/withdraw/transfer → save Transaction · transfer(): @Transactional rollback · SecurityService: isOwnCustomerProfile</text>
+
+  <!-- Repositories -->
+  <rect x="30" y="960" width="1140" height="52" rx="8" fill="#fffcf5" stroke="#e59866" stroke-width="1.5"/>
+  <text x="600" y="980" text-anchor="middle" font-weight="bold" fill="#784212">JPA Repositories</text>
+  <text x="600" y="1000" text-anchor="middle" fill="#444" font-size="11">UserRepository · CustomerRepository (findByPhone) · AccountRepository · TransactionRepository</text>
+
+  <!-- ═══ ARROW Spring Boot → DB ═══ -->
+  <line x1="600" y1="1037" x2="600" y2="1100" stroke="#555" stroke-width="2" marker-end="url(#arrow)"/>
+  <rect x="538" y="1055" width="124" height="18" rx="4" fill="#f8f9fa" stroke="#aaa" stroke-width="1"/>
+  <text x="600" y="1068" text-anchor="middle" fill="#555" font-size="11">JPA / Hibernate</text>
+
+  <!-- ═══════════════ DATABASE ═══════════════ -->
+  <rect x="10" y="1100" width="1180" height="345" rx="12" fill="#f0e8fd" stroke="#8e44ad" stroke-width="2"/>
+  <text x="590" y="1126" text-anchor="middle" font-size="16" font-weight="bold" fill="#4a235a">PostgreSQL Database</text>
+
+  <!-- users -->
+  <rect x="30" y="1138" width="215" height="115" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="138" y="1157" text-anchor="middle" font-weight="bold" fill="#4a235a">users</text>
+  <text x="138" y="1175" text-anchor="middle" fill="#444" font-size="11">uuid (PK)</text>
+  <text x="138" y="1192" text-anchor="middle" fill="#444" font-size="11">username · password (BCrypt)</text>
+  <text x="138" y="1209" text-anchor="middle" fill="#444" font-size="11">role_id (FK) · soft delete</text>
+
+  <!-- roles -->
+  <rect x="260" y="1138" width="195" height="115" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="358" y="1157" text-anchor="middle" font-weight="bold" fill="#4a235a">roles</text>
+  <text x="358" y="1175" text-anchor="middle" fill="#444" font-size="11">id (PK)</text>
+  <text x="358" y="1192" text-anchor="middle" fill="#444" font-size="11">ADMIN · EMPLOYEE</text>
+  <text x="358" y="1209" text-anchor="middle" fill="#444" font-size="11">CUSTOMER</text>
+
+  <!-- capabilities -->
+  <rect x="470" y="1138" width="220" height="115" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="580" y="1157" text-anchor="middle" font-weight="bold" fill="#4a235a">capabilities</text>
+  <text x="580" y="1175" text-anchor="middle" fill="#444" font-size="11">id (PK) · name</text>
+  <text x="580" y="1192" text-anchor="middle" fill="#444" font-size="11">CAN_DEPOSIT · CAN_WITHDRAW</text>
+  <text x="580" y="1209" text-anchor="middle" fill="#444" font-size="11">CAN_TRANSFER · VIEW_ACCOUNT · ...</text>
+
+  <!-- join tables -->
+  <rect x="705" y="1138" width="460" height="115" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="935" y="1157" text-anchor="middle" font-weight="bold" fill="#4a235a">join tables</text>
+  <text x="935" y="1175" text-anchor="middle" fill="#444" font-size="11">roles_capabilities (role_id, capability_id)</text>
+  <text x="935" y="1192" text-anchor="middle" fill="#444" font-size="11">customers_accounts (customer_id, account_id)</text>
+  <text x="935" y="1209" text-anchor="middle" fill="#444" font-size="11">many-to-many</text>
+
+  <!-- customers -->
+  <rect x="30" y="1278" width="215" height="125" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="138" y="1297" text-anchor="middle" font-weight="bold" fill="#4a235a">customers</text>
+  <text x="138" y="1315" text-anchor="middle" fill="#444" font-size="11">uuid (PK)</text>
+  <text x="138" y="1332" text-anchor="middle" fill="#444" font-size="11">firstname · lastname · vat</text>
+  <text x="138" y="1349" text-anchor="middle" fill="#444" font-size="11">email · phone · region_id</text>
+  <text x="138" y="1366" text-anchor="middle" fill="#444" font-size="11">personal_info_id (FK)</text>
+
+  <!-- accounts -->
+  <rect x="260" y="1278" width="195" height="125" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="358" y="1297" text-anchor="middle" font-weight="bold" fill="#4a235a">accounts</text>
+  <text x="358" y="1315" text-anchor="middle" fill="#444" font-size="11">iban (PK) · balance</text>
+  <text x="358" y="1332" text-anchor="middle" fill="#444" font-size="11">accountType · currency</text>
+  <text x="358" y="1349" text-anchor="middle" fill="#444" font-size="11">soft delete</text>
+  <text x="358" y="1366" text-anchor="middle" fill="#444" font-size="11">(many-to-many customers)</text>
+
+  <!-- transactions -->
+  <rect x="470" y="1278" width="220" height="125" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="580" y="1297" text-anchor="middle" font-weight="bold" fill="#4a235a">transactions</text>
+  <text x="580" y="1315" text-anchor="middle" fill="#444" font-size="11">id (PK) · iban (FK)</text>
+  <text x="580" y="1332" text-anchor="middle" fill="#444" font-size="11">amount · description</text>
+  <text x="580" y="1352" text-anchor="middle" fill="#444" font-size="10">DEPOSIT · WITHDRAWAL · TRANSFER</text>
+
+  <!-- personal_information -->
+  <rect x="705" y="1278" width="460" height="125" rx="8" fill="white" stroke="#8e44ad" stroke-width="1.5"/>
+  <text x="935" y="1297" text-anchor="middle" font-weight="bold" fill="#4a235a">personal_information</text>
+  <text x="935" y="1315" text-anchor="middle" fill="#444" font-size="11">id_number · place_of_birth</text>
+  <text x="935" y="1332" text-anchor="middle" fill="#444" font-size="11">municipality_of_registration</text>
+  <text x="935" y="1349" text-anchor="middle" fill="#444" font-size="11">date_of_birth · home_address · gender</text>
+  <text x="935" y="1366" text-anchor="middle" fill="#444" font-size="11">id_file_id (FK → attachments)</text>
+
+  <!-- DB relation lines -->
+  <!-- users.role_id → roles -->
+  <line x1="245" y1="1143" x2="260" y2="1143" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="252" y="1134" text-anchor="middle" fill="#8e44ad" font-size="9">role_id</text>
+  <!-- roles → roles_capabilities → capabilities -->
+  <line x1="455" y1="1143" x2="470" y2="1143" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- users → customers (user_id FK, vertical) -->
+  <line x1="138" y1="1253" x2="138" y2="1278" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="155" y="1268" text-anchor="start" fill="#8e44ad" font-size="9">user_id</text>
+  <!-- customers.personal_info_id → personal_information (dashed, below boxes) -->
+  <path d="M 138,1403 L 138,1422 L 935,1422 L 935,1403" fill="none" stroke="#8e44ad" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="537" y="1433" text-anchor="middle" fill="#8e44ad" font-size="9">personal_info_id</text>
+  <!-- transactions.iban → accounts -->
+  <line x1="468" y1="1283" x2="455" y2="1283" stroke="#8e44ad" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="462" y="1274" text-anchor="middle" fill="#8e44ad" font-size="9">iban FK</text>
+
+  <!-- ═══════════════ API ENDPOINTS ═══════════════ -->
+  <rect x="10" y="1490" width="1180" height="360" rx="12" fill="#e8f4fd" stroke="#2980b9" stroke-width="2"/>
+  <text x="590" y="1514" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a5276">API Endpoints — REST (επιβεβαιωμένα)</text>
+
+  <!-- header row -->
+  <rect x="10" y="1522" width="1180" height="22" fill="#c5dff0"/>
+  <text x="70" y="1537" text-anchor="middle" font-weight="bold" fill="#1a5276" font-size="11">Method</text>
+  <text x="135" y="1537" text-anchor="start" font-weight="bold" fill="#1a5276" font-size="11">Path</text>
+  <text x="575" y="1537" text-anchor="start" font-weight="bold" fill="#1a5276" font-size="11">Auth required</text>
+  <text x="795" y="1537" text-anchor="start" font-weight="bold" fill="#1a5276" font-size="11">Response</text>
+
+  <!-- column separators -->
+  <line x1="130" y1="1544" x2="130" y2="1844" stroke="#b0d0e8" stroke-width="1"/>
+  <line x1="570" y1="1544" x2="570" y2="1844" stroke="#b0d0e8" stroke-width="1"/>
+  <line x1="790" y1="1544" x2="790" y2="1844" stroke="#b0d0e8" stroke-width="1"/>
+
+  <!-- row 1 -->
+  <rect x="10" y="1544" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1557" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1557" text-anchor="start" fill="#333" font-size="10">/auth/authenticate</text>
+  <text x="575" y="1557" text-anchor="start" fill="#444" font-size="10">permitAll</text>
+  <text x="795" y="1557" text-anchor="start" fill="#444" font-size="10">{ token, uuid, role, customerUuid }</text>
+
+  <!-- row 2 -->
+  <text x="70" y="1577" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1577" text-anchor="start" fill="#333" font-size="10">/customers</text>
+  <text x="575" y="1577" text-anchor="start" fill="#444" font-size="10">permitAll</text>
+  <text x="795" y="1577" text-anchor="start" fill="#444" font-size="10">CustomerReadOnlyDTO</text>
+
+  <!-- row 3 -->
+  <rect x="10" y="1584" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1597" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1597" text-anchor="start" fill="#333" font-size="10">/customers/{uuid}</text>
+  <text x="575" y="1591" text-anchor="start" fill="#444" font-size="10">VIEW_CUSTOMER or</text>
+  <text x="575" y="1603" text-anchor="start" fill="#444" font-size="10">(VIEW_ONLY_CUSTOMER and isOwnProfile)</text>
+  <text x="795" y="1597" text-anchor="start" fill="#444" font-size="10">CustomerReadOnlyDTO</text>
+
+  <!-- row 4 -->
+  <text x="70" y="1617" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1617" text-anchor="start" fill="#333" font-size="10">/customers/{uuid}/accounts</text>
+  <text x="575" y="1617" text-anchor="start" fill="#444" font-size="10">VIEW_ACCOUNT or own</text>
+  <text x="795" y="1617" text-anchor="start" fill="#444" font-size="10">List&lt;AccountReadOnlyDTO&gt;</text>
+
+  <!-- row 5 -->
+  <rect x="10" y="1624" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1637" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1637" text-anchor="start" fill="#333" font-size="10">/accounts</text>
+  <text x="575" y="1637" text-anchor="start" fill="#444" font-size="10">authenticated</text>
+  <text x="795" y="1637" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 6 -->
+  <text x="70" y="1657" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1657" text-anchor="start" fill="#333" font-size="10">/accounts/{iban}</text>
+  <text x="575" y="1657" text-anchor="start" fill="#444" font-size="10">VIEW_ACCOUNT</text>
+  <text x="795" y="1657" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 7 -->
+  <rect x="10" y="1664" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1677" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1677" text-anchor="start" fill="#333" font-size="10">/accounts/{iban}/transactions</text>
+  <text x="575" y="1677" text-anchor="start" fill="#444" font-size="10">VIEW_ACCOUNT</text>
+  <text x="795" y="1677" text-anchor="start" fill="#444" font-size="10">List&lt;TransactionReadOnlyDTO&gt;</text>
+
+  <!-- row 8 -->
+  <text x="70" y="1697" text-anchor="middle" fill="#7d3c98" font-size="10" font-weight="bold">DELETE</text>
+  <text x="135" y="1697" text-anchor="start" fill="#333" font-size="10">/accounts/{iban}</text>
+  <text x="575" y="1697" text-anchor="start" fill="#444" font-size="10">DELETE_ACCOUNT</text>
+  <text x="795" y="1697" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 9 -->
+  <rect x="10" y="1704" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1717" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1717" text-anchor="start" fill="#333" font-size="10">/accounts/deposit</text>
+  <text x="575" y="1717" text-anchor="start" fill="#444" font-size="10">CAN_DEPOSIT</text>
+  <text x="795" y="1717" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 10 -->
+  <text x="70" y="1737" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1737" text-anchor="start" fill="#333" font-size="10">/accounts/withdraw</text>
+  <text x="575" y="1737" text-anchor="start" fill="#444" font-size="10">CAN_WITHDRAW</text>
+  <text x="795" y="1737" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 11 -->
+  <rect x="10" y="1744" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1757" text-anchor="middle" fill="#c0392b" font-size="10" font-weight="bold">POST</text>
+  <text x="135" y="1757" text-anchor="start" fill="#333" font-size="10">/accounts/transfer</text>
+  <text x="575" y="1757" text-anchor="start" fill="#444" font-size="10">CAN_TRANSFER</text>
+  <text x="795" y="1757" text-anchor="start" fill="#444" font-size="10">AccountReadOnlyDTO</text>
+
+  <!-- row 12 -->
+  <text x="70" y="1777" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1777" text-anchor="start" fill="#333" font-size="10">/accounts/{iban}/fee</text>
+  <text x="575" y="1777" text-anchor="start" fill="#444" font-size="10">authenticated</text>
+  <text x="795" y="1777" text-anchor="start" fill="#444" font-size="10">{ fee }</text>
+
+  <!-- row 13 -->
+  <rect x="10" y="1784" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1797" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1797" text-anchor="start" fill="#333" font-size="10">/accounts/{iban}/owner</text>
+  <text x="575" y="1797" text-anchor="start" fill="#444" font-size="10">CAN_TRANSFER</text>
+  <text x="795" y="1797" text-anchor="start" fill="#444" font-size="10">{ iban, firstname, lastname }</text>
+
+  <!-- row 14 -->
+  <text x="70" y="1817" text-anchor="middle" fill="#27ae60" font-size="10" font-weight="bold">GET</text>
+  <text x="135" y="1817" text-anchor="start" fill="#333" font-size="10">/accounts/phone/{phone}</text>
+  <text x="575" y="1817" text-anchor="start" fill="#444" font-size="10">CAN_TRANSFER</text>
+  <text x="795" y="1817" text-anchor="start" fill="#444" font-size="10">{ iban, firstname, lastname }</text>
+
+  <!-- row 15 -->
+  <rect x="10" y="1824" width="1180" height="20" fill="#f0f8ff"/>
+  <text x="70" y="1837" text-anchor="middle" fill="#e67e22" font-size="10" font-weight="bold">PUT</text>
+  <text x="135" y="1837" text-anchor="start" fill="#333" font-size="10">/users/{uuid}/password</text>
+  <text x="575" y="1837" text-anchor="start" fill="#444" font-size="10">own uuid</text>
+  <text x="795" y="1837" text-anchor="start" fill="#444" font-size="10">204 No Content</text>
+
+  <text x="600" y="1882" text-anchor="middle" fill="#aaa" font-size="10">KostaBank — restBankApp fullstack architecture</text>
+  </g>
+  </g>
+
+</svg>
