@@ -27,7 +27,10 @@
                     <label class="form-label" for="username">Όνομα Χρήστη</label>
                     <input class="form-input" type="text" id="username" required>
                     <label class="form-label" for="password">Κωδικός Πρόσβασης</label>
-                    <input class="form-input" type="password" id="password" required>
+                    <div class="password-wrapper">
+                        <input class="form-input" type="password" id="password" required>
+                        <button type="button" id="togglePassword" class="password-toggle" aria-label="Εμφάνιση κωδικού">&#128065;</button>
+                    </div>
                 </div>
             </div>
         </fieldset>
