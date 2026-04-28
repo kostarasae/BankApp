@@ -1,3 +1,8 @@
+document.getElementById('togglePassword').addEventListener('click', function() {
+    const pwd = document.getElementById('password');
+    pwd.type = pwd.type === 'password' ? 'text' : 'password';
+});
+
 document.getElementById('loginForm').addEventListener('submit', async function(e) {
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
