@@ -25,7 +25,12 @@ const menuBtn = document.querySelector('.menu-toggle');
 const overlay = document.querySelector('.overlay');
 
 menuBtn.addEventListener('click', () => {
-    document.body.classList.toggle('menu-open');
+    if (document.body.classList.contains('menu-open')) {
+        document.body.classList.remove('menu-open');
+    } else {
+        document.querySelectorAll('.card').forEach(c => c.getBoundingClientRect());
+        document.body.classList.add('menu-open');
+    }
 });
 
 overlay.addEventListener('click', () => {
