@@ -63,3 +63,7 @@ public/
 ### Env files ###
 .env
 .env.*.local
+
+### Runtime / local dirs ###
+.claude/
+uploads/
