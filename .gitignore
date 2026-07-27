@@ -45,7 +45,7 @@ yarn-error.log*
 .pnp.js
 
 # Optional lockfiles (add if you don't commit lockfiles)
-package-lock.json
+/package-lock.json
 yarn.lock
 
 ### Generated / build outputs ###
@@ -54,7 +54,7 @@ yarn.lock
 /src/main/resources/static/css/*.map
 
 dist/
-public/
+/public/
 
 ### IDEs / editors ###
 /.idea/
