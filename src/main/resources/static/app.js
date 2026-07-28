@@ -125,7 +125,7 @@ document.querySelector('#panel-create form').addEventListener('submit', async fu
         userInsertDTO: {
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
-            roleId:   2   // default: regular user
+            roleId:   3   // CUSTOMER (V2__static_data.sql: 1=ADMIN, 2=EMPLOYEE, 3=CUSTOMER)
         },
 
         firstname:  document.getElementById('ownerName').value,
@@ -150,10 +150,15 @@ document.querySelector('#panel-create form').addEventListener('submit', async fu
         return;
     }
 
+    const idFile = document.getElementById('ownerIdFile').files[0];
+    if (!idFile) {
+        document.getElementById('accountCreationStatus').textContent = 'Παρακαλώ επιλέξτε αρχείο ταυτότητας.';
+        return;  // πριν το createCustomer — μηδέν side-effects
+    }
+
     try {
         const customer = await createCustomer(customerData);
-        
-        await uploadIdFile(customer.uuid, document.getElementById('ownerIdFile').files[0]);
+        await uploadIdFile(customer.uuid, idFile);
 
         const accountData = {
             accountType: document.getElementById('accountType').value,
@@ -162,6 +167,9 @@ document.querySelector('#panel-create form').addEventListener('submit', async fu
         };
 
         await createAccount(accountData);
+
+        document.getElementById('accountCreationStatus').textContent = 'Ο λογαριασμός δημιουργήθηκε επιτυχώς!';
+        this.reset();
 
     } catch (error) {
         console.error('Account creation failed:', error);
