@@ -24,7 +24,7 @@ public record CustomerInsertDTO (
         String email,
 
         @NotNull
-        @Pattern(regexp = "69\\d{7}") // starts with 69 and has 10 digits
+        @Pattern(regexp = "\\+[0-9]{12}|[0-9]{10}") // matches frontend index.html pattern: +30XXXXXXXXXXXX or 10 digits
         String phone,
 
         @NotNull
