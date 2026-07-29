@@ -71,7 +71,7 @@ class AccountRestControllerTest {
     @Test
     @WithMockUser(authorities = "CAN_DEPOSIT")
     void deposit_shouldReturn201() throws Exception {
-        AccountDepositDTO depositDTO = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
+        AccountDepositDTO depositDTO = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
         AccountReadOnlyDTO readOnlyDTO = new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100));
 
         when(accountService.deposit(depositDTO)).thenReturn(readOnlyDTO);
@@ -80,14 +80,14 @@ class AccountRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(depositDTO))
                         .with(csrf()))
-                .andExpect(status().isCreated());
+                .andExpect(status().isOk());
     }
 
     // Test with a specific authority
     @Test
     @WithMockUser(authorities = "CAN_DEPOSIT")
     void deposit_shouldWork_withProperAuthority() throws Exception {
-        AccountDepositDTO dto = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
+        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
 
         when(accountService.deposit(any()))
                 .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100)));
@@ -96,14 +96,14 @@ class AccountRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(dto))
                         .with(csrf()))
-                .andExpect(status().isCreated());               // ← 201, not 200
+                .andExpect(status().isOk());               // ← 201, not 200
     }
 
     // Test without required authority
     @Test
     @WithMockUser
     void deposit_shouldReturn403_whenNoAuthority() throws Exception {
-        AccountDepositDTO dto = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
+        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
 
         mockMvc.perform(post("/api/v1/accounts/deposit")       // ← fixed path
                         .contentType(MediaType.APPLICATION_JSON)

@@ -30,7 +30,7 @@ public class AccountValidatorTest {
 
     @Test
     void validateDeposit_shouldHaveErrors_whenNegativeAmount() {
-        AccountDepositDTO dto = new AccountDepositDTO("GR123", BigDecimal.valueOf(-10));
+        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(-10));
 
         BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(dto, "accountDepositDTO");
@@ -42,7 +42,7 @@ public class AccountValidatorTest {
 
     @Test
     void validateWithdraw_shouldPass_whenValidAmount() {
-        AccountWithdrawDTO dto = new AccountWithdrawDTO("GR123", BigDecimal.valueOf(50));
+        AccountWithdrawDTO dto = new AccountWithdrawDTO("GR123", null, BigDecimal.valueOf(50));
 
         BeanPropertyBindingResult errors =
                 new BeanPropertyBindingResult(dto, "accountWithdrawDTO");

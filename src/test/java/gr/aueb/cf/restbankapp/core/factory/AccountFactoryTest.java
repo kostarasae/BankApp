@@ -17,7 +17,8 @@ public class AccountFactoryTest {
     void createCheckingAccount_shouldReturnCheckingAccount() {
         Account account = AccountFactory.create(
                 AccountType.CHECKING,
-                BigDecimal.ZERO
+                BigDecimal.ZERO,
+                "customer-uuid"
         );
 
         assertNotNull(account);
@@ -28,7 +29,8 @@ public class AccountFactoryTest {
     void createSavingsAccount_shouldReturnSavingsAccount() {
         Account account = AccountFactory.create(
                 AccountType.SAVINGS,
-                BigDecimal.valueOf(200)
+                BigDecimal.valueOf(200),
+                "customer-uuid"
         );
 
         assertNotNull(account);

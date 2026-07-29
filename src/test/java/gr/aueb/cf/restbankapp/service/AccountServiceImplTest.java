@@ -9,6 +9,7 @@ import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.Account;
 import gr.aueb.cf.restbankapp.model.AccountChecking;
 import gr.aueb.cf.restbankapp.repository.AccountRepository;
+import gr.aueb.cf.restbankapp.repository.TransactionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -35,6 +36,9 @@ class AccountServiceImplTest {
     @Mock
     private Mapper mapper;
 
+    @Mock
+    private TransactionRepository transactionRepository;
+
     @InjectMocks
     private AccountServiceImpl service;
 
@@ -42,15 +46,15 @@ class AccountServiceImplTest {
     private final BankConfiguration config = BankConfiguration.getInstance();
 
     //private AccountInsertDTO accountInsertDTO = new AccountInsertDTO();
-    private final AccountDepositDTO accountDepositDTO100 = new AccountDepositDTO("GR123", BigDecimal.valueOf(100));
-    private final AccountDepositDTO accountDepositDTO200 = new AccountDepositDTO("GR123", BigDecimal.valueOf(200));
-    private final AccountDepositDTO accountDepositDTO300 = new AccountDepositDTO("GR123", BigDecimal.valueOf(300));
-    private final AccountWithdrawDTO accountWithdrawDTO50 = new AccountWithdrawDTO("GR123", BigDecimal.valueOf(50));
-    private final AccountWithdrawDTO accountWithdrawDTO1000 = new AccountWithdrawDTO("GR123", BigDecimal.valueOf(1000));
+    private final AccountDepositDTO accountDepositDTO100 = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
+    private final AccountDepositDTO accountDepositDTO200 = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(200));
+    private final AccountDepositDTO accountDepositDTO300 = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(300));
+    private final AccountWithdrawDTO accountWithdrawDTO50 = new AccountWithdrawDTO("GR123", null, BigDecimal.valueOf(50));
+    private final AccountWithdrawDTO accountWithdrawDTO1000 = new AccountWithdrawDTO("GR123", null, BigDecimal.valueOf(1000));
 
     @BeforeEach
     void setup() {
-        accountChecking = new AccountChecking.Builder("1", "GR123", BigDecimal.ZERO, Instant.now())
+        accountChecking = new AccountChecking.Builder("1", "GR123", BigDecimal.ZERO, "customer-uuid")
                 .feeStrategy(config.getDefaultCheckingFeeStrategy())
                 .build();
     }
