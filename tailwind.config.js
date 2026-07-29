@@ -6,12 +6,7 @@ module.exports = {
     './src/main/java/**/*.java'
   ],
   theme: {
-    extend: {
-      colors: {
-        kosta: '#1f3c88',
-        'kosta-text': '#eaf0f0'
-      }
-    }
+    extend: {}
   },
   safelist: [],
   plugins: []

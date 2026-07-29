@@ -308,7 +308,7 @@
   .dot {
     @apply w-5 h-5 rounded-full m-[5px];
   }
-  .dot.income { @apply bg-kosta; }
+  .dot.income { background: var(--primary-color); }
   .dot.expense { background: var(--primary-soft); }
   .error { @apply text-red-600; }
 
