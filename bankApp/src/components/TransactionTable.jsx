@@ -7,7 +7,7 @@ export default function TransactionTable ({ transactions }) {
 
     const columnTitles = ['Ημερομηνία', 'Τύπος', 'Ποσό (€)', 'Περιγραφή'];
     return (
-        <table>
+        <table className="w-full">
             <thead>
                 <tr>
                     {columnTitles.map(h => <th key={h} className="border border-gray-300 p-2 text-sm font-bold bg-[#eaf0f0]">{h}</th>)}

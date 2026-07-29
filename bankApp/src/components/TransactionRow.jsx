@@ -3,7 +3,7 @@ const TYPE_LABEL = { DEPOSIT: 'Κατάθεση', WITHDRAWAL: 'Ανάληψη', 
 export default function TransactionRow({ transaction }) {
     const isIncome = transaction.type === 'DEPOSIT';
     return (
-        <tr>
+        <tr className="even:bg-[#eaf0f0]">
             <td className="border border-gray-300 p-2 text-center text-sm">
                 {new Date(transaction.timestamp).toLocaleDateString('el-GR')}
             </td>
