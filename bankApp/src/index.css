@@ -11,6 +11,34 @@
   --color-border: #ccc;
 }
 
+@keyframes pulse {
+    0% { transform: scale(1) translateX(20px); }
+    50% { transform: scale(1.06) translateX(40px); }
+    100% { transform: scale(1) translateX(20px); }
+}
+
+@utility card-3d-open {
+    transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
+    box-shadow: -40px 20px 60px rgba(0,0,0,0.4);
+}
+
+.balance-hover-group:hover .balance-pulse {
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.card-heading::after {
+    content: "";
+    display: block;
+    width: 0px;
+    height: 3px;
+    background-color: var(--color-primary);
+    transition: width 0.3s ease;
+}
+
+.card:hover .card-heading::after {
+    width: 120px;
+}
+
 body {
   margin: 0;
   background-color: #eaf0f0;
