@@ -67,3 +67,6 @@ dist/
 ### Runtime / local dirs ###
 .claude/
 uploads/
+
+### Local-only project docs (never commit) ###
+/docs/
