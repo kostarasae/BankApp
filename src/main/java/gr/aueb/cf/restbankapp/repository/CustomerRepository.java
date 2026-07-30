@@ -18,6 +18,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     Optional<Customer> findByUuid(UUID uuid);
     Optional<Customer> findByVat(String vat);
+    Optional<Customer> findByEmail(String email);
     Optional<Customer> findByPersonalInfo_IdNumber(String idNumber);
 
     @EntityGraph(attributePaths = {"personalInfo", "region"})

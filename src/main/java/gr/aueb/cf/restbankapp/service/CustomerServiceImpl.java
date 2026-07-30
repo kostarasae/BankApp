@@ -63,6 +63,9 @@ public class CustomerServiceImpl implements ICustomerService {
             if (dto.vat() != null && customerRepository.findByVat(dto.vat()).isPresent()) {
                 throw new EntityAlreadyExistsException("Customer", "Customer with vat=" + dto.vat() + " already exists");
             }
+            if (dto.email() != null && customerRepository.findByEmail(dto.email()).isPresent()) {
+                throw new EntityAlreadyExistsException("Email", "Customer with email " + dto.email() + " already exists");
+            }
             if (userRepository.findByUsername(dto.userInsertDTO().username()).isPresent()) {
                 throw new EntityAlreadyExistsException("Username", "User with username " + dto.userInsertDTO().username() + " already exists");
             }
