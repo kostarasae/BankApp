@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import { login as apiLogin, getCustomerAccounts } from '../api/restBankApi';
+import { login as apiLogin } from '../api/restBankApi';
 
 const AuthContext = createContext(null);
 
@@ -10,7 +10,6 @@ export default function AuthProvider({ children }) {
     const [userUuid,     setUserUuid]     = useState(sessionStorage.getItem('userUuid'));
     const [customerUuid, setCustomerUuid] = useState(sessionStorage.getItem('customerUuid'));
     const [role,         setRole]         = useState(sessionStorage.getItem('role'));
-    const [iban,         setIban]         = useState(sessionStorage.getItem('iban'));
 
     const navigate = useNavigate();
 
@@ -22,26 +21,20 @@ export default function AuthProvider({ children }) {
         setCustomerUuid(data.customerUuid);
         setRole(data.role);
 
-        const accounts = await getCustomerAccounts(data.customerUuid);
-        const firstIban = accounts[0]?.iban ?? null;
-        setIban(firstIban);
-        if (firstIban) sessionStorage.setItem('iban', firstIban);
-
         navigate('/');
     };
 
     async function logout() {
         sessionStorage.clear();
-        setToken(null); 
-        setUserUuid(null); 
-        setCustomerUuid(null); 
-        setRole(null); 
-        setIban(null);
+        setToken(null);
+        setUserUuid(null);
+        setCustomerUuid(null);
+        setRole(null);
         navigate('/login');
     }
 
     return (
-        <AuthContext.Provider value={{ token, userUuid, customerUuid, role, iban, login, logout }}>
+        <AuthContext.Provider value={{ token, userUuid, customerUuid, role, login, logout }}>
             {children}
         </AuthContext.Provider>
     )

@@ -8,10 +8,10 @@ import IncomeExpenseDonut from "./IncomeExpenseDonut";
 
 export default function Dashboard() {
 
-    const { customerUuid, iban: defaultIban } = useAuth();
-    
+    const { customerUuid } = useAuth();
+
     const [accounts, setAccounts] = useState([]);
-    const [selectedIban, setSelectedIban] = useState(defaultIban);
+    const [selectedIban, setSelectedIban] = useState(null);
 
     useEffect(() => {
         if (!customerUuid) return;
