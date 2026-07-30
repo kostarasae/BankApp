@@ -1,7 +1,5 @@
 package gr.aueb.cf.restbankapp.model;
 
-import java.math.BigInteger;
-
 /**
  * Utility class
  */
@@ -9,13 +7,6 @@ import java.math.BigInteger;
 public final class Generator {
 
     private Generator() {} // no instances
-
-    private static BigInteger counter = BigInteger.ZERO;
-
-    public static synchronized String generateAccountNumber() {
-        counter = counter.add(BigInteger.ONE);
-        return String.format("%010d", counter); // 10 digits;
-    }
 
     public static String generateIban(String accountNumber) {
         String bankCode = "0100";            // Bank

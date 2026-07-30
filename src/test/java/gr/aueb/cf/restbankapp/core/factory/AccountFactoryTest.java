@@ -18,7 +18,9 @@ public class AccountFactoryTest {
         Account account = AccountFactory.create(
                 AccountType.CHECKING,
                 BigDecimal.ZERO,
-                "customer-uuid"
+                "customer-uuid",
+                "0000001000",
+                "GR0001000001000001000"
         );
 
         assertNotNull(account);
@@ -30,7 +32,9 @@ public class AccountFactoryTest {
         Account account = AccountFactory.create(
                 AccountType.SAVINGS,
                 BigDecimal.valueOf(200),
-                "customer-uuid"
+                "customer-uuid",
+                "0000001001",
+                "GR0001000001000001001"
         );
 
         assertNotNull(account);

@@ -12,11 +12,8 @@ public class AccountFactory {
 
     private AccountFactory() {}
 
-    public static Account create(AccountType type, BigDecimal balance, String customerUuid) {
+    public static Account create(AccountType type, BigDecimal balance, String customerUuid, String accountNumber, String iban) {
 
-        // Generate account number and iban internally via a counter
-        String accountNumber = Generator.generateAccountNumber();
-        String iban = Generator.generateIban(accountNumber);
         BankConfiguration config = BankConfiguration.getInstance();
 
         // Build and return the requested account type

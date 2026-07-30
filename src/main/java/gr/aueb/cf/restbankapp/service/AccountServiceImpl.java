@@ -5,6 +5,7 @@ import gr.aueb.cf.restbankapp.dto.*;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.Account;
 import gr.aueb.cf.restbankapp.model.Customer;
+import gr.aueb.cf.restbankapp.model.Generator;
 import gr.aueb.cf.restbankapp.core.factory.AccountFactory;
 import gr.aueb.cf.restbankapp.model.Transaction;
 import gr.aueb.cf.restbankapp.model.TransactionType;
@@ -13,6 +14,7 @@ import gr.aueb.cf.restbankapp.repository.CustomerRepository;
 import gr.aueb.cf.restbankapp.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,12 +37,15 @@ public class AccountServiceImpl implements IAccountService {
     @PreAuthorize("hasAuthority('CREATE_ACCOUNT')")
     @Transactional(rollbackFor = { EntityAlreadyExistsException.class, EntityInvalidArgumentException.class, EntityNotFoundException.class })
     public AccountReadOnlyDTO createNewAccount(AccountInsertDTO accountInsertDTO)
-            throws EntityNotFoundException {
+            throws EntityNotFoundException, EntityAlreadyExistsException {
         try {
-            Account account = AccountFactory.create(accountInsertDTO.accountType(), accountInsertDTO.initialDeposit(), accountInsertDTO.customerUuid());
+            // account_number comes from a DB sequence (survives restarts, safe across instances — H.5)
+            String accountNumber = String.format("%010d", accountRepository.nextAccountNumberValue());
+            String iban = Generator.generateIban(accountNumber);
+            Account account = AccountFactory.create(accountInsertDTO.accountType(), accountInsertDTO.initialDeposit(), accountInsertDTO.customerUuid(), accountNumber, iban);
             // Save account to database
-            accountRepository.save(account);            
-            Customer customer = customerRepository.findByUuid(UUID.fromString(accountInsertDTO.customerUuid())) .orElseThrow(() -> 
+            accountRepository.save(account);
+            Customer customer = customerRepository.findByUuid(UUID.fromString(accountInsertDTO.customerUuid())) .orElseThrow(() ->
                     new EntityNotFoundException("Customer", "Customer with uuid=" + accountInsertDTO.customerUuid() + " not found!"));
             customer.addAccount(account);
             customerRepository.save(customer);
@@ -49,6 +54,12 @@ public class AccountServiceImpl implements IAccountService {
         } catch (EntityNotFoundException e) {
             log.error("Save failed. Customer with uuid={} not found", accountInsertDTO.customerUuid());
             throw e;
+        } catch (DataIntegrityViolationException e) {
+            // Generator.generateAccountNumber() is an in-memory counter (H.5) — collides with an
+            // existing account_number/iban after a JVM restart. Root cause needs a persistent
+            // generator (DB sequence); this only turns the resulting DB error into a clear message.
+            log.error("Save failed. Generated account number/iban collided with an existing one", e);
+            throw new EntityAlreadyExistsException("Account", "Παρουσιάστηκε πρόβλημα κατά τη δημιουργία μοναδικού αριθμού λογαριασμού. Παρακαλώ δοκιμάστε ξανά.");
         }
     }
 

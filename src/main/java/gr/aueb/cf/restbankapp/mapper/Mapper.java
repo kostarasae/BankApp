@@ -1,6 +1,5 @@
 package gr.aueb.cf.restbankapp.mapper;
 
-import gr.aueb.cf.restbankapp.core.factory.AccountFactory;
 import gr.aueb.cf.restbankapp.dto.*;
 import gr.aueb.cf.restbankapp.model.*;
 import gr.aueb.cf.restbankapp.model.static_data.Region;
@@ -60,10 +59,6 @@ public class Mapper {
         return new CustomerReadOnlyDTO(customer.getUuid().toString(),
             customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getEmail(),
             customer.getPhone(), customer.getRegion().getName(), customer.getUser().getUsername(), personalInfoDTO);
-    }
-
-    public Account mapToAccountModelEntity(AccountInsertDTO dto) {
-        return AccountFactory.create(dto.accountType(), dto.initialDeposit(), dto.customerUuid());
     }
 
     public AccountReadOnlyDTO mapToAccountReadOnlyDTO(Account account) {
