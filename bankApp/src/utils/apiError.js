@@ -61,7 +61,14 @@ function translateFieldError(message) {
     return message;   // custom μηνύματα (π.χ. του password) είναι ήδη ελληνικά
 }
 
-export function getErrorMessage(err) {
+/**
+ * @param err          το σφάλμα του axios
+ * @param overrides    προαιρετικά μηνύματα ανά code, για το συγκεκριμένο context.
+ *                     Π.χ. στο IRIS ψάχνουμε με τηλέφωνο, οπότε το `CustomerNotFound`
+ *                     διαβάζεται καλύτερα ως «δεν βρέθηκε λογαριασμός με αυτό το τηλέφωνο»
+ *                     παρά ως το γενικό «δεν βρέθηκε ο πελάτης».
+ */
+export function getErrorMessage(err, overrides = {}) {
     if (!err.response) return 'Δεν υπάρχει σύνδεση με τον διακομιστή. Ελέγξτε το δίκτυό σας.';
 
     const data = err.response.data;
@@ -73,6 +80,7 @@ export function getErrorMessage(err) {
             .join(', ');
     }
 
+    if (data?.code && overrides[data.code]) return overrides[data.code];
     if (data?.code && CODE_MESSAGES[data.code]) return CODE_MESSAGES[data.code];
 
     if (err.response.status === 401) return 'Η σύνδεσή σας έληξε. Συνδεθείτε ξανά.';
