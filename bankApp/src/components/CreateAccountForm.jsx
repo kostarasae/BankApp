@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { createCustomer, uploadIdFile, createAccount } from '../api/restBankApi';
+import StatusMessage from './StatusMessage';
+import { getErrorMessage } from '../utils/apiError';
 
 const INITIAL = {
     firstname: '', lastname: '', vat: '', email: '', phone: '',
@@ -13,7 +15,7 @@ export default function CreateAccountForm() {
     const [form, setForm] = useState(INITIAL);
     const [idFile, setIdFile] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState({ text: '', ok: false });
 
     const handleChange = e =>
         setForm(prev => ({ ...prev, [e.target.name]: e.target.value }));
@@ -22,32 +24,32 @@ export default function CreateAccountForm() {
         e.preventDefault();
 
         if (form.firstname.trim().length < 2) {
-            setStatus('Σφάλμα: Το όνομα πρέπει να έχει τουλάχιστον 2 χαρακτήρες');
+            setStatus({ text: 'Το όνομα πρέπει να έχει τουλάχιστον 2 χαρακτήρες', ok: false });
             return;
         }
         if (form.lastname.trim().length < 2) {
-            setStatus('Σφάλμα: Το επώνυμο πρέπει να έχει τουλάχιστον 2 χαρακτήρες');
+            setStatus({ text: 'Το επώνυμο πρέπει να έχει τουλάχιστον 2 χαρακτήρες', ok: false });
             return;
         }
         if (!/^\d{9,}$/.test(form.vat)) {
-            setStatus('Σφάλμα: Το ΑΦΜ πρέπει να έχει τουλάχιστον 9 ψηφία');
+            setStatus({ text: 'Το ΑΦΜ πρέπει να έχει τουλάχιστον 9 ψηφία', ok: false });
             return;
         }
         if (!/^[\w.-]+@[\w.-]+\.\w{2,}$/.test(form.email)) {
-            setStatus('Σφάλμα: Το email δεν έχει έγκυρη μορφή (π.χ. name@example.com)');
+            setStatus({ text: 'Το email δεν έχει έγκυρη μορφή (π.χ. name@example.com)', ok: false });
             return;
         }
         if (!/^(\+[0-9]{12}|[0-9]{10})$/.test(form.phone)) {
-            setStatus('Σφάλμα: Το τηλέφωνο πρέπει να έχει 10 ψηφία (π.χ. 6912345678) ή να ξεκινά με + και χώρα, ακολουθούμενο από 12 ψηφία (π.χ. +301234567890)');
+            setStatus({ text: 'Το τηλέφωνο πρέπει να έχει 10 ψηφία (π.χ. 6912345678) ή + και χώρα με 12 ψηφία (π.χ. +301234567890)', ok: false });
             return;
         }
         if (!/^[Α-ΩA-Z]{1,2}\d{6,7}$/.test(form.idNumber)) {
-            setStatus('Σφάλμα: Ο αριθμός ταυτότητας πρέπει να είναι 1-2 κεφαλαία γράμματα ακολουθούμενα από 6-7 ψηφία (π.χ. ΑΒ123456)');
+            setStatus({ text: 'Ο αριθμός ταυτότητας πρέπει να είναι 1-2 κεφαλαία γράμματα και 6-7 ψηφία (π.χ. ΑΒ123456)', ok: false });
             return;
         }
 
         setLoading(true);
-        setStatus('');
+        setStatus({ text: '', ok: false });
         try {
             const customerData = {
                 firstname: form.firstname, lastname: form.lastname,
@@ -70,14 +72,12 @@ export default function CreateAccountForm() {
                 initialDeposit: Number(form.initialDeposit)
             });
 
-            setStatus('Ο λογαριασμός δημιουργήθηκε επιτυχώς!');
+            setStatus({ text: 'Ο λογαριασμός δημιουργήθηκε επιτυχώς!', ok: true });
             setForm(INITIAL);
             setIdFile(null);
 
         } catch (err) {
-            const data = err.response?.data;
-            const detail = (data?.errors && Object.values(data.errors).join(', ')) || data?.message || data?.description;
-            setStatus('Σφάλμα: ' + (detail || err.message));
+            setStatus({ text: getErrorMessage(err), ok: false });
 
         } finally {
             setLoading(false);
@@ -152,7 +152,7 @@ export default function CreateAccountForm() {
                 placeholder="Αρχικό Ποσό" className="p-3 border border-gray-300 rounded" />
 
             <input type="file" onChange={e => setIdFile(e.target.files[0])} />
-            {status && <p className={status.includes('Σφάλμα') ? 'text-red-500' : 'text-green-700'}>{status}</p>}
+            <StatusMessage status={status} />
             <button type="submit" disabled={loading}
                 className="p-3 bg-[#1f3c88] text-white font-bold rounded disabled:opacity-50 cursor-pointer">
                 {loading ? 'Δημιουργία...' : 'Δημιουργία'}

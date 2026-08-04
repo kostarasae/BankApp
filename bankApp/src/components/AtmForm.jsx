@@ -1,27 +1,31 @@
 import { useState } from 'react';
 import { deposit, withdraw } from '../api/restBankApi';
 import Button from './Button';
+import StatusMessage from './StatusMessage';
 import { getErrorMessage } from '../utils/apiError';
 
 export default function AtmForm({ iban, onSuccess }) {
     const [atm, setAtm] = useState('');
     const [amount, setAmount] = useState('');
-    const [status, setStatus] = useState('');
+    const [status, setStatus] = useState({ text: '', ok: false });
     const [loading, setLoading] = useState(false);
 
     async function handleTransaction(type) {
-        if (!atm) { setStatus('Σφάλμα: Δεν επιλέχθηκε ATM'); return; }
-        if (!amount || Number(amount) <= 0) { setStatus('Σφάλμα: Μη έγκυρο ποσό'); return; }
-        setStatus('');
+        if (!atm) { setStatus({ text: 'Επιλέξτε ATM', ok: false }); return; }
+        if (!amount || Number(amount) <= 0) { setStatus({ text: 'Εισάγετε έγκυρο ποσό', ok: false }); return; }
+        setStatus({ text: '', ok: false });
         try {
             setLoading(true);
             const action = type === 'deposit' ? deposit : withdraw;
             const account = await action(iban, 'ATM ' + atm, Number(amount));
-            setStatus(`${type === 'deposit' ? 'Η κατάθεση' : 'Η ανάληψη'} ολοκληρώθηκε — νέο υπόλοιπο: ${account.balance}€`);
+            setStatus({
+                text: `${type === 'deposit' ? 'Η κατάθεση' : 'Η ανάληψη'} ολοκληρώθηκε — νέο υπόλοιπο: ${account.balance}€`,
+                ok: true,
+            });
             setAmount('');
             onSuccess?.();
         } catch (err) {
-            setStatus('Σφάλμα: ' + getErrorMessage(err));
+            setStatus({ text: getErrorMessage(err), ok: false });
         } finally {
             setLoading(false);
         }
@@ -45,11 +49,7 @@ export default function AtmForm({ iban, onSuccess }) {
                 <Button className="flex-1" disabled={loading} onClick={() => handleTransaction('deposit')}>Κατάθεση</Button>
                 <Button className="flex-1" disabled={loading} onClick={() => handleTransaction('withdraw')}>Ανάληψη</Button>
             </div>
-            {status && (
-                <p className={`mt-2 font-bold ${status.startsWith('Σφάλμα') ? 'text-red-500' : 'text-green-700'}`}>
-                    {status}
-                </p>
-            )}
+            <StatusMessage status={status} className="mt-2" />
         </fieldset>
     );
 }

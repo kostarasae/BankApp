@@ -3,14 +3,15 @@ import { getAccountFee, getAccountOwner, withdraw, transfer } from "../api/restB
 import AtmForm from "./AtmForm";
 import Button from "./Button";
 import Card from "./Card";
+import StatusMessage from "./StatusMessage";
 import { getErrorMessage } from "../utils/apiError";
 
 export default function PaymentsPanel({ iban, onSuccess }) {
 
     const [payment, setPayment] = useState({ provider: '', paymentId: '', amount: '' });
     const [transferForm, setTransferForm] = useState({ recipientIban: '', description: '', amount: '' });
-    const [paymentStatus, setPaymentStatus] = useState('');
-    const [transferStatus, setTransferStatus] = useState('');
+    const [paymentStatus, setPaymentStatus] = useState({ text: '', ok: false });
+    const [transferStatus, setTransferStatus] = useState({ text: '', ok: false });
     const [loading, setLoading] = useState(false);
 
     async function handlePayment() {
@@ -18,13 +19,13 @@ export default function PaymentsPanel({ iban, onSuccess }) {
             const fee = await getAccountFee(iban);
             if (!window.confirm(`Θα χρεωθείτε με προμήθεια ${fee}€. Συνέχεια;`)) return;
             setLoading(true);
-            setPaymentStatus('');
+            setPaymentStatus({ text: '', ok: false });
             await withdraw(
                 iban, 
                 `Λογαριασμός ${payment.provider}: ${payment.paymentId}`,
                 Number(payment.amount)
             );
-            setPaymentStatus('Η πληρωμή ολοκληρώθηκε');
+            setPaymentStatus({ text: 'Η πληρωμή ολοκληρώθηκε', ok: true });
             onSuccess?.();
             setPayment({
                 provider:'',
@@ -32,7 +33,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
                 amount:''
             });
         } catch (err) {
-            setPaymentStatus('Σφάλμα: ' + getErrorMessage(err));
+            setPaymentStatus({ text: getErrorMessage(err), ok: false });
         } finally {
             setLoading(false);
         }
@@ -41,11 +42,11 @@ export default function PaymentsPanel({ iban, onSuccess }) {
     async function handleTransfer() {
         const to = transferForm.recipientIban.trim().toUpperCase();
         if (!/^GR\d{25}$/.test(to)) {
-            setTransferStatus(`Σφάλμα: Το IBAN πρέπει να είναι GR + 25 ψηφία (27 χαρακτήρες) — έδωσες ${to.length}`);
+            setTransferStatus({ text: `Το IBAN πρέπει να έχει 27 χαρακτήρες (GR + 25 ψηφία) — έδωσες ${to.length}`, ok: false });
             return;
         }
         if (to === iban) {
-            setTransferStatus('Σφάλμα: Δεν γίνεται μεταφορά στον ίδιο λογαριασμό');
+            setTransferStatus({ text: 'Δεν γίνεται μεταφορά στον ίδιο λογαριασμό', ok: false });
             return;
         }
         try{
@@ -56,14 +57,14 @@ export default function PaymentsPanel({ iban, onSuccess }) {
             )
             if (!ok) return;
             setLoading(true);
-            setTransferStatus('');
+            setTransferStatus({ text: '', ok: false });
             await transfer(
                 iban,
                 to,
                 transferForm.description,
                 Number(transferForm.amount)
             );
-            setTransferStatus('Η μεταφορά ολοκληρώθηκε');
+            setTransferStatus({ text: 'Η μεταφορά ολοκληρώθηκε', ok: true });
             onSuccess?.();
             setTransferForm({
                 recipientIban:'',
@@ -71,7 +72,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
                 amount:''
             });
         } catch (err) {
-            setTransferStatus('Σφάλμα: ' + getErrorMessage(err));
+            setTransferStatus({ text: getErrorMessage(err), ok: false });
         } finally {
             setLoading(false);
         }
@@ -103,11 +104,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
                         onChange={e => setPayment(prev => ({ ...prev, amount: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
                     <Button disabled={loading} onClick={handlePayment} className="mt-2.5 w-full">Πληρωμή</Button>
-                    {paymentStatus && (
-                        <p className={`mt-2 font-bold ${paymentStatus.startsWith('Σφάλμα') ? 'text-red-500' : 'text-green-700'}`}>
-                            {paymentStatus}
-                        </p>
-                    )}
+                    <StatusMessage status={paymentStatus} className="mt-2" />
                 </fieldset>
 
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
@@ -125,11 +122,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
                         onChange={e => setTransferForm(prev => ({ ...prev, amount: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
                     <Button disabled={loading} onClick={handleTransfer} className="mt-2.5 w-full">Μεταφορά</Button>
-                    {transferStatus && (
-                        <p className={`mt-2 font-bold ${transferStatus.startsWith('Σφάλμα') ? 'text-red-500' : 'text-green-700'}`}>
-                            {transferStatus}
-                        </p>
-                    )}
+                    <StatusMessage status={transferStatus} className="mt-2" />
                 </fieldset>
 
                 <AtmForm iban={iban} onSuccess={onSuccess} />
