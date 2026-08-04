@@ -52,8 +52,9 @@ export default function PaymentsPanel({ iban, onSuccess }) {
         try{
             const fee = await getAccountFee(iban);
             const owner = await getAccountOwner(to);
+            // Χωρίς πτώση στο όνομα: το backend το δίνει σε ονομαστική.
             const ok = window.confirm(
-                `Μεταφορά σε ${owner.firstname} ${owner.lastname} - προμήθεια ${fee}€. Συνέχεια;`
+                `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${Number(transferForm.amount).toFixed(2)}€\nΠρομήθεια: ${fee}€\n\nΝα προχωρήσει η μεταφορά;`
             )
             if (!ok) return;
             setLoading(true);
