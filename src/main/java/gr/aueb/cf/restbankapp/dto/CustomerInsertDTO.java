@@ -24,7 +24,7 @@ public record CustomerInsertDTO (
         String email,
 
         @NotNull
-        @Pattern(regexp = "\\+[0-9]{12}|[0-9]{10}") // matches frontend index.html pattern: +30XXXXXXXXXXXX or 10 digits
+        @Pattern(regexp = "[0-9]{10}", message = "Phone must be exactly 10 digits, no country code") // seed data uses 69XXXXXXXX
         String phone,
 
         @NotNull

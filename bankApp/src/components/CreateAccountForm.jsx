@@ -39,8 +39,8 @@ export default function CreateAccountForm() {
             setStatus({ text: 'Το email δεν έχει έγκυρη μορφή (π.χ. name@example.com)', ok: false });
             return;
         }
-        if (!/^(\+[0-9]{12}|[0-9]{10})$/.test(form.phone)) {
-            setStatus({ text: 'Το τηλέφωνο πρέπει να έχει 10 ψηφία (π.χ. 6912345678) ή + και χώρα με 12 ψηφία (π.χ. +301234567890)', ok: false });
+        if (!/^\d{10}$/.test(form.phone)) {
+            setStatus({ text: 'Το τηλέφωνο πρέπει να έχει 10 ψηφία, χωρίς κωδικό χώρας (π.χ. 6912345678)', ok: false });
             return;
         }
         if (!/^[Α-ΩA-Z]{1,2}\d{6,7}$/.test(form.idNumber)) {
@@ -94,8 +94,8 @@ export default function CreateAccountForm() {
                 placeholder="ΑΦΜ" className="p-3 border border-gray-300 rounded" />
             <input name="email" value={form.email} onChange={handleChange}
                 placeholder="Email" className="p-3 border border-gray-300 rounded" />
-            <input name="phone" value={form.phone} onChange={handleChange}
-                placeholder="Τηλέφωνο" className="p-3 border border-gray-300 rounded" />
+            <input type="tel" name="phone" value={form.phone} onChange={handleChange}
+                placeholder="Τηλέφωνο (10 ψηφία, π.χ. 6912345678)" className="p-3 border border-gray-300 rounded" />
             <input name="username" value={form.username} onChange={handleChange}
                 placeholder="Όνομα χρήστη" className="p-3 border border-gray-300 rounded" />
             <input type="password" name="password" value={form.password} onChange={handleChange}
