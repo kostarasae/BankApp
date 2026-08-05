@@ -85,9 +85,9 @@ export default function MainLayout() {
                             <li key={tab.id}>
                                 <button onClick={() => selectTab(tab.id)}
                                     title={tab.label}
-                                    className={`w-full flex items-center gap-4 text-left text-[17px] p-3 rounded-lg cursor-pointer transition
+                                    className={`w-full flex items-center gap-4 text-left text-[19px] p-3 rounded-lg cursor-pointer transition
                                         ${activeTab === tab.id ? 'bg-white/20 font-bold' : 'hover:bg-white/10'}`}>
-                                    <Icon name={tab.icon} className="w-7 h-7 shrink-0" />
+                                    <Icon name={tab.icon} className="w-8 h-8 shrink-0" />
                                     <span className={`whitespace-nowrap transition-opacity duration-300
                                         ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>{tab.label}</span>
                                 </button>
@@ -95,8 +95,8 @@ export default function MainLayout() {
                         ))}
                         <li className="mt-4 border-t border-white/20 pt-2">
                             <button onClick={logout} title="Αποσύνδεση"
-                                className="w-full flex items-center gap-4 text-left text-[17px] p-3 rounded-lg cursor-pointer hover:bg-white/10">
-                                <Icon name="logout" className="w-7 h-7 shrink-0" />
+                                className="w-full flex items-center gap-4 text-left text-[19px] p-3 rounded-lg cursor-pointer hover:bg-white/10">
+                                <Icon name="logout" className="w-8 h-8 shrink-0" />
                                 <span className={`whitespace-nowrap transition-opacity duration-300
                                     ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>Αποσύνδεση</span>
                             </button>
@@ -111,7 +111,7 @@ export default function MainLayout() {
 
             <div className="pl-[80px]">
             <Header />
-            <main className="p-5 max-w-[900px] mx-auto">
+            <main className="p-5 max-w-[1200px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
                     <Card>
