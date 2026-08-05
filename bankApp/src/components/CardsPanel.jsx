@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Card from './Card';
 import { useAuth } from '../context/AuthContext';
 import { getCustomer } from '../api/restBankApi';
 
@@ -17,8 +18,8 @@ export default function CardsPanel() {
     }, [customerUuid]);
 
     return (
-        <section className="bg-white p-5 mb-[2%] ml-[4%] rounded-2xl">
-            <h2 className="text-lg font-bold text-[#1f3c88] mb-2">Κάρτες</h2>
+        <Card>
+            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Κάρτες</h2>
 
             <div className="w-[380px] max-w-full h-[220px] mx-auto my-6 rounded-[18px] text-white p-6 box-border flex flex-col justify-between relative overflow-hidden font-mono"
                 style={{ background: 'linear-gradient(135deg, #132452 0%, #1f3c88 60%, #6e8ff0 100%)', boxShadow: '0 16px 48px rgba(31, 60, 136, 0.45)' }}>
@@ -54,6 +55,6 @@ export default function CardsPanel() {
                     <span>Contactless</span><span>Ενεργό</span>
                 </div>
             </div>
-        </section>
+        </Card>
     );
 }

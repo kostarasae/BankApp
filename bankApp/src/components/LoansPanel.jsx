@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import Card from './Card';
 
 export default function LoansPanel() {
     const [amount, setAmount] = useState(10000);
@@ -27,8 +28,8 @@ export default function LoansPanel() {
     }
 
     return (
-        <section className="bg-white p-5 mb-[2%] ml-[4%] rounded-2xl">
-            <h2 className="text-lg font-bold text-[#1f3c88] mb-2">Δάνεια</h2>
+        <Card>
+            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Δάνεια</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Υπολογισμός Δανείου</legend>
@@ -98,6 +99,6 @@ export default function LoansPanel() {
                     </details>
                 </div>
             )}
-        </section>
+        </Card>
     );
 }

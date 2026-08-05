@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import Card from './Card';
 
 const PERIODS = ['1W', '1M', '3M', '1Y'];
 const POINTS_BY_PERIOD = { '1W': 5, '1M': 22, '3M': 66, '1Y': 60 };
@@ -31,8 +32,8 @@ export default function InvestmentsPanel() {
     }).join(' ');
 
     return (
-        <section className="bg-white p-5 mb-[2%] ml-[4%] rounded-2xl">
-            <h2 className="text-lg font-bold text-[#1f3c88] mb-2">Επενδύσεις</h2>
+        <Card>
+            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Επενδύσεις</h2>
 
             <div className="flex items-baseline gap-3.5 mb-3 flex-wrap">
                 <span className="text-[22px] font-bold text-[#1f3c88]">S&amp;P 500</span>
@@ -56,6 +57,6 @@ export default function InvestmentsPanel() {
             <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-40">
                 <polyline fill="none" stroke={isUp ? '#2e7d32' : '#c62828'} strokeWidth="2" points={points} />
             </svg>
-        </section>
+        </Card>
     );
 }
