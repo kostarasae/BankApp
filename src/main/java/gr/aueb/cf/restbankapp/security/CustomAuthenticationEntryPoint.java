@@ -26,14 +26,7 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
 
         log.warn("User not authenticated, with message={}", e.getMessage());
 
-        String errorCode = switch (e.getClass().getSimpleName()) {
-            case "BadCredentialsException" -> "BAD_CREDENTIALS";
-            case "DisabledException" -> "ACCOUNT_DISABLED";
-            case "LockedException" -> "ACCOUNT_LOCKED";
-            case "AccountExpiredException" -> "ACCOUNT_EXPIRED";
-            case "CredentialsExpiredException" -> "CREDENTIALS_EXPIRED";
-            default -> "UNAUTHORIZED";
-        };
+        String errorCode = AuthErrorCode.of(e, AuthErrorCode.UNAUTHORIZED);
 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
         response.setContentType("application/json; charset=UTF-8");

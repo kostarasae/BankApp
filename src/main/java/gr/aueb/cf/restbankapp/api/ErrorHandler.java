@@ -9,8 +9,8 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.*;
 import org.springframework.security.core.AuthenticationException;
+import gr.aueb.cf.restbankapp.security.AuthErrorCode;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -117,14 +117,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
                                                                           HttpServletRequest request) {
         log.warn("Failed login for IP={}", request.getRemoteAddr());
 
-        String errorCode = switch (e) {
-            case BadCredentialsException ex -> "INVALID_CREDENTIALS";
-            case DisabledException ex -> "ACCOUNT_DISABLED";
-            case LockedException ex -> "ACCOUNT_LOCKED";
-            case AccountExpiredException ex -> "ACCOUNT_EXPIRED";
-            case CredentialsExpiredException ex -> "CREDENTIALS_EXPIRED";
-            default -> "AUTHENTICATION_ERROR";
-        };
+        String errorCode = AuthErrorCode.of(e, AuthErrorCode.AUTHENTICATION_ERROR);
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)            // 401 Unauthorized
