@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
 import Header from "./Header";
+import Footer from "./Footer";
 import Card from "./Card";
 import Icon from "./Icon";
 import ChatWidget from "./ChatWidget";
@@ -62,7 +63,6 @@ export default function MainLayout() {
         <>
         <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
-            <Header />
 
             <button onClick={() => setMenuOpen(o => !o)}
                 aria-label="Μενού"
@@ -74,25 +74,31 @@ export default function MainLayout() {
                 <span className="block h-[3px] w-full bg-current rounded-full" />
             </button>
 
-            <aside className={`fixed top-0 left-0 w-full max-w-[20vw] min-w-[240px] h-screen
-                bg-primary-dark text-[#eaf0f0] pt-24 px-6
-                box-border overflow-y-auto transition-transform duration-[800ms] ease z-[300]
-                ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            <aside className={`fixed top-0 left-0 h-screen
+                bg-primary-dark text-[#eaf0f0] pt-24 px-3
+                box-border overflow-y-auto overflow-x-hidden
+                transition-[width] duration-[800ms] ease z-[300]
+                ${menuOpen ? 'w-[260px]' : 'w-[80px]'}`}>
                 <nav>
                     <ul className="flex flex-col gap-1">
                         {visibleTabs.map(tab => (
                             <li key={tab.id}>
                                 <button onClick={() => selectTab(tab.id)}
-                                    className={`w-full flex items-center gap-4 text-left text-[17px] p-3.5 rounded-lg cursor-pointer transition
+                                    title={tab.label}
+                                    className={`w-full flex items-center gap-4 text-left text-[17px] p-3 rounded-lg cursor-pointer transition
                                         ${activeTab === tab.id ? 'bg-white/20 font-bold' : 'hover:bg-white/10'}`}>
-                                    <Icon name={tab.icon} className="w-6 h-6 shrink-0" />{tab.label}
+                                    <Icon name={tab.icon} className="w-7 h-7 shrink-0" />
+                                    <span className={`whitespace-nowrap transition-opacity duration-300
+                                        ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>{tab.label}</span>
                                 </button>
                             </li>
                         ))}
                         <li className="mt-4 border-t border-white/20 pt-2">
-                            <button onClick={logout}
-                                className="w-full flex items-center gap-4 text-left text-[17px] p-3.5 rounded-lg cursor-pointer hover:bg-white/10">
-                                <Icon name="logout" className="w-6 h-6 shrink-0" />Αποσύνδεση
+                            <button onClick={logout} title="Αποσύνδεση"
+                                className="w-full flex items-center gap-4 text-left text-[17px] p-3 rounded-lg cursor-pointer hover:bg-white/10">
+                                <Icon name="logout" className="w-7 h-7 shrink-0" />
+                                <span className={`whitespace-nowrap transition-opacity duration-300
+                                    ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>Αποσύνδεση</span>
                             </button>
                         </li>
                     </ul>
@@ -103,6 +109,8 @@ export default function MainLayout() {
                 className={`fixed inset-0 bg-black/30 z-[100] transition-opacity duration-300
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
+            <div className="pl-[80px]">
+            <Header />
             <main className="p-5 max-w-[900px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
@@ -118,6 +126,8 @@ export default function MainLayout() {
                 <active.Component {...panelProps} />
                 </div>
             </main>
+            <Footer />
+            </div>
         </div>
 
         <ChatWidget />
