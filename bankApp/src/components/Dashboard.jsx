@@ -5,10 +5,6 @@ import IncomeExpenseDonut from "./IncomeExpenseDonut";
 import Card from "./Card";
 import { formatEuro } from "../utils/format";
 
-/**
- * Ο ενεργός λογαριασμός επιλέγεται στο MainLayout και έρχεται εδώ ως prop, ώστε
- * Dashboard / Πληρωμές / IRIS να δουλεύουν πάντα στον ΙΔΙΟ λογαριασμό.
- */
 export default function Dashboard({ iban }) {
     const { balance, transactions, loading, error } = useAccount(iban);
 

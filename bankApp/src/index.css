@@ -10,15 +10,9 @@
   --color-bg: #eaf0f0;
   --color-border: #ccc;
 
-  /* Ουδέτερη κλίμακα. Το `marble` είναι η επιφάνεια ΟΜΑΔΑΣ: οι λευκές κάρτες
-     κάθονται μέσα του, δεν επιπλέουν κατευθείαν πάνω στη σελίδα. Χωρίς αυτό το
-     ενδιάμεσο επίπεδο, όλα τα στοιχεία μοιάζουν ισότιμα και η σελίδα διαβάζεται
-     σαν λίστα από widgets αντί για οργανωμένη οθόνη. */
   --color-marble: #f2ebe7;
   --color-hairline: #e6ded8;
 
-  /* Ποτέ καθαρό μαύρο για κείμενο — το #000 σε λευκό φόντο έχει υπερβολική
-     αντίθεση και «τρυπάει» τη σελίδα. */
   --color-ink: #1e222d;
   --color-muted: #6d7179;
 }
@@ -33,10 +27,6 @@
     animation: pulse 1.5s ease-in-out infinite;
 }
 
-/* ===============================
-   CARD — αιωρούμενες καρτέλες (port από το vanilla style.css)
-================================ */
-/* Επιφάνεια ομάδας: το μπεζ κουτί που περιέχει τις λευκές κάρτες. */
 .surface-group {
     background-color: var(--color-marble);
     border-radius: 14px;
@@ -47,46 +37,31 @@
     position: relative;
     z-index: 200;
 
-    /* Το 3D "ηρεμο" state. Ο transform-origin στα δεξιά κάνει την κάρτα να
-       ανοίγει σαν πόρτα προς τα μέσα όταν εμφανίζεται το μενού. */
     transform-style: preserve-3d;
     transform-origin: right center;
     transform: rotateX(0deg) rotateY(0deg) translateX(0%) scale(1);
 
-    /* Σκιά με μπλε απόχρωση αντί για καθαρό μαύρο, σε πολύ χαμηλή αδιαφάνεια.
-       Το μαύρο στο 50% έδινε βρόμικο γκρι περίγραμμα — μια σκιά υποτίθεται ότι
-       δηλώνει ύψος, όχι ότι τραβάει την προσοχή. */
     box-shadow:
         0 1px 2px rgba(3, 42, 87, 0.06),
         0 2px 8px rgba(3, 42, 87, 0.06);
 
-    /* Ίδια διάρκεια ΚΑΙ ίδια καμπύλη με το transform, ώστε η σκιά να ταξιδεύει
-       μαζί με την κάρτα. Με 0.5s η σκιά προλάβαινε στη θέση της και μετά την
-       ακολουθούσε η κάρτα για ένα δευτερόλεπτο — έμοιαζε ξεκολλημένη. */
     transition:
         transform 1.5s cubic-bezier(0.19, 1, 0.22, 1),
         box-shadow 1.5s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .card:hover {
-    /* Το hover θέλει άμεση αντίδραση — 1.5s θα έμοιαζε με κολλημένο ποντίκι.
-       Ισχύει μόνο κατά την είσοδο στο hover· η έξοδος γυρνά στην αργή καμπύλη. */
     transition: box-shadow 0.3s ease;
     box-shadow:
         0 2px 4px rgba(3, 42, 87, 0.08),
         0 10px 24px rgba(3, 42, 87, 0.14);
 }
 
-/* Όταν ανοίγει το μενού, οι κάρτες γέρνουν σε 3D και "φεύγουν" προς τα πίσω.
-   Στο vanilla ήταν `body.menu-open .card`· εδώ το MainLayout βάζει την κλάση
-   σε wrapper, ώστε να μένει τοπικό στο component.
-   Εδώ η σκιά μένει σχετικά έντονη — είναι αυτή που κάνει την κλίση αντιληπτή. */
 .menu-open .card {
     transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
     box-shadow: -28px 18px 48px rgba(3, 42, 87, 0.3);
 }
 
-/* Όσο οι κάρτες είναι γερμένες, τα controls δεν πατιούνται */
 .menu-open .card input,
 .menu-open .card select,
 .menu-open .card textarea,

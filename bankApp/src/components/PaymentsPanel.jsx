@@ -8,7 +8,6 @@ import { getErrorMessage } from "../utils/apiError";
 import { formatEuro } from "../utils/format";
 
 export default function PaymentsPanel({ iban, onSuccess }) {
-
     const [payment, setPayment] = useState({ provider: '', paymentId: '', amount: '' });
     const [transferForm, setTransferForm] = useState({ recipientIban: '', description: '', amount: '' });
     const [paymentStatus, setPaymentStatus] = useState({ text: '', ok: false });
@@ -53,7 +52,6 @@ export default function PaymentsPanel({ iban, onSuccess }) {
         try{
             const fee = await getAccountFee(iban);
             const owner = await getAccountOwner(to);
-            // Χωρίς πτώση στο όνομα: το backend το δίνει σε ονομαστική.
             const ok = window.confirm(
                 `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${formatEuro(transferForm.amount)}\nΠρομήθεια: ${formatEuro(fee)}\n\nΝα προχωρήσει η μεταφορά;`
             )

@@ -6,18 +6,14 @@ import StatusMessage from './StatusMessage';
 import Button from './Button';
 import Card from './Card';
 
-// Ο lookup γίνεται με exact match στη στήλη phone, όπου τα δεδομένα είναι 10ψήφια.
 const PHONE_PATTERN = /^\d{10}$/;
 
-// Στο IRIS ψάχνουμε με τηλέφωνο, όχι με uuid — το γενικό «δεν βρέθηκε ο πελάτης»
-// δεν λέει στον χρήστη τι να διορθώσει.
 const ERROR_OVERRIDES = {
     CustomerNotFound: 'Δεν βρέθηκε λογαριασμός με αυτό το τηλέφωνο.',
     AccountNotFound: 'Δεν βρέθηκε λογαριασμός με αυτό το τηλέφωνο.',
 };
 
 export default function IrisForm({ iban, onSuccess }) {
-
     const [phone, setPhone] = useState('');
     const [amount, setAmount] = useState('');
     const [description, setDescription] = useState('');
@@ -44,8 +40,6 @@ export default function IrisForm({ iban, onSuccess }) {
                 setStatus({ text: 'Αυτό το τηλέφωνο αντιστοιχεί στον δικό σας λογαριασμό', ok: false });
                 return;
             }
-            // Το backend δίνει το όνομα σε ονομαστική· τα ελληνικά ονόματα δεν κλίνονται
-            // αξιόπιστα προγραμματιστικά, γι' αυτό τα μηνύματα αποφεύγουν την πτώση.
             const ok = window.confirm(
                 `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${formatEuro(amount)}\n\nΝα προχωρήσει η μεταφορά;`
             );

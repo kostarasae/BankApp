@@ -14,10 +14,6 @@ import LoansPanel from "./LoansPanel";
 import CardsPanel from "./CardsPanel";
 import InvestmentsPanel from "./InvestmentsPanel";
 
-// Data-driven: αντικαθιστά τα 9 ξεχωριστά <li data-target="..."> του vanilla με ένα .map().
-// Το `Component` (κεφαλαίο C) κρατά την ΙΔΙΑ τη function — renderάρεται αργότερα, όταν
-// επιλεγεί το tab. `staffOnly` κρύβει το tab από τον CUSTOMER (F.20).
-// Το `icon` είναι πλέον κλειδί του Icon component, όχι emoji.
 const TABS = [
     { id: 'dashboard',   label: 'Προεπισκόπηση', icon: 'home',     Component: Dashboard },
     { id: 'create',      label: 'Λογαριασμοί',   icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
@@ -30,7 +26,6 @@ const TABS = [
     { id: 'settings',    label: 'Ρυθμίσεις',     icon: 'gear',     Component: SettingsPanel },
 ];
 
-// Ποια panels δουλεύουν πάνω σε συγκεκριμένο λογαριασμό
 const NEEDS_IBAN = ['dashboard', 'payments', 'iris'];
 
 export default function MainLayout() {
@@ -40,8 +35,6 @@ export default function MainLayout() {
     const [activeTab, setActiveTab] = useState('dashboard');
     const [menuOpen, setMenuOpen] = useState(false);
 
-    // F.20 — το hiding είναι μόνο UX. Η πραγματική προστασία είναι το @PreAuthorize
-    // στο backend: ο CUSTOMER που καλέσει το POST /accounts παίρνει 403 έτσι κι αλλιώς.
     const visibleTabs = TABS.filter(t => !t.staffOnly || role !== 'CUSTOMER');
     const active = visibleTabs.find(t => t.id === activeTab) ?? visibleTabs[0];
 
@@ -51,8 +44,6 @@ export default function MainLayout() {
     }
 
     return (
-        // `menu-open` → οι κάρτες γέρνουν σε 3D (index.css), όπως στο vanilla.
-        // `perspective` εδώ ώστε το rotateX/rotateY να έχει βάθος αντί για flat skew.
         <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
             <Header />
@@ -67,7 +58,6 @@ export default function MainLayout() {
                 <span className="block h-[3px] w-full bg-current rounded-full" />
             </button>
 
-            {/* z-300 / 0.8s ease — ίδια τιμή με το vanilla `.sidebar` */}
             <aside className={`fixed top-0 left-0 w-full max-w-[20vw] min-w-[240px] h-screen
                 bg-primary-dark text-[#eaf0f0] pt-20 px-8
                 box-border overflow-y-auto transition-transform duration-[800ms] ease z-[300]
@@ -93,19 +83,12 @@ export default function MainLayout() {
                 </nav>
             </aside>
 
-            {/* Πάντα στο DOM με opacity transition (όχι conditional render), και σε
-                z-100 — ΠΙΣΩ από τις κάρτες (z-200), όπως στο vanilla: το φόντο
-                σκοτεινιάζει αλλά οι γερμένες κάρτες μένουν φωτεινές μπροστά. */}
             <div onClick={() => setMenuOpen(false)}
                 className={`fixed inset-0 bg-black/30 z-[100] transition-opacity duration-300
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
             <main className="p-5 max-w-[900px] mx-auto">
-                {/* Δύο επίπεδα επιφάνειας: μπεζ ομάδα, λευκές κάρτες μέσα της.
-                    Το τελευταίο `mb` της κάρτας μηδενίζεται, αλλιώς η ομάδα
-                    κλείνει με κενό στο κάτω μέρος. */}
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
-                {/* Μέσα σε Card, ώστε να γέρνει μαζί με τα υπόλοιπα όταν ανοίγει το μενού */}
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && (
                     <Card>
                         <label className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>

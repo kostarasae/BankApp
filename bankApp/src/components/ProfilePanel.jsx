@@ -20,7 +20,6 @@ export default function ProfilePanel() {
     if (loading) return <Card><p className="text-gray-400">Φόρτωση...</p></Card>;
     if (error) return <Card><p className="font-bold text-red-500">{error}</p></Card>;
 
-    // admin/employee: συνδεδεμένος χρήστης χωρίς προφίλ πελάτη
     if (!profile) {
         return (
             <Card>

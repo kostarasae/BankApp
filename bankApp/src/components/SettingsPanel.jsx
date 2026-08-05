@@ -9,8 +9,6 @@ import Card from "./Card";
 const INPUT_CLS = "p-3 text-base border border-gray-300 rounded h-12 box-border";
 const LABEL_CLS = "font-bold text-sm mt-2.5 mb-[3px]";
 
-// Ίδιος κανόνας με το backend (UserInsertDTO): 8+ χαρακτήρες, 1 πεζό, 1 κεφαλαίο,
-// 1 ψηφίο, 1 ειδικός. Ο έλεγχος εδώ είναι για UX — ο server τον ξανακάνει.
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).{8,}$/;
 
 export default function SettingsPanel() {
@@ -24,7 +22,6 @@ export default function SettingsPanel() {
     async function handleSubmit(e) {
         e.preventDefault();
 
-        // Client-side: ό,τι μπορούμε να απαντήσουμε χωρίς τον server
         if (!currentPassword) {
             setStatus({ text: 'Συμπληρώστε τον τρέχοντα κωδικό', ok: false });
             return;
@@ -49,7 +46,6 @@ export default function SettingsPanel() {
             setCurrentPassword(''); setNewPassword(''); setConfirmPassword('');
             setTimeout(() => setStatus({ text: '', ok: false }), 3000);
         } catch (err) {
-            // Χωρίς reset: ο χρήστης μπορεί να θέλει να διορθώσει μόνο ένα πεδίο
             setStatus({ text: getErrorMessage(err), ok: false });
         } finally {
             setLoading(false);

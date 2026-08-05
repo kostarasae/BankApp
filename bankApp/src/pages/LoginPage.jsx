@@ -20,7 +20,7 @@ export default function LoginPage() {
         try {
             setLoading(true);
             setStatus({ text: '', ok: false });
-            await login(username, password);   // κάνει και το redirect σε '/'
+            await login(username, password);
         } catch (err) {
             setStatus({ text: getErrorMessage(err), ok: false });
         } finally {

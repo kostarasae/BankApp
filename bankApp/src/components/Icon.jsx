@@ -1,18 +1,3 @@
-/**
- * Εικονίδια γραμμής (line icons) για την πλοήγηση.
- *
- * Αντικαθιστούν τα emoji. Δύο λόγοι, πέρα από το ύφος:
- *  - Το emoji το σχεδιάζει το λειτουργικό, όχι εμείς: το 🏦 σε Windows, σε Mac
- *    και σε Android είναι τρία διαφορετικά σχέδια, σε διαφορετικά χρώματα και
- *    μεγέθη. Δεν υπάρχει τρόπος να ταιριάξουν μεταξύ τους ή με το υπόλοιπο UI.
- *  - Το emoji αγνοεί το `color`. Το SVG παρακάτω ζωγραφίζεται με
- *    `stroke="currentColor"`, οπότε παίρνει αυτόματα το χρώμα του κειμένου
- *    δίπλα του — άσπρο στο sidebar, μπλε αν το βάλουμε σε κάρτα.
- *
- * Όλα τα paths είναι σχεδιασμένα στο ίδιο πλέγμα 24×24, ώστε να έχουν κοινό
- * οπτικό βάρος. Το `PATHS` είναι απλό object: κλειδί → JSX του σχήματος.
- */
-
 const PATHS = {
     home: (
         <>
@@ -90,8 +75,6 @@ export default function Icon({ name, className = 'w-5 h-5' }) {
         <svg viewBox="0 0 24 24" className={className}
             fill="none" stroke="currentColor" strokeWidth="1.6"
             strokeLinecap="round" strokeLinejoin="round"
-            // Διακοσμητικό: ο λεκτικός τίτλος υπάρχει ήδη δίπλα, οπότε ο
-            // screen reader δεν χρειάζεται να το ανακοινώσει δεύτερη φορά.
             aria-hidden="true" focusable="false">
             {shape}
         </svg>
