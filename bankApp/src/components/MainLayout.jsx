@@ -16,14 +16,14 @@ import InvestmentsPanel from "./InvestmentsPanel";
 
 const TABS = [
     { id: 'dashboard',   label: 'Προεπισκόπηση', icon: 'home',     Component: Dashboard },
-    { id: 'create',      label: 'Λογαριασμοί',   icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
-    { id: 'payments',    label: 'Πληρωμές',      icon: 'transfer', Component: PaymentsPanel },
-    { id: 'iris',        label: 'IRIS',          icon: 'mobile',   Component: IrisForm },
-    { id: 'investments', label: 'Επενδύσεις',    icon: 'chart',    Component: InvestmentsPanel },
-    { id: 'loans',       label: 'Δάνεια',        icon: 'bank',     Component: LoansPanel },
-    { id: 'cards',       label: 'Κάρτες',        icon: 'card',     Component: CardsPanel },
-    { id: 'profile',     label: 'Προφίλ',        icon: 'user',     Component: ProfilePanel },
-    { id: 'settings',    label: 'Ρυθμίσεις',     icon: 'gear',     Component: SettingsPanel },
+    { id: 'create',      label: 'Λογαριασμοί', icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
+    { id: 'payments',    label: 'Πληρωμές',    icon: 'transfer', Component: PaymentsPanel },
+    { id: 'iris',        label: 'IRIS',        icon: 'mobile',   Component: IrisForm },
+    { id: 'investments', label: 'Επενδύσεις',  icon: 'chart',    Component: InvestmentsPanel },
+    { id: 'loans',       label: 'Δάνεια',      icon: 'bank',     Component: LoansPanel },
+    { id: 'cards',       label: 'Κάρτες',      icon: 'card',     Component: CardsPanel },
+    { id: 'profile',     label: 'Προφίλ',      icon: 'user',     Component: ProfilePanel },
+    { id: 'settings',    label: 'Ρυθμίσεις',   icon: 'gear',     Component: SettingsPanel },
 ];
 
 const NEEDS_IBAN = ['dashboard', 'payments', 'iris'];
@@ -50,8 +50,8 @@ export default function MainLayout() {
 
             <button onClick={() => setMenuOpen(o => !o)}
                 aria-label="Μενού"
-                className="fixed top-4 left-4 z-[400] w-14 h-11 px-3 flex flex-col justify-center gap-[5px]
-                    bg-primary-dark text-white rounded cursor-pointer
+                className="fixed top-4 left-4 z-[400] w-14 h-14 px-3 flex flex-col justify-center gap-[7px]
+                    bg-primary-dark text-white rounded-lg cursor-pointer
                     transition-transform duration-300 hover:scale-105">
                 <span className="block h-[3px] w-full bg-current rounded-full" />
                 <span className="block h-[3px] w-full bg-current rounded-full" />
@@ -59,7 +59,7 @@ export default function MainLayout() {
             </button>
 
             <aside className={`fixed top-0 left-0 w-full max-w-[20vw] min-w-[240px] h-screen
-                bg-primary-dark text-[#eaf0f0] pt-20 px-8
+                bg-primary-dark text-[#eaf0f0] pt-24 px-6
                 box-border overflow-y-auto transition-transform duration-[800ms] ease z-[300]
                 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <nav>
@@ -67,16 +67,16 @@ export default function MainLayout() {
                         {visibleTabs.map(tab => (
                             <li key={tab.id}>
                                 <button onClick={() => selectTab(tab.id)}
-                                    className={`w-full flex items-center gap-3 text-left p-3 rounded cursor-pointer transition
+                                    className={`w-full flex items-center gap-4 text-left text-[17px] p-3.5 rounded-lg cursor-pointer transition
                                         ${activeTab === tab.id ? 'bg-white/20 font-bold' : 'hover:bg-white/10'}`}>
-                                    <Icon name={tab.icon} />{tab.label}
+                                    <Icon name={tab.icon} className="w-6 h-6 shrink-0" />{tab.label}
                                 </button>
                             </li>
                         ))}
                         <li className="mt-4 border-t border-white/20 pt-2">
                             <button onClick={logout}
-                                className="w-full flex items-center gap-3 text-left p-3 rounded cursor-pointer hover:bg-white/10">
-                                <Icon name="logout" />Αποσύνδεση
+                                className="w-full flex items-center gap-4 text-left text-[17px] p-3.5 rounded-lg cursor-pointer hover:bg-white/10">
+                                <Icon name="logout" className="w-6 h-6 shrink-0" />Αποσύνδεση
                             </button>
                         </li>
                     </ul>
