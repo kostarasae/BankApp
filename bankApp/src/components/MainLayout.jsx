@@ -5,6 +5,7 @@ import Header from "./Header";
 import Card from "./Card";
 import Icon from "./Icon";
 import Dashboard from "./Dashboard";
+import HistoryPanel from "./HistoryPanel";
 import CreateAccountForm from "./CreateAccountForm";
 import PaymentsPanel from "./PaymentsPanel";
 import IrisForm from "./IrisForm";
@@ -18,6 +19,7 @@ const TABS = [
     { id: 'dashboard',   label: 'Επισκόπηση',  icon: 'home',     Component: Dashboard },
     { id: 'create',      label: 'Λογαριασμοί', icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
     { id: 'payments',    label: 'Πληρωμές',    icon: 'transfer', Component: PaymentsPanel },
+    { id: 'history',     label: 'Ιστορικό',    icon: 'history',  Component: HistoryPanel },
     { id: 'iris',        label: 'IRIS',        icon: 'mobile',   Component: IrisForm },
     { id: 'investments', label: 'Επενδύσεις',  icon: 'chart',    Component: InvestmentsPanel },
     { id: 'loans',       label: 'Δάνεια',      icon: 'bank',     Component: LoansPanel },
@@ -26,7 +28,7 @@ const TABS = [
     { id: 'settings',    label: 'Ρυθμίσεις',   icon: 'gear',     Component: SettingsPanel },
 ];
 
-const NEEDS_IBAN = ['dashboard', 'payments', 'iris'];
+const NEEDS_IBAN = ['dashboard', 'payments', 'history', 'iris'];
 
 export default function MainLayout() {
     const { role, customerUuid, logout } = useAuth();
@@ -41,6 +43,18 @@ export default function MainLayout() {
     function selectTab(id) {
         setActiveTab(id);
         setMenuOpen(false);
+    }
+
+    function openHistory(iban) {
+        setSelectedIban(iban);
+        setActiveTab('history');
+    }
+
+    const panelProps = NEEDS_IBAN.includes(active.id) ? { iban: selectedIban } : {};
+    if (active.id === 'dashboard') {
+        Object.assign(panelProps, {
+            accounts, selectedIban, onSelect: setSelectedIban, onOpenHistory: openHistory,
+        });
     }
 
     return (
@@ -89,7 +103,7 @@ export default function MainLayout() {
 
             <main className="p-5 max-w-[900px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
-                {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && (
+                {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
                     <Card>
                         <label className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>
                         <select value={selectedIban} onChange={e => setSelectedIban(e.target.value)}
@@ -99,9 +113,7 @@ export default function MainLayout() {
                     </Card>
                 )}
 
-                {NEEDS_IBAN.includes(active.id)
-                    ? <active.Component iban={selectedIban} />
-                    : <active.Component />}
+                <active.Component {...panelProps} />
                 </div>
             </main>
         </div>

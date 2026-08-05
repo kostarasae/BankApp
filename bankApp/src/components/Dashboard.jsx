@@ -1,32 +1,50 @@
 import { useAccount } from '../hooks/useAccount';
-import BalanceCard from "./BalanceCard";
-import TransactionTable from "./TransactionTable";
+import AccountCard from './AccountCard';
 import IncomeExpenseDonut from "./IncomeExpenseDonut";
 import Card from "./Card";
 import { formatEuro } from "../utils/format";
 
-export default function Dashboard({ iban }) {
-    const { balance, transactions, loading, error } = useAccount(iban);
+export default function Dashboard({ iban, accounts = [], selectedIban, onSelect, onOpenHistory }) {
+    const { transactions, loading, error } = useAccount(iban);
 
     if (!iban) {
         return (
             <Card>
-                <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Προεπισκόπηση</h2>
-                <p className="text-gray-500">Δεν υπάρχει λογαριασμός για προβολή.</p>
+                <h2 className="card-heading text-lg font-bold text-primary mb-3">Επισκόπηση</h2>
+                <p className="text-muted">Δεν υπάρχει λογαριασμός για προβολή.</p>
             </Card>
         );
     }
-    if (loading) return <Card><p className="text-gray-400">Φόρτωση...</p></Card>;
-    if (error) return <Card><p className="font-bold text-red-500">{error}</p></Card>;
+
+    const total = accounts.reduce((sum, a) => sum + Number(a.balance ?? 0), 0);
 
     return (
-        <div className="flex flex-col gap-4">
-            {balance != null && <BalanceCard balance={formatEuro(balance)} />}
-            <IncomeExpenseDonut transactions={transactions} />
-            <Card>
-                <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Συναλλαγές</h2>
-                <TransactionTable transactions={transactions} />
-            </Card>
+        <div className="flex flex-col gap-6">
+            <section>
+                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3 px-1">
+                    <h2 className="text-lg font-bold text-primary">Λογαριασμοί</h2>
+                    <p className="text-[13px] text-muted">
+                        Συνολικό διαθέσιμο υπόλοιπο{' '}
+                        <span className="text-lg font-bold text-ink tabular-nums ml-1">
+                            {formatEuro(total)}
+                        </span>
+                    </p>
+                </div>
+
+                <div className="grid gap-4 sm:grid-cols-2">
+                    {accounts.map(account => (
+                        <AccountCard key={account.iban}
+                            account={account}
+                            selected={account.iban === selectedIban}
+                            onSelect={onSelect}
+                            onOpenHistory={onOpenHistory} />
+                    ))}
+                </div>
+            </section>
+
+            {loading && <Card className="mb-0"><p className="text-muted">Φόρτωση...</p></Card>}
+            {error && <Card className="mb-0"><p className="font-bold text-red-500">{error}</p></Card>}
+            {!loading && !error && <IncomeExpenseDonut transactions={transactions} />}
         </div>
     );
 }
