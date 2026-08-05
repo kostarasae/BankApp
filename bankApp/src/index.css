@@ -17,13 +17,48 @@
     100% { transform: scale(1) translateX(20px); }
 }
 
-@utility card-3d-open {
-    transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
-    box-shadow: -40px 20px 60px rgba(0,0,0,0.4);
-}
-
 .balance-hover-group:hover .balance-pulse {
     animation: pulse 1.5s ease-in-out infinite;
+}
+
+/* ===============================
+   CARD — αιωρούμενες καρτέλες (port από το vanilla style.css)
+================================ */
+.card {
+    position: relative;
+    z-index: 200;
+
+    /* Το 3D "ηρεμο" state. Ο transform-origin στα δεξιά κάνει την κάρτα να
+       ανοίγει σαν πόρτα προς τα μέσα όταν εμφανίζεται το μενού. */
+    transform-style: preserve-3d;
+    transform-origin: right center;
+    transform: rotateX(0deg) rotateY(0deg) translateX(0%) scale(1);
+
+    transition:
+        transform 1.5s cubic-bezier(0.19, 1, 0.22, 1),
+        box-shadow 0.5s ease;
+}
+
+.card:hover {
+    box-shadow: 0 20px 20px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Όταν ανοίγει το μενού, οι κάρτες γέρνουν σε 3D και "φεύγουν" προς τα πίσω.
+   Στο vanilla ήταν `body.menu-open .card`· εδώ το MainLayout βάζει την κλάση
+   σε wrapper, ώστε να μένει τοπικό στο component. */
+.menu-open .card {
+    transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
+    box-shadow: -40px 20px 60px rgba(0, 0, 0, 0.4);
+}
+
+/* Όσο οι κάρτες είναι γερμένες, τα controls δεν πατιούνται */
+.menu-open .card input,
+.menu-open .card select,
+.menu-open .card textarea,
+.menu-open .card button,
+.menu-open .balance-amount {
+    pointer-events: none;
+    opacity: 0.9;
 }
 
 .card-heading::after {

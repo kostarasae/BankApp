@@ -48,17 +48,22 @@ export default function MainLayout() {
     }
 
     return (
-        <div className="min-h-screen bg-[#eaf0f0]">
+        // `menu-open` → οι κάρτες γέρνουν σε 3D (index.css), όπως στο vanilla.
+        // `perspective` εδώ ώστε το rotateX/rotateY να έχει βάθος αντί για flat skew.
+        <div className={`min-h-screen bg-[#eaf0f0] ${menuOpen ? 'menu-open' : ''}`}
+            style={{ perspective: '1500px' }}>
             <Header />
 
             <button onClick={() => setMenuOpen(o => !o)}
                 aria-label="Μενού"
-                className="p-2.5 fixed top-4 left-4 z-[1001] text-2xl bg-primary-dark text-white rounded">
+                className="p-2.5 fixed top-4 left-4 z-[400] text-2xl bg-primary-dark text-white rounded">
                 ☰
             </button>
 
-            <aside className={`fixed top-0 left-0 w-64 h-screen bg-primary-dark text-[#eaf0f0] pt-20 px-4
-                box-border overflow-y-auto transition-transform duration-300 ease-in-out z-[1000]
+            {/* z-300 / 0.8s ease — ίδια τιμή με το vanilla `.sidebar` */}
+            <aside className={`fixed top-0 left-0 w-full max-w-[20vw] min-w-[240px] h-screen
+                bg-primary-dark text-[#eaf0f0] pt-20 px-8
+                box-border overflow-y-auto transition-transform duration-[800ms] ease z-[300]
                 ${menuOpen ? 'translate-x-0' : '-translate-x-full'}`}>
                 <nav>
                     <ul className="flex flex-col gap-1">
@@ -81,10 +86,12 @@ export default function MainLayout() {
                 </nav>
             </aside>
 
-            {menuOpen && (
-                <div onClick={() => setMenuOpen(false)}
-                    className="fixed inset-0 bg-black/40 z-[999]" />
-            )}
+            {/* Πάντα στο DOM με opacity transition (όχι conditional render), και σε
+                z-100 — ΠΙΣΩ από τις κάρτες (z-200), όπως στο vanilla: το φόντο
+                σκοτεινιάζει αλλά οι γερμένες κάρτες μένουν φωτεινές μπροστά. */}
+            <div onClick={() => setMenuOpen(false)}
+                className={`fixed inset-0 bg-black/30 z-[100] transition-opacity duration-300
+                    ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
             <main className="p-5 max-w-[900px] mx-auto">
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && (
