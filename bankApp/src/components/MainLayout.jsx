@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
 import Header from "./Header";
 import Card from "./Card";
+import Icon from "./Icon";
 import Dashboard from "./Dashboard";
 import CreateAccountForm from "./CreateAccountForm";
 import PaymentsPanel from "./PaymentsPanel";
@@ -16,16 +17,17 @@ import InvestmentsPanel from "./InvestmentsPanel";
 // Data-driven: αντικαθιστά τα 9 ξεχωριστά <li data-target="..."> του vanilla με ένα .map().
 // Το `Component` (κεφαλαίο C) κρατά την ΙΔΙΑ τη function — renderάρεται αργότερα, όταν
 // επιλεγεί το tab. `staffOnly` κρύβει το tab από τον CUSTOMER (F.20).
+// Το `icon` είναι πλέον κλειδί του Icon component, όχι emoji.
 const TABS = [
-    { id: 'dashboard',   label: 'Προεπισκόπηση', icon: '🏠', Component: Dashboard },
-    { id: 'create',      label: 'Λογαριασμοί',   icon: '➕', Component: CreateAccountForm, staffOnly: true },
-    { id: 'payments',    label: 'Πληρωμές',      icon: '💸', Component: PaymentsPanel },
-    { id: 'iris',        label: 'IRIS',          icon: '📲', Component: IrisForm },
-    { id: 'investments', label: 'Επενδύσεις',    icon: '📈', Component: InvestmentsPanel },
-    { id: 'loans',       label: 'Δάνεια',        icon: '🏦', Component: LoansPanel },
-    { id: 'cards',       label: 'Κάρτες',        icon: '💳', Component: CardsPanel },
-    { id: 'profile',     label: 'Προφίλ',        icon: '👤', Component: ProfilePanel },
-    { id: 'settings',    label: 'Ρυθμίσεις',     icon: '⚙️', Component: SettingsPanel },
+    { id: 'dashboard',   label: 'Προεπισκόπηση', icon: 'home',     Component: Dashboard },
+    { id: 'create',      label: 'Λογαριασμοί',   icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
+    { id: 'payments',    label: 'Πληρωμές',      icon: 'transfer', Component: PaymentsPanel },
+    { id: 'iris',        label: 'IRIS',          icon: 'mobile',   Component: IrisForm },
+    { id: 'investments', label: 'Επενδύσεις',    icon: 'chart',    Component: InvestmentsPanel },
+    { id: 'loans',       label: 'Δάνεια',        icon: 'bank',     Component: LoansPanel },
+    { id: 'cards',       label: 'Κάρτες',        icon: 'card',     Component: CardsPanel },
+    { id: 'profile',     label: 'Προφίλ',        icon: 'user',     Component: ProfilePanel },
+    { id: 'settings',    label: 'Ρυθμίσεις',     icon: 'gear',     Component: SettingsPanel },
 ];
 
 // Ποια panels δουλεύουν πάνω σε συγκεκριμένο λογαριασμό
@@ -75,16 +77,16 @@ export default function MainLayout() {
                         {visibleTabs.map(tab => (
                             <li key={tab.id}>
                                 <button onClick={() => selectTab(tab.id)}
-                                    className={`w-full text-left p-3 rounded cursor-pointer transition
+                                    className={`w-full flex items-center gap-3 text-left p-3 rounded cursor-pointer transition
                                         ${activeTab === tab.id ? 'bg-white/20 font-bold' : 'hover:bg-white/10'}`}>
-                                    <span className="mr-2">{tab.icon}</span>{tab.label}
+                                    <Icon name={tab.icon} />{tab.label}
                                 </button>
                             </li>
                         ))}
                         <li className="mt-4 border-t border-white/20 pt-2">
                             <button onClick={logout}
-                                className="w-full text-left p-3 rounded cursor-pointer hover:bg-white/10">
-                                <span className="mr-2">🚪</span>Αποσύνδεση
+                                className="w-full flex items-center gap-3 text-left p-3 rounded cursor-pointer hover:bg-white/10">
+                                <Icon name="logout" />Αποσύνδεση
                             </button>
                         </li>
                     </ul>
