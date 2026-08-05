@@ -56,8 +56,12 @@ export default function MainLayout() {
 
             <button onClick={() => setMenuOpen(o => !o)}
                 aria-label="Μενού"
-                className="p-2.5 fixed top-4 left-4 z-[400] text-2xl bg-primary-dark text-white rounded">
-                ☰
+                className="fixed top-4 left-4 z-[400] w-14 h-11 px-3 flex flex-col justify-center gap-[5px]
+                    bg-primary-dark text-white rounded cursor-pointer
+                    transition-transform duration-300 hover:scale-105">
+                <span className="block h-[3px] w-full bg-current rounded-full" />
+                <span className="block h-[3px] w-full bg-current rounded-full" />
+                <span className="block h-[3px] w-full bg-current rounded-full" />
             </button>
 
             {/* z-300 / 0.8s ease — ίδια τιμή με το vanilla `.sidebar` */}
