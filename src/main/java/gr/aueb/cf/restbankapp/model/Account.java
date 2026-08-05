@@ -98,10 +98,6 @@ public abstract class Account extends AbstractEntity {
     // Template Method / Hook
     public abstract boolean violatesRules(BigDecimal balance);
 
-    /**
-     * The concrete type of this account. Persisted as the discriminator column, so
-     * asking the subclass beats reading the column or testing with instanceof.
-     */
     public abstract AccountType getAccountType();
 
     // concrete methods (full implementation, opposite of abstract)
