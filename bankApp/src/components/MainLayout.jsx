@@ -66,7 +66,7 @@ export default function MainLayout() {
 
             <button onClick={() => setMenuOpen(o => !o)}
                 aria-label="Μενού"
-                className="fixed top-4 left-4 z-[400] w-[60px] h-[60px] px-3.5 flex flex-col justify-center gap-2
+                className="fixed top-4 left-4 z-[400] w-[64px] h-[64px] px-4 flex flex-col justify-center gap-2
                     bg-primary-dark text-white rounded-lg cursor-pointer
                     transition-transform duration-300 hover:scale-105">
                 <span className="block h-[3px] w-full bg-current rounded-full" />
@@ -75,19 +75,19 @@ export default function MainLayout() {
             </button>
 
             <aside className={`fixed top-0 left-0 h-screen
-                bg-primary-dark text-[#eaf0f0] pt-24 px-[14px]
-                box-border overflow-y-auto overflow-x-hidden
+                bg-primary-dark text-[#eaf0f0] pt-[92px] px-[18px]
+                box-border overflow-y-auto overflow-x-hidden no-scrollbar
                 transition-[width] duration-[800ms] ease z-[300]
-                ${menuOpen ? 'w-[280px]' : 'w-[88px]'}`}>
+                ${menuOpen ? 'w-[320px]' : 'w-[100px]'}`}>
                 <nav>
                     <ul className="flex flex-col gap-1">
                         {visibleTabs.map(tab => (
                             <li key={tab.id}>
                                 <button onClick={() => selectTab(tab.id)}
                                     title={tab.label}
-                                    className={`w-full flex items-center gap-4 text-left text-[21px] h-[60px] px-[12px] rounded-lg cursor-pointer transition
+                                    className={`w-full flex items-center gap-4 text-left text-[21px] h-[64px] px-[12px] rounded-xl cursor-pointer transition
                                         ${activeTab === tab.id ? 'bg-white/20 font-bold' : 'hover:bg-white/10'}`}>
-                                    <Icon name={tab.icon} className="w-[36px] h-[36px] shrink-0" />
+                                    <Icon name={tab.icon} className="w-[40px] h-[40px] shrink-0" />
                                     <span className={`whitespace-nowrap transition-opacity duration-300
                                         ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>{tab.label}</span>
                                 </button>
@@ -95,8 +95,8 @@ export default function MainLayout() {
                         ))}
                         <li className="mt-4 border-t border-white/20 pt-2">
                             <button onClick={logout} title="Αποσύνδεση"
-                                className="w-full flex items-center gap-4 text-left text-[21px] h-[60px] px-[12px] rounded-lg cursor-pointer hover:bg-white/10">
-                                <Icon name="logout" className="w-[36px] h-[36px] shrink-0" />
+                                className="w-full flex items-center gap-4 text-left text-[21px] h-[64px] px-[12px] rounded-xl cursor-pointer hover:bg-white/10">
+                                <Icon name="logout" className="w-[40px] h-[40px] shrink-0" />
                                 <span className={`whitespace-nowrap transition-opacity duration-300
                                     ${menuOpen ? 'opacity-100' : 'opacity-0'}`}>Αποσύνδεση</span>
                             </button>
@@ -109,7 +109,7 @@ export default function MainLayout() {
                 className={`fixed inset-0 bg-black/30 z-[100] transition-opacity duration-300
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
-            <div className="pl-[88px] min-h-screen flex flex-col">
+            <div className="pl-[100px] min-h-screen flex flex-col">
             <Header />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
