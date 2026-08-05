@@ -77,21 +77,21 @@ export default function LoansPanel() {
                             <table className="w-full text-sm">
                                 <thead>
                                     <tr>
-                                        <th className="p-2 border border-gray-300">Μήνας</th>
-                                        <th className="p-2 border border-gray-300">Δόση (€)</th>
-                                        <th className="p-2 border border-gray-300">Κεφάλαιο (€)</th>
-                                        <th className="p-2 border border-gray-300">Τόκος (€)</th>
-                                        <th className="p-2 border border-gray-300">Υπόλοιπο (€)</th>
+                                        <th className="p-2 border border-gray-300 text-left">Μήνας</th>
+                                        <th className="p-2 border border-gray-300 text-right">Δόση (€)</th>
+                                        <th className="p-2 border border-gray-300 text-right">Κεφάλαιο (€)</th>
+                                        <th className="p-2 border border-gray-300 text-right">Τόκος (€)</th>
+                                        <th className="p-2 border border-gray-300 text-right">Υπόλοιπο (€)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {result.rows.map(row => (
                                         <tr key={row.month}>
-                                            <td className="p-2 border border-gray-300 text-center">{row.month}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.payment)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.principal)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.interest)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.balance)}</td>
+                                            <td className="p-2 border border-gray-300 text-left tabular-nums">{row.month}</td>
+                                            <td className="p-2 border border-gray-300 text-right tabular-nums">{formatAmount(row.payment)}</td>
+                                            <td className="p-2 border border-gray-300 text-right tabular-nums">{formatAmount(row.principal)}</td>
+                                            <td className="p-2 border border-gray-300 text-right tabular-nums">{formatAmount(row.interest)}</td>
+                                            <td className="p-2 border border-gray-300 text-right tabular-nums">{formatAmount(row.balance)}</td>
                                         </tr>
                                     ))}
                                 </tbody>
