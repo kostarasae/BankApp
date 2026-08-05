@@ -15,7 +15,7 @@ import CardsPanel from "./CardsPanel";
 import InvestmentsPanel from "./InvestmentsPanel";
 
 const TABS = [
-    { id: 'dashboard',   label: 'Προεπισκόπηση', icon: 'home',     Component: Dashboard },
+    { id: 'dashboard',   label: 'Επισκόπηση',  icon: 'home',     Component: Dashboard },
     { id: 'create',      label: 'Λογαριασμοί', icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
     { id: 'payments',    label: 'Πληρωμές',    icon: 'transfer', Component: PaymentsPanel },
     { id: 'iris',        label: 'IRIS',        icon: 'mobile',   Component: IrisForm },
