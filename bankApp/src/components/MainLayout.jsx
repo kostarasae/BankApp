@@ -4,6 +4,7 @@ import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
 import Header from "./Header";
 import Card from "./Card";
 import Icon from "./Icon";
+import ChatWidget from "./ChatWidget";
 import Dashboard from "./Dashboard";
 import HistoryPanel from "./HistoryPanel";
 import CreateAccountForm from "./CreateAccountForm";
@@ -58,6 +59,7 @@ export default function MainLayout() {
     }
 
     return (
+        <>
         <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
             <Header />
@@ -117,5 +119,8 @@ export default function MainLayout() {
                 </div>
             </main>
         </div>
+
+        <ChatWidget />
+        </>
     );
 }
