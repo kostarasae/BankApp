@@ -28,9 +28,24 @@
 }
 
 .surface-group {
+    position: relative;
+    z-index: 200;
     background-color: var(--color-marble);
     border-radius: 14px;
     padding: 16px;
+
+    transform-style: preserve-3d;
+    transform-origin: right center;
+    transform: rotateX(0deg) rotateY(0deg) translateX(0%) scale(1);
+
+    transition:
+        transform 1.5s cubic-bezier(0.19, 1, 0.22, 1),
+        box-shadow 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.menu-open .surface-group {
+    transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
+    box-shadow: -28px 18px 48px rgba(3, 42, 87, 0.3);
 }
 
 .card {
@@ -58,8 +73,8 @@
 }
 
 .menu-open .card {
-    transform: rotateX(-7deg) rotateY(-40deg) translateX(-1%) scale(0.95);
-    box-shadow: -28px 18px 48px rgba(3, 42, 87, 0.3);
+    transform: translateZ(28px);
+    box-shadow: -18px 12px 32px rgba(3, 42, 87, 0.28);
 }
 
 .menu-open .card input,
