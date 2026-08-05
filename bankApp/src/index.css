@@ -98,6 +98,10 @@
     width: 120px;
 }
 
+html {
+  font-size: 18px;
+}
+
 body {
   margin: 0;
   background-color: #fff;
