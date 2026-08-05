@@ -9,6 +9,18 @@
   --color-success: #2e7d32;
   --color-bg: #eaf0f0;
   --color-border: #ccc;
+
+  /* Ουδέτερη κλίμακα. Το `marble` είναι η επιφάνεια ΟΜΑΔΑΣ: οι λευκές κάρτες
+     κάθονται μέσα του, δεν επιπλέουν κατευθείαν πάνω στη σελίδα. Χωρίς αυτό το
+     ενδιάμεσο επίπεδο, όλα τα στοιχεία μοιάζουν ισότιμα και η σελίδα διαβάζεται
+     σαν λίστα από widgets αντί για οργανωμένη οθόνη. */
+  --color-marble: #f2ebe7;
+  --color-hairline: #e6ded8;
+
+  /* Ποτέ καθαρό μαύρο για κείμενο — το #000 σε λευκό φόντο έχει υπερβολική
+     αντίθεση και «τρυπάει» τη σελίδα. */
+  --color-ink: #1e222d;
+  --color-muted: #6d7179;
 }
 
 @keyframes pulse {
@@ -24,6 +36,13 @@
 /* ===============================
    CARD — αιωρούμενες καρτέλες (port από το vanilla style.css)
 ================================ */
+/* Επιφάνεια ομάδας: το μπεζ κουτί που περιέχει τις λευκές κάρτες. */
+.surface-group {
+    background-color: var(--color-marble);
+    border-radius: 14px;
+    padding: 16px;
+}
+
 .card {
     position: relative;
     z-index: 200;
@@ -76,5 +95,6 @@
 
 body {
   margin: 0;
-  background-color: #eaf0f0;
+  background-color: #fff;
+  color: var(--color-ink);
 }

@@ -58,15 +58,15 @@ export default function LoansPanel() {
             {result && (
                 <div className="mt-4">
                     <div className="flex gap-4 my-5 flex-wrap">
-                        <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
+                        <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Μηνιαία Δόση</span>
                             <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.monthly)}</strong>
                         </div>
-                        <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
+                        <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Συνολικό Ποσό</span>
                             <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.total)}</strong>
                         </div>
-                        <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
+                        <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Συνολικοί Τόκοι</span>
                             <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.interest)}</strong>
                         </div>

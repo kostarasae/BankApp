@@ -3,7 +3,7 @@
 // είναι εντονότερο από το `shadow-2xl` και το transition είναι 1.5s cubic-bezier.
 export default function Card({ children, className = '' }) {
     return (
-        <section className={`card bg-white p-5 mb-[2%] rounded-2xl ${className}`}>
+        <section className={`card bg-white p-5 mb-4 rounded-[14px] border border-marble ${className}`}>
             {children}
         </section>
     );

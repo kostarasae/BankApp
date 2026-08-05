@@ -53,7 +53,7 @@ export default function MainLayout() {
     return (
         // `menu-open` → οι κάρτες γέρνουν σε 3D (index.css), όπως στο vanilla.
         // `perspective` εδώ ώστε το rotateX/rotateY να έχει βάθος αντί για flat skew.
-        <div className={`min-h-screen bg-[#eaf0f0] ${menuOpen ? 'menu-open' : ''}`}
+        <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
             <Header />
 
@@ -101,6 +101,10 @@ export default function MainLayout() {
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
             <main className="p-5 max-w-[900px] mx-auto">
+                {/* Δύο επίπεδα επιφάνειας: μπεζ ομάδα, λευκές κάρτες μέσα της.
+                    Το τελευταίο `mb` της κάρτας μηδενίζεται, αλλιώς η ομάδα
+                    κλείνει με κενό στο κάτω μέρος. */}
+                <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {/* Μέσα σε Card, ώστε να γέρνει μαζί με τα υπόλοιπα όταν ανοίγει το μενού */}
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && (
                     <Card>
@@ -115,6 +119,7 @@ export default function MainLayout() {
                 {NEEDS_IBAN.includes(active.id)
                     ? <active.Component iban={selectedIban} />
                     : <active.Component />}
+                </div>
             </main>
         </div>
     );
