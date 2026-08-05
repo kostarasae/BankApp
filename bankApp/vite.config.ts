@@ -6,6 +6,6 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   plugins: [react(), tailwindcss()],
   server: {
-        proxy: { '/api': { target: 'https://bankapp-3cwp.onrender.com', changeOrigin: true } }   // προώθηση κάθε /api/... στο backend
+        proxy: { '/api': { target: 'https://bankapp-3cwp.onrender.com', changeOrigin: true } }
     }
 })
