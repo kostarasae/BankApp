@@ -62,7 +62,8 @@ public class Mapper {
     }
 
     public AccountReadOnlyDTO mapToAccountReadOnlyDTO(Account account) {
-        return new AccountReadOnlyDTO(account.getIban(), account.getBalance());
+        return new AccountReadOnlyDTO(account.getIban(), account.getAccountNumber(),
+                account.getAccountType(), account.getBalance());
     }
 
     public TransactionReadOnlyDTO mapToTransactionReadOnlyDTO(Transaction t) {

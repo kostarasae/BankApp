@@ -4,6 +4,7 @@ import gr.aueb.cf.restbankapp.config.BankConfiguration;
 import gr.aueb.cf.restbankapp.core.exceptions.InsufficientBalanceException;
 import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
+import gr.aueb.cf.restbankapp.model.AccountType;
 import gr.aueb.cf.restbankapp.dto.AccountWithdrawDTO;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
 import gr.aueb.cf.restbankapp.model.Account;
@@ -68,7 +69,7 @@ class AccountServiceImplTest {
                 .thenReturn(accountChecking);
 
         when(mapper.mapToAccountReadOnlyDTO(any()))
-                .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100)));
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(100)));
 
         service.deposit(accountDepositDTO100);
 
@@ -84,12 +85,12 @@ class AccountServiceImplTest {
                 .thenReturn(accountChecking);
 
         when(mapper.mapToAccountReadOnlyDTO(any()))
-                .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(200)));
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(200)));
 
         service.deposit(accountDepositDTO200);
 
         when(mapper.mapToAccountReadOnlyDTO(any()))
-                .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(50)));
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(50)));
 
         service.withdraw(accountWithdrawDTO50);
 
@@ -105,7 +106,7 @@ class AccountServiceImplTest {
                 .thenReturn(accountChecking);
 
         when(mapper.mapToAccountReadOnlyDTO(any()))
-                .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(300)));
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(300)));
 
         service.deposit(accountDepositDTO300);
 

@@ -47,6 +47,11 @@ public class AccountChecking extends Account {
     }
 
     @Override
+    public AccountType getAccountType() {
+        return AccountType.CHECKING;
+    }
+
+    @Override
     public boolean violatesRules(BigDecimal balance) {
         return balance.compareTo(
                 BankConfiguration.getInstance().getDefaultCheckingOverdraftLimit()

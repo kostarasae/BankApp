@@ -47,6 +47,11 @@ public class AccountSavings extends Account {
     }
 
     @Override
+    public AccountType getAccountType() {
+        return AccountType.SAVINGS;
+    }
+
+    @Override
     public boolean violatesRules(BigDecimal balance) {
         return balance.compareTo(
                 BankConfiguration.getInstance().getDefaultSavingsOverdraftLimit()

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.aueb.cf.restbankapp.authentication.JwtService;
 import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
+import gr.aueb.cf.restbankapp.model.AccountType;
 import gr.aueb.cf.restbankapp.security.JwtAuthenticationFilter;
 import gr.aueb.cf.restbankapp.service.IAccountService;
 import gr.aueb.cf.restbankapp.validation.AccountValidator;
@@ -72,7 +73,7 @@ class AccountRestControllerTest {
     @WithMockUser(authorities = "CAN_DEPOSIT")
     void deposit_shouldReturn201() throws Exception {
         AccountDepositDTO depositDTO = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
-        AccountReadOnlyDTO readOnlyDTO = new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100));
+        AccountReadOnlyDTO readOnlyDTO = new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(100));
 
         when(accountService.deposit(depositDTO)).thenReturn(readOnlyDTO);
 
@@ -90,7 +91,7 @@ class AccountRestControllerTest {
         AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
 
         when(accountService.deposit(any()))
-                .thenReturn(new AccountReadOnlyDTO("GR123", BigDecimal.valueOf(100)));
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(100)));
 
         mockMvc.perform(post("/api/v1/accounts/deposit")       // ← fixed path
                         .contentType(MediaType.APPLICATION_JSON)
