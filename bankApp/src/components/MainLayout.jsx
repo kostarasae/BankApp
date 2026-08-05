@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
 import Header from "./Header";
+import Card from "./Card";
 import Dashboard from "./Dashboard";
 import CreateAccountForm from "./CreateAccountForm";
 import PaymentsPanel from "./PaymentsPanel";
@@ -98,14 +99,15 @@ export default function MainLayout() {
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
             <main className="p-5 max-w-[900px] mx-auto">
+                {/* Μέσα σε Card, ώστε να γέρνει μαζί με τα υπόλοιπα όταν ανοίγει το μενού */}
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && (
-                    <div className="flex flex-col gap-1 mb-4">
-                        <label className="font-bold text-sm">Ενεργός Λογαριασμός</label>
+                    <Card>
+                        <label className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>
                         <select value={selectedIban} onChange={e => setSelectedIban(e.target.value)}
-                            className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white max-w-[420px]">
+                            className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white w-full max-w-[420px]">
                             {accounts.map(a => <option key={a.iban} value={a.iban}>{a.iban}</option>)}
                         </select>
-                    </div>
+                    </Card>
                 )}
 
                 {NEEDS_IBAN.includes(active.id)
