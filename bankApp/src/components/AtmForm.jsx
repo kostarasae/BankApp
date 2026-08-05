@@ -3,6 +3,7 @@ import { deposit, withdraw } from '../api/restBankApi';
 import Button from './Button';
 import StatusMessage from './StatusMessage';
 import { getErrorMessage } from '../utils/apiError';
+import { formatEuro } from '../utils/format';
 
 export default function AtmForm({ iban, onSuccess }) {
     const [atm, setAtm] = useState('');
@@ -19,7 +20,7 @@ export default function AtmForm({ iban, onSuccess }) {
             const action = type === 'deposit' ? deposit : withdraw;
             const account = await action(iban, 'ATM ' + atm, Number(amount));
             setStatus({
-                text: `${type === 'deposit' ? 'Η κατάθεση' : 'Η ανάληψη'} ολοκληρώθηκε — νέο υπόλοιπο: ${account.balance}€`,
+                text: `${type === 'deposit' ? 'Η κατάθεση' : 'Η ανάληψη'} ολοκληρώθηκε — νέο υπόλοιπο: ${formatEuro(account.balance)}`,
                 ok: true,
             });
             setAmount('');

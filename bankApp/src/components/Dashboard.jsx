@@ -3,6 +3,7 @@ import BalanceCard from "./BalanceCard";
 import TransactionTable from "./TransactionTable";
 import IncomeExpenseDonut from "./IncomeExpenseDonut";
 import Card from "./Card";
+import { formatEuro } from "../utils/format";
 
 /**
  * Ο ενεργός λογαριασμός επιλέγεται στο MainLayout και έρχεται εδώ ως prop, ώστε
@@ -24,7 +25,7 @@ export default function Dashboard({ iban }) {
 
     return (
         <div className="flex flex-col gap-4">
-            {balance != null && <BalanceCard balance={`${balance.toFixed(2)} €`} />}
+            {balance != null && <BalanceCard balance={formatEuro(balance)} />}
             <IncomeExpenseDonut transactions={transactions} />
             <Card>
                 <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Συναλλαγές</h2>

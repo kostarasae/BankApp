@@ -5,6 +5,7 @@ import Button from "./Button";
 import Card from "./Card";
 import StatusMessage from "./StatusMessage";
 import { getErrorMessage } from "../utils/apiError";
+import { formatEuro } from "../utils/format";
 
 export default function PaymentsPanel({ iban, onSuccess }) {
 
@@ -17,7 +18,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
     async function handlePayment() {
         try{
             const fee = await getAccountFee(iban);
-            if (!window.confirm(`Θα χρεωθείτε με προμήθεια ${fee}€. Συνέχεια;`)) return;
+            if (!window.confirm(`Θα χρεωθείτε με προμήθεια ${formatEuro(fee)}. Συνέχεια;`)) return;
             setLoading(true);
             setPaymentStatus({ text: '', ok: false });
             await withdraw(
@@ -54,7 +55,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
             const owner = await getAccountOwner(to);
             // Χωρίς πτώση στο όνομα: το backend το δίνει σε ονομαστική.
             const ok = window.confirm(
-                `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${Number(transferForm.amount).toFixed(2)}€\nΠρομήθεια: ${fee}€\n\nΝα προχωρήσει η μεταφορά;`
+                `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${formatEuro(transferForm.amount)}\nΠρομήθεια: ${formatEuro(fee)}\n\nΝα προχωρήσει η μεταφορά;`
             )
             if (!ok) return;
             setLoading(true);

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import Card from './Card';
+import { formatEuro, formatAmount } from '../utils/format';
 
 export default function LoansPanel() {
     const [amount, setAmount] = useState(10000);
@@ -59,15 +60,15 @@ export default function LoansPanel() {
                     <div className="flex gap-4 my-5 flex-wrap">
                         <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Μηνιαία Δόση</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{result.monthly.toFixed(2)} €</strong>
+                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.monthly)}</strong>
                         </div>
                         <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Συνολικό Ποσό</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{result.total.toFixed(2)} €</strong>
+                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.total)}</strong>
                         </div>
                         <div className="flex-1 min-w-[140px] bg-[#eaf0f0] rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
                             <span className="text-[13px] text-[#666]">Συνολικοί Τόκοι</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{result.interest.toFixed(2)} €</strong>
+                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.interest)}</strong>
                         </div>
                     </div>
                     <details>
@@ -87,10 +88,10 @@ export default function LoansPanel() {
                                     {result.rows.map(row => (
                                         <tr key={row.month}>
                                             <td className="p-2 border border-gray-300 text-center">{row.month}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{row.payment.toFixed(2)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{row.principal.toFixed(2)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{row.interest.toFixed(2)}</td>
-                                            <td className="p-2 border border-gray-300 text-center">{row.balance.toFixed(2)}</td>
+                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.payment)}</td>
+                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.principal)}</td>
+                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.interest)}</td>
+                                            <td className="p-2 border border-gray-300 text-center">{formatAmount(row.balance)}</td>
                                         </tr>
                                     ))}
                                 </tbody>

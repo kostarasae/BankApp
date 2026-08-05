@@ -1,5 +1,6 @@
 import { useState, useMemo } from 'react';
 import Card from './Card';
+import { formatAmount } from '../utils/format';
 
 const PERIODS = ['1W', '1M', '3M', '1Y'];
 const POINTS_BY_PERIOD = { '1W': 5, '1M': 22, '3M': 66, '1Y': 60 };
@@ -37,9 +38,9 @@ export default function InvestmentsPanel() {
 
             <div className="flex items-baseline gap-3.5 mb-3 flex-wrap">
                 <span className="text-[22px] font-bold text-[#1f3c88]">S&amp;P 500</span>
-                <span className="text-3xl font-bold text-[#222]">{last.toLocaleString('el-GR', { minimumFractionDigits: 2 })} pts</span>
+                <span className="text-3xl font-bold text-[#222]">{formatAmount(last)} pts</span>
                 <span className="text-base font-bold" style={{ color: isUp ? '#2e7d32' : '#c62828' }}>
-                    {isUp ? '+' : ''}{change.toFixed(2)} ({isUp ? '+' : ''}{pct.toFixed(2)}%)
+                    {isUp ? '+' : ''}{formatAmount(change)} ({isUp ? '+' : ''}{formatAmount(pct)}%)
                 </span>
             </div>
 

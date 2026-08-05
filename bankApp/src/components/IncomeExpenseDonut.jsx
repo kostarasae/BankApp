@@ -1,4 +1,5 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
+import { formatEuro } from '../utils/format';
 
 const CANVAS_SIZE = 260;
 const BASE_RADIUS = 115;
@@ -57,7 +58,7 @@ export default function IncomeExpenseDonut({ transactions }) {
             ctx.font = 'bold 14px Arial';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
-            ctx.fillText(slice.value.toFixed(2) + '€', tx, ty);
+            ctx.fillText(formatEuro(slice.value), tx, ty);
         });
 
         ctx.beginPath();

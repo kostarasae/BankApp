@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getAccountByPhone, transfer } from "../api/restBankApi";
 import { getErrorMessage } from '../utils/apiError';
+import { formatEuro } from '../utils/format';
 import StatusMessage from './StatusMessage';
 import Button from './Button';
 import Card from './Card';
@@ -46,12 +47,12 @@ export default function IrisForm({ iban, onSuccess }) {
             // Το backend δίνει το όνομα σε ονομαστική· τα ελληνικά ονόματα δεν κλίνονται
             // αξιόπιστα προγραμματιστικά, γι' αυτό τα μηνύματα αποφεύγουν την πτώση.
             const ok = window.confirm(
-                `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${Number(amount).toFixed(2)}€\n\nΝα προχωρήσει η μεταφορά;`
+                `Παραλήπτης: ${owner.firstname} ${owner.lastname}\nΠοσό: ${formatEuro(amount)}\n\nΝα προχωρήσει η μεταφορά;`
             );
             if (!ok) return;
             setLoading(true);
             await transfer(iban, owner.iban, description, Number(amount));
-            setStatus({ text: `Επιτυχής μεταφορά ${Number(amount).toFixed(2)}€ — παραλήπτης: ${owner.firstname} ${owner.lastname}`, ok: true });
+            setStatus({ text: `Επιτυχής μεταφορά ${formatEuro(amount)} — παραλήπτης: ${owner.firstname} ${owner.lastname}`, ok: true });
             setPhone(''); setAmount(''); setDescription('');
             onSuccess?.();
         } catch (err) {
