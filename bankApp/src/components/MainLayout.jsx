@@ -74,8 +74,8 @@ export default function MainLayout() {
                 <span className="block h-[3px] w-full bg-current rounded-full" />
             </button>
 
-            <aside className={`fixed top-0 left-0 h-screen
-                bg-primary-dark text-[#eaf0f0] pt-[92px] px-[18px]
+            <aside className={`fixed top-0 left-0 max-h-screen
+                bg-primary-dark text-[#eaf0f0] pt-[92px] px-[18px] pb-5 rounded-br-2xl
                 box-border overflow-y-auto overflow-x-hidden no-scrollbar
                 transition-[width] duration-[800ms] ease z-[300]
                 ${menuOpen ? 'w-[320px]' : 'w-[100px]'}`}>
