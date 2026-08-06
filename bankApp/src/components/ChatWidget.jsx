@@ -76,8 +76,8 @@ export default function ChatWidget() {
 
             <button type="button" onClick={() => setOpen(o => !o)}
                 aria-label={open ? 'Κλείσιμο συνομιλίας' : 'Άνοιγμα συνομιλίας'}
-                className="w-[76px] h-[76px] grid place-items-center rounded-full bg-primary text-white
-                    shadow-[0_6px_18px_rgba(3,42,87,0.3)] cursor-pointer transition hover:scale-105">
+                className="w-[76px] h-[76px] grid place-items-center rounded-full bg-primary-dark text-white
+                    shadow-[0_6px_18px_rgba(3,42,87,0.4)] cursor-pointer transition hover:scale-105">
                 <Icon name={open ? 'close' : 'chat'} className="w-[42px] h-[42px]" />
             </button>
         </div>
