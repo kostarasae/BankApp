@@ -6,9 +6,10 @@ const GENDER_LABELS = { MALE: 'Άνδρας', FEMALE: 'Γυναίκα' };
 
 function Row({ label, value }) {
     return (
-        <div className="flex justify-between gap-4 py-2 border-b border-gray-200 last:border-b-0">
-            <span className="font-bold text-sm">{label}</span>
-            <span className="text-sm text-right">{value || '—'}</span>
+        <div className="grid grid-cols-[minmax(160px,260px)_1fr] gap-x-8 py-2.5
+            border-b border-gray-200 last:border-b-0">
+            <span className="font-bold">{label}</span>
+            <span>{value || '—'}</span>
         </div>
     );
 }
@@ -23,7 +24,7 @@ export default function ProfilePanel() {
     if (!profile) {
         return (
             <Card>
-                <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Προφίλ</h2>
+                <h2 className="card-heading mb-3">Προφίλ</h2>
                 <p className="text-gray-500">Ο λογαριασμός σας δεν αντιστοιχεί σε πελάτη, οπότε δεν υπάρχουν στοιχεία προφίλ.</p>
             </Card>
         );
@@ -33,7 +34,7 @@ export default function ProfilePanel() {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Προφίλ</h2>
+            <h2 className="card-heading mb-3">Προφίλ</h2>
 
             <fieldset className="flex flex-col rounded-lg p-4 border border-gray-300 mb-4">
                 <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Στοιχεία Κατόχου</legend>

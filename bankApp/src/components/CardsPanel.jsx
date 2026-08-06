@@ -19,7 +19,7 @@ export default function CardsPanel() {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Κάρτες</h2>
+            <h2 className="card-heading mb-3">Κάρτες</h2>
 
             <div className="w-[380px] max-w-full h-[220px] mx-auto my-6 rounded-[18px] text-white p-6 box-border flex flex-col justify-between relative overflow-hidden font-mono"
                 style={{ background: 'linear-gradient(135deg, #132452 0%, #1f3c88 60%, #6e8ff0 100%)', boxShadow: '0 16px 48px rgba(31, 60, 136, 0.45)' }}>
@@ -41,18 +41,18 @@ export default function CardsPanel() {
                 </div>
             </div>
 
-            <div className="mt-4 flex flex-col gap-0">
-                <div className="flex justify-between text-sm py-3 px-1 border-b border-gray-300">
-                    <span>Τύπος</span><span>VISA Debit</span>
+            <div className="mt-4 flex flex-col gap-0 max-w-[680px]">
+                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                    <span className="font-bold">Τύπος</span><span>VISA Debit</span>
                 </div>
-                <div className="flex justify-between text-sm py-3 px-1 border-b border-gray-300">
-                    <span>Κατάσταση</span><span className="text-[#2e7d32] font-bold">● Ενεργή</span>
+                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                    <span className="font-bold">Κατάσταση</span><span className="text-[#2e7d32] font-bold">● Ενεργή</span>
                 </div>
-                <div className="flex justify-between text-sm py-3 px-1 border-b border-gray-300">
-                    <span>Όριο ημερήσιων συναλλαγών</span><span>1.000,00 €</span>
+                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                    <span className="font-bold">Όριο ημερήσιων συναλλαγών</span><span className="tabular-nums">1.000,00 €</span>
                 </div>
-                <div className="flex justify-between text-sm py-3 px-1 border-b border-gray-300">
-                    <span>Contactless</span><span>Ενεργό</span>
+                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                    <span className="font-bold">Contactless</span><span>Ενεργό</span>
                 </div>
             </div>
         </Card>

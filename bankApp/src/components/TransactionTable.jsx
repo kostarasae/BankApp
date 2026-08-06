@@ -25,13 +25,13 @@ export default function TransactionTable({ transactions }) {
     const groups = groupByDay(transactions);
 
     return (
-        <table className="w-full text-sm">
+        <table className="w-full table-fixed">
             <thead>
-                <tr className="text-[13px] text-muted">
-                    <th className="text-left font-semibold pb-2">Ώρα</th>
-                    <th className="text-left font-semibold pb-2">Τύπος</th>
+                <tr className="text-sm text-muted">
+                    <th className="text-left font-semibold pb-2 w-[90px]">Ώρα</th>
+                    <th className="text-left font-semibold pb-2 w-[150px]">Τύπος</th>
                     <th className="text-left font-semibold pb-2">Περιγραφή</th>
-                    <th className="text-right font-semibold pb-2">Ποσό</th>
+                    <th className="text-right font-semibold pb-2 w-[180px]">Ποσό</th>
                 </tr>
             </thead>
 
@@ -39,7 +39,7 @@ export default function TransactionTable({ transactions }) {
                 <tbody key={group.key}>
                     <tr>
                         <th colSpan={4}
-                            className="text-left font-bold text-[13px] pt-5 pb-2 border-b border-hairline">
+                            className="text-left font-bold text-sm pt-5 pb-2 border-b border-hairline">
                             {group.label}
                         </th>
                     </tr>
