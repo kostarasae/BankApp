@@ -61,24 +61,20 @@ export default function MainLayout() {
 
     return (
         <>
-        <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
-            style={{ perspective: '1500px' }}>
-
-            <button onClick={() => setMenuOpen(o => !o)}
-                aria-label="Μενού"
-                className="fixed top-4 left-4 z-[400] w-[64px] h-[64px] px-4 flex flex-col justify-center gap-2
-                    bg-primary-dark text-white rounded-lg cursor-pointer
-                    transition-transform duration-300 hover:scale-105">
-                <span className="block h-[3px] w-full bg-current rounded-full" />
-                <span className="block h-[3px] w-full bg-current rounded-full" />
-                <span className="block h-[3px] w-full bg-current rounded-full" />
-            </button>
-
-            <aside className={`fixed top-0 left-0 max-h-screen
-                bg-primary-dark text-[#eaf0f0] pt-[92px] px-[18px] pb-5 rounded-br-2xl
+            <aside className={`fixed left-0 top-1/2 -translate-y-1/2 max-h-screen
+                bg-primary-dark text-[#eaf0f0] px-[18px] py-5 rounded-r-2xl
                 box-border overflow-y-auto overflow-x-hidden no-scrollbar
                 transition-[width] duration-[800ms] ease z-[300]
                 ${menuOpen ? 'w-[320px]' : 'w-[100px]'}`}>
+                <button onClick={() => setMenuOpen(o => !o)}
+                    aria-label="Μενού"
+                    className="w-[64px] h-[64px] mb-3 px-4 flex flex-col justify-center gap-2
+                        rounded-xl cursor-pointer transition hover:bg-white/10">
+                    <span className="block h-[3px] w-full bg-current rounded-full" />
+                    <span className="block h-[3px] w-full bg-current rounded-full" />
+                    <span className="block h-[3px] w-full bg-current rounded-full" />
+                </button>
+
                 <nav>
                     <ul className="flex flex-col gap-1">
                         {visibleTabs.map(tab => (
@@ -109,6 +105,8 @@ export default function MainLayout() {
                 className={`fixed inset-0 bg-black/30 z-[100] transition-opacity duration-300
                     ${menuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} />
 
+        <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
+            style={{ perspective: '1500px' }}>
             <div className="pl-[100px] min-h-screen flex flex-col">
             <Header />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
