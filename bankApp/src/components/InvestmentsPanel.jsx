@@ -52,7 +52,7 @@ export default function InvestmentsPanel() {
 
                 <div className="flex items-baseline gap-4 mb-4 flex-wrap">
                     <span className="text-xl font-bold text-primary">S&amp;P 500</span>
-                    <span className="text-3xl font-bold text-ink tabular-nums">{formatAmount(last)} pts</span>
+                    <span className="text-2xl font-bold text-ink tabular-nums">{formatAmount(last)} pts</span>
                     <span className="text-lg font-bold tabular-nums" style={{ color: lineColor }}>
                         {isUp ? '+' : ''}{formatAmount(change)} ({isUp ? '+' : ''}{formatAmount(pct)}%)
                     </span>
@@ -103,11 +103,11 @@ export default function InvestmentsPanel() {
                 <table className="w-full table-fixed">
                     <thead>
                         <tr className="text-sm text-muted">
-                            <th className="text-left font-semibold pb-2">Κατηγορία</th>
-                            <th className="text-left font-semibold pb-2 w-[180px]">Δείκτης</th>
-                            <th className="text-right font-semibold pb-2 w-[170px]">Αξία</th>
-                            <th className="text-right font-semibold pb-2 w-[150px]">Βάρος</th>
-                            <th className="text-right font-semibold pb-2 w-[130px]">Μεταβολή</th>
+                            <th className="text-left font-semibold pb-2 w-[28%]">Κατηγορία</th>
+                            <th className="text-left font-semibold pb-2 w-[18%]">Δείκτης</th>
+                            <th className="text-right font-semibold pb-2 w-[18%]">Αξία</th>
+                            <th className="text-right font-semibold pb-2 w-[22%]">Βάρος</th>
+                            <th className="text-right font-semibold pb-2 w-[14%]">Μεταβολή</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -118,7 +118,7 @@ export default function InvestmentsPanel() {
                                 <td className="py-3 text-right tabular-nums whitespace-nowrap">{formatEuro(h.value)}</td>
                                 <td className="py-3 pl-6">
                                     <span className="flex items-center gap-2 justify-end">
-                                        <span className="grow h-2 rounded-full bg-marble overflow-hidden max-w-[70px]">
+                                        <span className="grow h-2 rounded-full bg-marble overflow-hidden max-w-[110px]">
                                             <span className="block h-full bg-primary-soft"
                                                 style={{ width: `${h.weight}%` }} />
                                         </span>
