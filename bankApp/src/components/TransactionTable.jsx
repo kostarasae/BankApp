@@ -28,10 +28,10 @@ export default function TransactionTable({ transactions }) {
         <table className="w-full table-fixed">
             <thead>
                 <tr className="text-sm text-muted">
-                    <th className="text-left font-semibold pb-2 w-[15%]">Ώρα</th>
-                    <th className="text-left font-semibold pb-2 w-[20%]">Τύπος</th>
-                    <th className="text-left font-semibold pb-2 w-[40%]">Περιγραφή</th>
-                    <th className="text-right font-semibold pb-2 w-[25%]">Ποσό</th>
+                    <th className="text-left font-semibold pb-2 w-1/4">Ώρα</th>
+                    <th className="text-left font-semibold pb-2 w-1/4">Τύπος</th>
+                    <th className="text-left font-semibold pb-2 w-1/4">Περιγραφή</th>
+                    <th className="text-right font-semibold pb-2 w-1/4">Ποσό</th>
                 </tr>
             </thead>
 
