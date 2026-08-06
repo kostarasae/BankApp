@@ -194,7 +194,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
-    @PreAuthorize("hasAuthority('EDIT_CUSTOMER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional(rollbackFor = EntityNotFoundException.class)
     public void resetPassword(UUID uuid, String newPassword) throws EntityNotFoundException {
         try {

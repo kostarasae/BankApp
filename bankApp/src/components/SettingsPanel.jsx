@@ -12,7 +12,7 @@ const LABEL_CLS = "font-bold text-sm mt-2.5 mb-[3px]";
 const PASSWORD_PATTERN = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&+=]).{8,}$/;
 const WEAK_MESSAGE = 'Ο νέος κωδικός πρέπει να έχει 8+ χαρακτήρες, με πεζό, κεφαλαίο, αριθμό και ειδικό χαρακτήρα (!@#$%^&+=)';
 
-export default function SettingsPanel({ isStaff = false, customers = [] }) {
+export default function SettingsPanel({ isAdmin = false, customers = [] }) {
     const { userUuid } = useAuth();
     const [target, setTarget] = useState('self');
     const [customerUuid, setCustomerUuid] = useState('');
@@ -26,7 +26,7 @@ export default function SettingsPanel({ isStaff = false, customers = [] }) {
         setCurrentPassword(''); setNewPassword(''); setConfirmPassword('');
     };
 
-    const forCustomer = isStaff && target === 'customer';
+    const forCustomer = isAdmin && target === 'customer';
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -77,7 +77,7 @@ export default function SettingsPanel({ isStaff = false, customers = [] }) {
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Αλλαγή Κωδικού</legend>
 
-                    {isStaff && (
+                    {isAdmin && (
                         <div className="flex gap-4 mb-2">
                             <label className="flex items-center gap-2 cursor-pointer">
                                 <input type="radio" name="target" value="self"

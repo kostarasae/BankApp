@@ -38,6 +38,7 @@ const NEEDS_CUSTOMER = ['dashboard', 'payments', 'history', 'iris', 'profile'];
 export default function MainLayout() {
     const { role, customerUuid, logout } = useAuth();
     const isStaff = role !== 'CUSTOMER';
+    const isAdmin = role === 'ADMIN';
 
     const [staffCustomerUuid, setStaffCustomerUuid] = useState('');
     const { customers } = useCustomers(isStaff);
@@ -75,7 +76,7 @@ export default function MainLayout() {
         panelProps.customerUuid = activeCustomerUuid;
     }
     if (active.id === 'settings') {
-        Object.assign(panelProps, { isStaff, customers });
+        Object.assign(panelProps, { isAdmin, customers });
     }
 
     return (
