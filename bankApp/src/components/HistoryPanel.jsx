@@ -8,7 +8,7 @@ export default function HistoryPanel({ iban }) {
     if (!iban) {
         return (
             <Card>
-                <h2 className="card-heading text-lg font-bold text-primary mb-3">Ιστορικό</h2>
+                <h2 className="card-heading mb-3">Ιστορικό</h2>
                 <p className="text-muted">Δεν υπάρχει λογαριασμός για προβολή.</p>
             </Card>
         );
@@ -18,8 +18,8 @@ export default function HistoryPanel({ iban }) {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-primary mb-1">Ιστορικό κινήσεων</h2>
-            <p className="text-[13px] text-muted tabular-nums mb-4 break-all">{iban}</p>
+            <h2 className="card-heading mb-1">Ιστορικό κινήσεων</h2>
+            <p className="text-sm text-muted tabular-nums mb-4 break-all">{iban}</p>
             <TransactionTable transactions={transactions} />
         </Card>
     );

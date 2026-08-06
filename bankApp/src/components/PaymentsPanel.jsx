@@ -80,7 +80,7 @@ export default function PaymentsPanel({ iban, onSuccess }) {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Πληρωμές</h2>
+            <h2 className="card-heading mb-3">Πληρωμές</h2>
 
             <div className="flex flex-col gap-4">
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">

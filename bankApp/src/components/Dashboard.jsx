@@ -10,7 +10,7 @@ export default function Dashboard({ iban, accounts = [], selectedIban, onSelect,
     if (!iban) {
         return (
             <Card>
-                <h2 className="card-heading text-lg font-bold text-primary mb-3">Επισκόπηση</h2>
+                <h2 className="card-heading mb-3">Επισκόπηση</h2>
                 <p className="text-muted">Δεν υπάρχει λογαριασμός για προβολή.</p>
             </Card>
         );
@@ -22,10 +22,10 @@ export default function Dashboard({ iban, accounts = [], selectedIban, onSelect,
         <div className="flex flex-col gap-6">
             <section>
                 <div className="flex flex-wrap items-baseline justify-between gap-2 mb-3 px-1">
-                    <h2 className="text-lg font-bold text-primary">Λογαριασμοί</h2>
-                    <p className="text-[13px] text-muted">
+                    <h2 className="card-heading">Λογαριασμοί</h2>
+                    <p className="text-sm text-muted">
                         Συνολικό διαθέσιμο υπόλοιπο{' '}
-                        <span className="text-lg font-bold text-ink tabular-nums ml-1">
+                        <span className="text-2xl font-bold text-ink tabular-nums ml-1">
                             {formatEuro(total)}
                         </span>
                     </p>

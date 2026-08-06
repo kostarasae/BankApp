@@ -54,7 +54,7 @@ export default function SettingsPanel() {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Ρυθμίσεις</h2>
+            <h2 className="card-heading mb-3">Ρυθμίσεις</h2>
             <form onSubmit={handleSubmit}>
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Αλλαγή Κωδικού</legend>

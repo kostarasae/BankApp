@@ -85,6 +85,12 @@
     opacity: 0.9;
 }
 
+.card-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
 .card-heading::after {
     content: "";
     display: block;
@@ -99,7 +105,7 @@
 }
 
 html {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 .no-scrollbar {

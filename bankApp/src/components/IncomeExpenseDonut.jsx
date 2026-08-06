@@ -99,7 +99,7 @@ export default function IncomeExpenseDonut({ transactions }) {
 
     return (
         <section className="card bg-white p-5 mb-[2%] rounded-2xl flex flex-col items-center">
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-2">Κατανομή Εσόδων / Εξόδων</h2>
+            <h2 className="card-heading mb-2">Κατανομή Εσόδων / Εξόδων</h2>
             <div className="flex gap-[30px] items-center">
                 <canvas
                     ref={canvasRef}

@@ -30,7 +30,7 @@ export default function LoansPanel() {
 
     return (
         <Card>
-            <h2 className="card-heading text-lg font-bold text-[#1f3c88] mb-3">Δάνεια</h2>
+            <h2 className="card-heading mb-3">Δάνεια</h2>
             <form onSubmit={handleSubmit} className="flex flex-col gap-2.5">
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Υπολογισμός Δανείου</legend>
@@ -59,16 +59,16 @@ export default function LoansPanel() {
                 <div className="mt-4">
                     <div className="flex gap-4 my-5 flex-wrap">
                         <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
-                            <span className="text-[13px] text-[#666]">Μηνιαία Δόση</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.monthly)}</strong>
+                            <span className="text-sm text-[#666]">Μηνιαία Δόση</span>
+                            <strong className="text-2xl text-[#1f3c88]">{formatEuro(result.monthly)}</strong>
                         </div>
                         <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
-                            <span className="text-[13px] text-[#666]">Συνολικό Ποσό</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.total)}</strong>
+                            <span className="text-sm text-[#666]">Συνολικό Ποσό</span>
+                            <strong className="text-2xl text-[#1f3c88]">{formatEuro(result.total)}</strong>
                         </div>
                         <div className="flex-1 min-w-[140px] bg-marble rounded-[10px] p-4 flex flex-col gap-1.5 text-center">
-                            <span className="text-[13px] text-[#666]">Συνολικοί Τόκοι</span>
-                            <strong className="text-[22px] text-[#1f3c88]">{formatEuro(result.interest)}</strong>
+                            <span className="text-sm text-[#666]">Συνολικοί Τόκοι</span>
+                            <strong className="text-2xl text-[#1f3c88]">{formatEuro(result.interest)}</strong>
                         </div>
                     </div>
                     <details>
