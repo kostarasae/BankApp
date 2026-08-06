@@ -19,9 +19,9 @@ import InvestmentsPanel from "./InvestmentsPanel";
 
 const TABS = [
     { id: 'dashboard',   label: 'Επισκόπηση',  icon: 'home',     Component: Dashboard },
-    { id: 'create',      label: 'Λογαριασμοί', icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
-    { id: 'payments',    label: 'Πληρωμές',    icon: 'transfer', Component: PaymentsPanel },
     { id: 'history',     label: 'Ιστορικό',    icon: 'history',  Component: HistoryPanel },
+    { id: 'payments',    label: 'Πληρωμές',    icon: 'transfer', Component: PaymentsPanel },
+    { id: 'create',      label: 'Λογαριασμοί', icon: 'userPlus', Component: CreateAccountForm, staffOnly: true },
     { id: 'iris',        label: 'IRIS',        icon: 'mobile',   Component: IrisForm },
     { id: 'investments', label: 'Επενδύσεις',  icon: 'chart',    Component: InvestmentsPanel },
     { id: 'loans',       label: 'Δάνεια',      icon: 'bank',     Component: LoansPanel },
