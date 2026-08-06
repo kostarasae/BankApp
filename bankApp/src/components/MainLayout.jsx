@@ -126,7 +126,7 @@ export default function MainLayout() {
                 <active.Component {...panelProps} />
                 </div>
             </main>
-            <Footer />
+            <Footer className="-ml-[100px] w-[calc(100%+100px)]" />
             </div>
         </div>
 
