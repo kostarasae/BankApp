@@ -19,7 +19,7 @@ export default function AccountCard({ account, selected, onSelect, onOpenHistory
                     <span className="font-bold">{type.label}</span>
                 </span>
 
-                <span className="block text-sm text-muted tabular-nums mt-2">
+                <span className="block text-base text-ink tabular-nums mt-2">
                     Αρ. λογαριασμού {account.accountNumber ?? '—'}
                 </span>
                 <span className="block text-sm text-muted tabular-nums break-all">
@@ -27,7 +27,7 @@ export default function AccountCard({ account, selected, onSelect, onOpenHistory
                 </span>
 
                 <span className="block text-sm text-muted mt-5">Διαθέσιμο υπόλοιπο</span>
-                <span className="block text-3xl leading-tight font-bold text-primary tabular-nums">
+                <span className="block text-2xl leading-tight font-bold text-primary tabular-nums">
                     {formatEuro(account.balance)}
                 </span>
             </button>

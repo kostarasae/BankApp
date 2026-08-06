@@ -1,9 +1,10 @@
 import { useRef, useEffect, useState, useMemo } from 'react';
 import { formatEuro } from '../utils/format';
+import Card from './Card';
 
-const CANVAS_SIZE = 260;
-const BASE_RADIUS = 115;
-const HOVER_RADIUS = 125;
+const CANVAS_SIZE = 360;
+const BASE_RADIUS = 160;
+const HOVER_RADIUS = 172;
 const INNER_RADIUS = BASE_RADIUS * 0.6;
 
 export default function IncomeExpenseDonut({ transactions }) {
@@ -55,7 +56,7 @@ export default function IncomeExpenseDonut({ transactions }) {
             const tx = centerX + Math.cos(mid) * radius * 0.75;
             const ty = centerY + Math.sin(mid) * radius * 0.75;
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 14px Arial';
+            ctx.font = 'bold 22px system-ui, sans-serif';
             ctx.textAlign = 'center';
             ctx.textBaseline = 'middle';
             ctx.fillText(formatEuro(slice.value), tx, ty);
@@ -67,7 +68,7 @@ export default function IncomeExpenseDonut({ transactions }) {
         ctx.fill();
 
         ctx.fillStyle = '#222';
-        ctx.font = 'bold 18px Arial';
+        ctx.font = 'bold 26px system-ui, sans-serif';
         ctx.fillText('Συναλλαγές', centerX, centerY);
     }, [slices, hoverIndex]);
 
@@ -98,7 +99,7 @@ export default function IncomeExpenseDonut({ transactions }) {
     ];
 
     return (
-        <section className="card bg-white p-5 mb-[2%] rounded-2xl flex flex-col items-center">
+        <Card className="mb-0 flex flex-col items-center">
             <h2 className="card-heading mb-2">Κατανομή Εσόδων / Εξόδων</h2>
             <div className="flex gap-[30px] items-center">
                 <canvas
@@ -124,6 +125,6 @@ export default function IncomeExpenseDonut({ transactions }) {
                     ))}
                 </div>
             </div>
-        </section>
+        </Card>
     );
 }
