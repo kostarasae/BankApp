@@ -36,7 +36,7 @@ export default function MainLayout() {
     const { role, customerUuid, logout } = useAuth();
     const { accounts, selectedIban, setSelectedIban } = useCustomerAccounts(customerUuid);
 
-    const [activeTab, setActiveTab] = useState('dashboard');
+    const [activeTab, setActiveTab] = useState(role === 'CUSTOMER' ? 'dashboard' : 'create');
     const [menuOpen, setMenuOpen] = useState(false);
     const [hideAmounts, setHideAmounts] = useState(false);
 
