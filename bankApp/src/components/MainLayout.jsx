@@ -108,7 +108,7 @@ export default function MainLayout() {
         <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
             <div className="pl-[100px] min-h-screen flex flex-col">
-            <Header />
+            <Header className="-ml-[100px] w-[calc(100%+100px)]" />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
