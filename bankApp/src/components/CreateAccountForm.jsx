@@ -55,7 +55,7 @@ export default function CreateAccountForm() {
                 firstname: form.firstname, lastname: form.lastname,
                 vat: form.vat, email: form.email, phone: form.phone,
                 regionId: Number(form.regionId),
-                userInsertDTO: { username: form.username, password: form.password, roleId: 3 },
+                userInsertDTO: { username: form.username, password: form.password, roleId: 3 },  // 3 = CUSTOMER
                 personalInfoInsertDTO: {
                     idNumber: form.idNumber, placeOfBirth: form.placeOfBirth,
                     municipalityOfRegistration: form.municipalityOfRegistration,

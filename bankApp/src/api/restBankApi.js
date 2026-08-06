@@ -167,7 +167,7 @@ export async function withdraw(myIban, description, amount) {
 export async function getAccountFee(iban) {
     try {
         const response = await axios.get(`${BASE_URL}/accounts/${iban}/fee`);
-        return response.data.fee;
+        return response.data.fee; // BigDecimal number
     } catch (error) {
         console.error('Error fetching account fee:', error);
         throw error;
@@ -177,7 +177,7 @@ export async function getAccountFee(iban) {
 export async function getAccountOwner(iban) {
     try {
         const response = await axios.get(`${BASE_URL}/accounts/${iban}/owner`);
-        return response.data;
+        return response.data; // { iban, firstname, lastname }
     } catch (error) {
         console.error('Error fetching account owner:', error);
         throw error;
@@ -197,7 +197,7 @@ export async function transfer(myIban, toIban, description, amount) {
 export async function getAccountByPhone(phone) {
     try {
         const response = await axios.get(`${BASE_URL}/accounts/phone/${phone}`);
-        return response.data;
+        return response.data; // { iban, firstname, lastname }
     } catch (error) {
         console.error('Error fetching account by phone:', error);
         throw error;
