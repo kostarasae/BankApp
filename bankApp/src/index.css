@@ -108,6 +108,12 @@ html {
   font-size: 20px;
 }
 
+.amounts-hidden .amount {
+    filter: blur(9px);
+    user-select: none;
+    pointer-events: none;
+}
+
 .no-scrollbar {
     scrollbar-width: none;
     -ms-overflow-style: none;

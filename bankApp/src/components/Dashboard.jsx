@@ -25,7 +25,7 @@ export default function Dashboard({ iban, accounts = [], selectedIban, onSelect,
                     <h2 className="card-heading">Λογαριασμοί</h2>
                     <p className="text-sm text-muted">
                         Συνολικό διαθέσιμο υπόλοιπο{' '}
-                        <span className="text-2xl font-bold text-ink tabular-nums ml-1">
+                        <span className="amount text-2xl font-bold text-ink tabular-nums ml-1">
                             {formatEuro(total)}
                         </span>
                     </p>
