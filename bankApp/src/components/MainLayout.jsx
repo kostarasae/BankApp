@@ -77,14 +77,16 @@ export default function MainLayout() {
                 box-border overflow-y-auto overflow-x-hidden no-scrollbar
                 transition-[width] duration-[800ms] ease z-[300]
                 ${menuOpen ? 'w-[320px]' : 'w-[100px]'}`}>
-                <button onClick={() => setMenuOpen(o => !o)}
-                    aria-label="Μενού"
-                    className="w-[64px] h-[64px] mb-3 px-4 flex flex-col justify-center gap-2
-                        rounded-xl cursor-pointer transition hover:bg-white/10">
-                    <span className="block h-[3px] w-full bg-current rounded-full" />
-                    <span className="block h-[3px] w-full bg-current rounded-full" />
-                    <span className="block h-[3px] w-full bg-current rounded-full" />
-                </button>
+                <div className="mb-3 pb-3 border-b border-white/20">
+                    <button onClick={() => setMenuOpen(o => !o)}
+                        aria-label="Μενού"
+                        className="w-[64px] h-[64px] px-4 flex flex-col justify-center gap-[7px]
+                            rounded-xl cursor-pointer transition hover:bg-white/10">
+                        <span className="block h-[3px] w-full bg-current rounded-full" />
+                        <span className="block h-[3px] w-full bg-current rounded-full" />
+                        <span className="block h-[3px] w-full bg-current rounded-full" />
+                    </button>
+                </div>
 
                 <nav>
                     <ul className="flex flex-col gap-1">
