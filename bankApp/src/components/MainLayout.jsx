@@ -74,6 +74,9 @@ export default function MainLayout() {
     if (active.id === 'profile') {
         panelProps.customerUuid = activeCustomerUuid;
     }
+    if (active.id === 'settings') {
+        Object.assign(panelProps, { isStaff, customers });
+    }
 
     return (
         <>

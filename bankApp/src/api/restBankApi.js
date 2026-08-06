@@ -60,6 +60,16 @@ export async function getCustomers() {
     }
 }
 
+export async function resetCustomerPassword(customerUuid, newPassword) {
+    try {
+        const response = await axios.put(`${BASE_URL}/customers/${customerUuid}/password`, { newPassword });
+        return response.data;
+    } catch (error) {
+        console.error('Error resetting customer password:', error);
+        throw error;
+    }
+}
+
 export async function getCustomer(uuid) {
     try {
         const response = await axios.get(`${BASE_URL}/customers/${uuid}`);
