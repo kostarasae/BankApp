@@ -14,9 +14,9 @@ function Row({ label, value }) {
     );
 }
 
-export default function ProfilePanel() {
-    const { customerUuid } = useAuth();
-    const { profile, loading, error } = useCustomerProfile(customerUuid);
+export default function ProfilePanel({ customerUuid: propUuid }) {
+    const { customerUuid: ownUuid } = useAuth();
+    const { profile, loading, error } = useCustomerProfile(propUuid ?? ownUuid);
 
     if (loading) return <Card><p className="text-gray-400">Φόρτωση...</p></Card>;
     if (error) return <Card><p className="font-bold text-red-500">{error}</p></Card>;

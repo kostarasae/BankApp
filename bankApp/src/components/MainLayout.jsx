@@ -32,6 +32,8 @@ const TABS = [
 ];
 
 const NEEDS_IBAN = ['dashboard', 'payments', 'history', 'iris'];
+const PICKER_TABS = ['dashboard', 'payments', 'history', 'iris', 'investments', 'cards', 'profile'];
+const NEEDS_CUSTOMER = ['dashboard', 'payments', 'history', 'iris', 'profile'];
 
 export default function MainLayout() {
     const { role, customerUuid, logout } = useAuth();
@@ -68,6 +70,9 @@ export default function MainLayout() {
         Object.assign(panelProps, {
             accounts, selectedIban, onSelect: setSelectedIban, onOpenHistory: openHistory,
         });
+    }
+    if (active.id === 'profile') {
+        panelProps.customerUuid = activeCustomerUuid;
     }
 
     return (
@@ -126,7 +131,7 @@ export default function MainLayout() {
                 onToggleAmounts={() => setHideAmounts(h => !h)} />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
-                {isStaff && NEEDS_IBAN.includes(active.id) && (
+                {isStaff && PICKER_TABS.includes(active.id) && (
                     <Card>
                         <label className="block font-bold text-sm mb-[3px]">Πελάτης</label>
                         <select value={staffCustomerUuid} onChange={e => setStaffCustomerUuid(e.target.value)}
@@ -151,8 +156,8 @@ export default function MainLayout() {
                     </Card>
                 )}
 
-                {isStaff && NEEDS_IBAN.includes(active.id) && !activeCustomerUuid
-                    ? <Card className="mb-0"><p className="text-muted">Επιλέξτε πελάτη για να δείτε τους λογαριασμούς του.</p></Card>
+                {isStaff && NEEDS_CUSTOMER.includes(active.id) && !activeCustomerUuid
+                    ? <Card className="mb-0"><p className="text-muted">Επιλέξτε πελάτη για να δείτε τα στοιχεία του.</p></Card>
                     : <active.Component {...panelProps} />}
                 </div>
             </main>
