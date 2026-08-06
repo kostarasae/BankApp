@@ -6,7 +6,7 @@ const GENDER_LABELS = { MALE: 'Άνδρας', FEMALE: 'Γυναίκα' };
 
 function Row({ label, value }) {
     return (
-        <div className="grid grid-cols-[minmax(160px,260px)_1fr] gap-x-8 py-2.5
+        <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 py-2.5
             border-b border-gray-200 last:border-b-0">
             <span className="font-bold">{label}</span>
             <span>{value || '—'}</span>

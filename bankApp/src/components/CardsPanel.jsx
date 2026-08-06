@@ -41,17 +41,17 @@ export default function CardsPanel() {
                 </div>
             </div>
 
-            <div className="mt-4 flex flex-col gap-0 max-w-[680px]">
-                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+            <div className="mt-4 flex flex-col gap-0">
+                <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
                     <span className="font-bold">Τύπος</span><span>VISA Debit</span>
                 </div>
-                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
                     <span className="font-bold">Κατάσταση</span><span className="text-[#2e7d32] font-bold">● Ενεργή</span>
                 </div>
-                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
                     <span className="font-bold">Όριο ημερήσιων συναλλαγών</span><span className="tabular-nums">1.000,00 €</span>
                 </div>
-                <div className="grid grid-cols-[minmax(200px,300px)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
+                <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 py-3 px-1 border-b border-gray-300">
                     <span className="font-bold">Contactless</span><span>Ενεργό</span>
                 </div>
             </div>
