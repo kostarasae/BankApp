@@ -194,6 +194,21 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDIT_CUSTOMER')")
+    @Transactional(rollbackFor = EntityNotFoundException.class)
+    public void resetPassword(UUID uuid, String newPassword) throws EntityNotFoundException {
+        try {
+            Customer customer = customerRepository.findByUuidAndDeletedFalse(uuid)
+                    .orElseThrow(() -> new EntityNotFoundException("Customer", "Customer with uuid=" + uuid + " not found"));
+            customer.getUser().setPassword(passwordEncoder.encode(newPassword));
+            log.info("Password reset by staff for customer with uuid={}", uuid);
+        } catch (EntityNotFoundException e) {
+            log.error("Password reset failed. Customer with uuid={} not found", uuid);
+            throw e;
+        }
+    }
+
+    @Override
     @PreAuthorize("hasRole('ADMIN')")
     public CustomerReadOnlyDTO getCustomerByUUID(UUID uuid) throws EntityNotFoundException {
 

@@ -260,9 +260,23 @@ public class CustomerRestController {
 
     @GetMapping("/{uuid}/accounts")
     @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or authentication.principal.customer?.uuid?.toString() == #uuid")
-    public ResponseEntity<List<AccountReadOnlyDTO>> getCustomerAccounts(@PathVariable String uuid) 
+    public ResponseEntity<List<AccountReadOnlyDTO>> getCustomerAccounts(@PathVariable String uuid)
     throws EntityNotFoundException {
         List<AccountReadOnlyDTO> accounts = customerService.getCustomerAccountsNotDeleted(uuid);
         return ResponseEntity.ok(accounts);
+    }
+
+    @PutMapping("/{uuid}/password")
+    public ResponseEntity<Void> resetCustomerPassword(
+            @PathVariable UUID uuid,
+            @Valid @RequestBody PasswordResetDTO dto,
+            BindingResult bindingResult)
+            throws EntityNotFoundException, ValidationException {
+
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("PasswordReset", "Invalid password", bindingResult);
+        }
+        customerService.resetPassword(uuid, dto.newPassword());
+        return ResponseEntity.noContent().build();
     }
 }
