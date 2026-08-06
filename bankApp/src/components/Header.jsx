@@ -18,7 +18,7 @@ export default function Header({ className = '', hideAmounts, onToggleAmounts })
     }).format(new Date());
 
     return (
-        <header className={`flex items-center justify-between gap-6 bg-primary text-[#eaf0f0] px-6 py-4 ${className}`}>
+        <header className={`flex items-center justify-between gap-6 bg-primary text-[#eaf0f0] py-4 ${className}`}>
             <div className="flex items-center gap-4 min-w-0">
                 {fullName ? (
                     <>

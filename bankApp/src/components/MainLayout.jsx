@@ -109,7 +109,7 @@ export default function MainLayout() {
         <div className={`min-h-screen bg-white ${menuOpen ? 'menu-open' : ''}`}
             style={{ perspective: '1500px' }}>
             <div className={`pl-[100px] min-h-screen flex flex-col ${hideAmounts ? 'amounts-hidden' : ''}`}>
-            <Header className="-ml-[100px] w-[calc(100%+100px)]"
+            <Header className="-ml-[100px] w-[calc(100%+100px)] pl-[124px] pr-6"
                 hideAmounts={hideAmounts}
                 onToggleAmounts={() => setHideAmounts(h => !h)} />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
