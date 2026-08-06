@@ -40,7 +40,10 @@ export default function MainLayout() {
     const [menuOpen, setMenuOpen] = useState(false);
     const [hideAmounts, setHideAmounts] = useState(false);
 
-    const visibleTabs = TABS.filter(t => !t.staffOnly || role !== 'CUSTOMER');
+    const allowedTabs = TABS.filter(t => !t.staffOnly || role !== 'CUSTOMER');
+    const visibleTabs = role === 'CUSTOMER'
+        ? allowedTabs
+        : [...allowedTabs.filter(t => t.staffOnly), ...allowedTabs.filter(t => !t.staffOnly)];
     const active = visibleTabs.find(t => t.id === activeTab) ?? visibleTabs[0];
 
     function selectTab(id) {
