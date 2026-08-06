@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
+import { useCustomers } from "../hooks/useCustomers";
 import Header from "./Header";
 import Footer from "./Footer";
 import Card from "./Card";
@@ -34,16 +35,22 @@ const NEEDS_IBAN = ['dashboard', 'payments', 'history', 'iris'];
 
 export default function MainLayout() {
     const { role, customerUuid, logout } = useAuth();
-    const { accounts, selectedIban, setSelectedIban } = useCustomerAccounts(customerUuid);
+    const isStaff = role !== 'CUSTOMER';
 
-    const [activeTab, setActiveTab] = useState(role === 'CUSTOMER' ? 'dashboard' : 'create');
+    const [staffCustomerUuid, setStaffCustomerUuid] = useState('');
+    const { customers } = useCustomers(isStaff);
+
+    const activeCustomerUuid = isStaff ? staffCustomerUuid : customerUuid;
+    const { accounts, selectedIban, setSelectedIban } = useCustomerAccounts(activeCustomerUuid);
+
+    const [activeTab, setActiveTab] = useState(isStaff ? 'create' : 'dashboard');
     const [menuOpen, setMenuOpen] = useState(false);
     const [hideAmounts, setHideAmounts] = useState(false);
 
-    const allowedTabs = TABS.filter(t => !t.staffOnly || role !== 'CUSTOMER');
-    const visibleTabs = role === 'CUSTOMER'
-        ? allowedTabs
-        : [...allowedTabs.filter(t => t.staffOnly), ...allowedTabs.filter(t => !t.staffOnly)];
+    const allowedTabs = TABS.filter(t => !t.staffOnly || isStaff);
+    const visibleTabs = isStaff
+        ? [...allowedTabs.filter(t => t.staffOnly), ...allowedTabs.filter(t => !t.staffOnly)]
+        : allowedTabs;
     const active = visibleTabs.find(t => t.id === activeTab) ?? visibleTabs[0];
 
     function selectTab(id) {
@@ -117,6 +124,21 @@ export default function MainLayout() {
                 onToggleAmounts={() => setHideAmounts(h => !h)} />
             <main className="grow w-full p-5 max-w-[1400px] mx-auto">
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
+                {isStaff && NEEDS_IBAN.includes(active.id) && (
+                    <Card>
+                        <label className="block font-bold text-sm mb-[3px]">Πελάτης</label>
+                        <select value={staffCustomerUuid} onChange={e => setStaffCustomerUuid(e.target.value)}
+                            className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white w-full max-w-[420px]">
+                            <option value="">— Επιλέξτε πελάτη —</option>
+                            {customers.map(c => (
+                                <option key={c.uuid} value={c.uuid}>
+                                    {c.firstname} {c.lastname} ({c.username})
+                                </option>
+                            ))}
+                        </select>
+                    </Card>
+                )}
+
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
                     <Card>
                         <label className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>
@@ -127,7 +149,9 @@ export default function MainLayout() {
                     </Card>
                 )}
 
-                <active.Component {...panelProps} />
+                {isStaff && NEEDS_IBAN.includes(active.id) && !activeCustomerUuid
+                    ? <Card className="mb-0"><p className="text-muted">Επιλέξτε πελάτη για να δείτε τους λογαριασμούς του.</p></Card>
+                    : <active.Component {...panelProps} />}
                 </div>
             </main>
             <Footer className="-ml-[100px] w-[calc(100%+100px)]" />

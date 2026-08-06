@@ -50,6 +50,16 @@ export async function createCustomer(customerData) {
     }
 }
 
+export async function getCustomers() {
+    try {
+        const response = await axios.get(`${BASE_URL}/customers`, { params: { size: 200 } });
+        return response.data.content;
+    } catch (error) {
+        console.error('Error fetching customers:', error);
+        throw error;
+    }
+}
+
 export async function getCustomer(uuid) {
     try {
         const response = await axios.get(`${BASE_URL}/customers/${uuid}`);
