@@ -62,16 +62,16 @@ public class CustomerServiceImpl implements ICustomerService {
             throws EntityAlreadyExistsException, EntityInvalidArgumentException {
 
         try {
-            if (dto.vat() != null && customerRepository.findByVat(dto.vat()).isPresent()) {
+            if (dto.vat() != null && customerRepository.findByVatAndDeletedFalse(dto.vat()).isPresent()) {
                 throw new EntityAlreadyExistsException("Customer", "Customer with vat=" + dto.vat() + " already exists");
             }
-            if (dto.email() != null && customerRepository.findByEmail(dto.email()).isPresent()) {
+            if (dto.email() != null && customerRepository.findByEmailAndDeletedFalse(dto.email()).isPresent()) {
                 throw new EntityAlreadyExistsException("Email", "Customer with email " + dto.email() + " already exists");
             }
-            if (userRepository.findByUsername(dto.userInsertDTO().username()).isPresent()) {
+            if (userRepository.findByUsernameAndDeletedFalse(dto.userInsertDTO().username()).isPresent()) {
                 throw new EntityAlreadyExistsException("Username", "User with username " + dto.userInsertDTO().username() + " already exists");
             }
-            if (personalInfoRepository.findByIdNumber(dto.personalInfoInsertDTO().idNumber()).isPresent()) {
+            if (personalInfoRepository.findByIdNumberAndDeletedFalse(dto.personalInfoInsertDTO().idNumber()).isPresent()) {
                 throw new EntityAlreadyExistsException("IdNumber", "User with ID number " + dto.personalInfoInsertDTO().idNumber() + " already exists");
             }
 
@@ -106,7 +106,7 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     @Transactional(readOnly = true)
     public boolean isCustomerExists(String vat) {
-        return customerRepository.findByVat(vat).isPresent();
+        return customerRepository.findByVatAndDeletedFalse(vat).isPresent();
     }
 
     @Override
@@ -140,19 +140,19 @@ public class CustomerServiceImpl implements ICustomerService {
             customer.setLastname(dto.lastname());
 
             if (!customer.getVat().equals(dto.vat())) {
-                if (customerRepository.findByVat(dto.vat()).isPresent()) {
+                if (customerRepository.findByVatAndDeletedFalse(dto.vat()).isPresent()) {
                     throw new EntityAlreadyExistsException("","Customer with vat=" + dto.vat() + " already exists");
                 }
                 customer.setVat(dto.vat());
             }
 
             if (!customer.getPersonalInfo().getIdNumber().equals(dto.personalInfoUpdateDTO().idNumber()) &&
-                    personalInfoRepository.findByIdNumber(dto.personalInfoUpdateDTO().idNumber()).isPresent()) {
+                    personalInfoRepository.findByIdNumberAndDeletedFalse(dto.personalInfoUpdateDTO().idNumber()).isPresent()) {
                 throw new EntityAlreadyExistsException("Customer", "Customer with ID number " + dto.personalInfoUpdateDTO().idNumber() + " already exists");
             }
 
             if (!Objects.equals(customer.getEmail(), dto.email())) {
-                if (customerRepository.findByEmail(dto.email()).isPresent()) {
+                if (customerRepository.findByEmailAndDeletedFalse(dto.email()).isPresent()) {
                     throw new EntityAlreadyExistsException("Email", "Customer with email " + dto.email() + " already exists");
                 }
                 customer.setEmail(dto.email());

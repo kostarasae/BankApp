@@ -35,7 +35,7 @@ public class UserService implements IUserService {
     public UserReadOnlyDTO saveUser(UserInsertDTO userInsertDTO)
             throws EntityAlreadyExistsException, EntityInvalidArgumentException {
         try {
-            if (userRepository.findByUsername(userInsertDTO.username()).isPresent()) {
+            if (userRepository.findByUsernameAndDeletedFalse(userInsertDTO.username()).isPresent()) {
                 throw new EntityAlreadyExistsException("User", "User with username=" + userInsertDTO.username() + " already exists");
             }
             User user = mapper.mapToUserEntity(userInsertDTO);
@@ -112,6 +112,6 @@ public class UserService implements IUserService {
     @Override
     @Transactional(readOnly = true)
     public boolean isUserExists(String username) {
-        return userRepository.findByUsername(username).isPresent();
+        return userRepository.findByUsernameAndDeletedFalse(username).isPresent();
     }
 }

@@ -10,4 +10,5 @@ public interface PersonalInfoRepository extends JpaRepository<PersonalInfo, Long
         JpaSpecificationExecutor<PersonalInfo> {
 
     Optional<PersonalInfo> findByIdNumber(String idNumber);
+    Optional<PersonalInfo> findByIdNumberAndDeletedFalse(String idNumber);
 }

@@ -26,6 +26,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Long>,
 
     Optional<Customer> findByUuidAndDeletedFalse(UUID uuid);
     Optional<Customer> findByVatAndDeletedFalse(String vat);
+    Optional<Customer> findByEmailAndDeletedFalse(String email);
 
     boolean existsByUuidAndUser_Uuid(UUID customerUuid, UUID userUuid);
 
