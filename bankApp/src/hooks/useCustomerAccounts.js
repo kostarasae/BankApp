@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCustomerAccounts } from "../api/restBankApi";
 
 export function useCustomerAccounts(customerUuid) {
@@ -7,25 +7,28 @@ export function useCustomerAccounts(customerUuid) {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
 
-    useEffect(() => {
+    const load = useCallback(async () => {
         if (!customerUuid) {
+            setAccounts([]);
+            setSelectedIban('');
             setLoading(false);
             return;
         }
-        async function load() {
-            try {
-                setLoading(true);
-                const fetchedAccounts = await getCustomerAccounts(customerUuid);
-                setAccounts(fetchedAccounts);
-                setSelectedIban(fetchedAccounts[0]?.iban ?? '');
-            } catch (err) {
-                setError(err.message);
-            } finally {
-                setLoading(false);
-            }
+        try {
+            setLoading(true);
+            const fetchedAccounts = await getCustomerAccounts(customerUuid);
+            setAccounts(fetchedAccounts);
+            // Keep the current selection when it survived the reload
+            setSelectedIban(prev =>
+                fetchedAccounts.some(a => a.iban === prev) ? prev : (fetchedAccounts[0]?.iban ?? ''));
+        } catch (err) {
+            setError(err.message);
+        } finally {
+            setLoading(false);
         }
-        load();
     }, [customerUuid]);
 
-    return { accounts, selectedIban, setSelectedIban, loading, error }
+    useEffect(() => { load(); }, [load]);
+
+    return { accounts, selectedIban, setSelectedIban, loading, error, reload: load }
 }

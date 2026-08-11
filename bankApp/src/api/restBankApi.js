@@ -80,6 +80,26 @@ export async function getCustomer(uuid) {
     }
 }
 
+export async function updateCustomer(uuid, customerData) {
+    try {
+        const response = await axios.put(`${BASE_URL}/customers/${uuid}`, customerData);
+        return response.data;
+    } catch (error) {
+        console.error('Error updating customer:', error);
+        throw error;
+    }
+}
+
+export async function deleteCustomer(uuid) {
+    try {
+        const response = await axios.delete(`${BASE_URL}/customers/${uuid}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error deleting customer:', error);
+        throw error;
+    }
+}
+
 export async function getCustomerAccounts(uuid) {
     try {
         const response = await axios.get(`${BASE_URL}/customers/${uuid}/accounts`);

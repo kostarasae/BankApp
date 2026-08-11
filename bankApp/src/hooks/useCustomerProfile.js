@@ -22,5 +22,5 @@ export function useCustomerProfile(customerUuid) {
     
     useEffect(() => { load(); }, [load]);
 
-    return { profile, loading, error };
+    return { profile, loading, error, reload: load };
 }

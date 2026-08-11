@@ -41,10 +41,10 @@ export default function MainLayout() {
     const isAdmin = role === 'ADMIN';
 
     const [staffCustomerUuid, setStaffCustomerUuid] = useState('');
-    const { customers } = useCustomers(isStaff);
+    const { customers, reload: reloadCustomers } = useCustomers(isStaff);
 
     const activeCustomerUuid = isStaff ? staffCustomerUuid : customerUuid;
-    const { accounts, selectedIban, setSelectedIban } = useCustomerAccounts(activeCustomerUuid);
+    const { accounts, selectedIban, setSelectedIban, reload: reloadAccounts } = useCustomerAccounts(activeCustomerUuid);
 
     const [activeTab, setActiveTab] = useState(isStaff ? 'create' : 'dashboard');
     const [menuOpen, setMenuOpen] = useState(false);
@@ -70,10 +70,14 @@ export default function MainLayout() {
     if (active.id === 'dashboard') {
         Object.assign(panelProps, {
             accounts, selectedIban, onSelect: setSelectedIban, onOpenHistory: openHistory,
+            isAdmin, onAccountsChanged: reloadAccounts,
         });
     }
     if (active.id === 'profile') {
-        panelProps.customerUuid = activeCustomerUuid;
+        Object.assign(panelProps, {
+            customerUuid: activeCustomerUuid, isStaff, isAdmin,
+            onDeleted: () => { setStaffCustomerUuid(''); reloadCustomers?.(); },
+        });
     }
     if (active.id === 'settings') {
         Object.assign(panelProps, { isAdmin, customers });

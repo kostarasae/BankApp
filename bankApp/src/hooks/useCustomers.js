@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getCustomers } from "../api/restBankApi";
 import { getErrorMessage } from "../utils/apiError";
 
@@ -7,17 +7,20 @@ export function useCustomers(enabled) {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-    useEffect(() => {
+    const load = useCallback(async () => {
         if (!enabled) return;
-        let ignore = false;
         setLoading(true);
         setError('');
-        getCustomers()
-            .then(data => { if (!ignore) setCustomers(data); })
-            .catch(err => { if (!ignore) setError(getErrorMessage(err)); })
-            .finally(() => { if (!ignore) setLoading(false); });
-        return () => { ignore = true; };
+        try {
+            setCustomers(await getCustomers());
+        } catch (err) {
+            setError(getErrorMessage(err));
+        } finally {
+            setLoading(false);
+        }
     }, [enabled]);
 
-    return { customers, loading, error };
+    useEffect(() => { load(); }, [load]);
+
+    return { customers, loading, error, reload: load };
 }

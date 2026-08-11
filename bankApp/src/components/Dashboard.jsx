@@ -4,7 +4,7 @@ import IncomeExpenseDonut from "./IncomeExpenseDonut";
 import Card from "./Card";
 import { formatEuro } from "../utils/format";
 
-export default function Dashboard({ iban, accounts = [], selectedIban, onSelect, onOpenHistory }) {
+export default function Dashboard({ iban, accounts = [], selectedIban, onSelect, onOpenHistory, isAdmin = false, onAccountsChanged }) {
     const { transactions, loading, error } = useAccount(iban);
 
     if (!iban) {
@@ -37,7 +37,9 @@ export default function Dashboard({ iban, accounts = [], selectedIban, onSelect,
                             account={account}
                             selected={account.iban === selectedIban}
                             onSelect={onSelect}
-                            onOpenHistory={onOpenHistory} />
+                            onOpenHistory={onOpenHistory}
+                            isAdmin={isAdmin}
+                            onClosed={onAccountsChanged} />
                     ))}
                 </div>
             </section>

@@ -1,5 +1,7 @@
 import Card from './Card';
 import Icon from './Icon';
+import DangerZone from './DangerZone';
+import { closeAccount } from '../api/restBankApi';
 import { formatEuro } from '../utils/format';
 
 const TYPES = {
@@ -7,8 +9,9 @@ const TYPES = {
     SAVINGS: { label: 'Ταμιευτήριο', icon: 'savings' },
 };
 
-export default function AccountCard({ account, selected, onSelect, onOpenHistory }) {
+export default function AccountCard({ account, selected, onSelect, onOpenHistory, isAdmin = false, onClosed }) {
     const type = TYPES[account.accountType] ?? { label: 'Λογαριασμός', icon: 'checking' };
+    const lastFour = String(account.iban ?? '').slice(-4);
 
     return (
         <Card className={`mb-0 flex flex-col ${selected ? 'outline outline-2 outline-primary' : ''}`}>
@@ -39,6 +42,20 @@ export default function AccountCard({ account, selected, onSelect, onOpenHistory
                     Κινήσεις
                 </button>
             </div>
+
+            {isAdmin && (
+                <DangerZone
+                    title="Κλείσιμο λογαριασμού"
+                    description={`Ο λογαριασμός με υπόλοιπο ${formatEuro(account.balance)} θα πάψει να είναι διαθέσιμος.`}
+                    confirmLabel="Για επιβεβαίωση γράψε τα 4 τελευταία του IBAN:"
+                    confirmValue={lastFour}
+                    actionLabel="Κλείσιμο"
+                    onConfirm={async () => {
+                        await closeAccount(account.iban);
+                        onClosed?.();
+                    }}
+                />
+            )}
         </Card>
     );
 }
