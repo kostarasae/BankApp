@@ -120,7 +120,6 @@ public class AccountRestController {
     }
 
     @GetMapping("/{iban}/transactions")
-    @PreAuthorize("hasAuthority('VIEW_ONLY_ACCOUNT')")
     public ResponseEntity<List<TransactionReadOnlyDTO>> getTransactions(@PathVariable String iban) {
         return ResponseEntity.ok(accountService.getTransactions(iban));
     }
