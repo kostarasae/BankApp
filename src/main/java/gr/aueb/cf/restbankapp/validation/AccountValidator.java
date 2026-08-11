@@ -89,12 +89,12 @@ public class AccountValidator implements Validator {
             );
         }
 
-        if (dto.amount() == null || dto.amount().compareTo(BigDecimal.ZERO) < 0) {
+        if (dto.amount() == null || dto.amount().compareTo(BigDecimal.ZERO) <= 0) {
             log.warn("Deposit failed. Invalid amount: {}", dto.amount());
             errors.rejectValue(
                     "amount",
-                    "amount.account.negative",
-                    "Deposit amount should not be negative"
+                    "amount.account.invalid",
+                    "Deposit amount must be greater than zero"
             );
         }
     }
@@ -110,12 +110,12 @@ public class AccountValidator implements Validator {
             );
         }
 
-        if (dto.amount() == null || dto.amount().compareTo(BigDecimal.ZERO) < 0) {
+        if (dto.amount() == null || dto.amount().compareTo(BigDecimal.ZERO) <= 0) {
             log.warn("Withdraw failed. Invalid amount: {}", dto.amount());
             errors.rejectValue(
                     "amount",
-                    "amount.account.negative",
-                    "Withdraw amount should not be negative"
+                    "amount.account.invalid",
+                    "Withdraw amount must be greater than zero"
             );
         }
     }
