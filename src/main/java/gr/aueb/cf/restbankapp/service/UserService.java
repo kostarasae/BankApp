@@ -88,7 +88,7 @@ public class UserService implements IUserService {
     }
 
     @Override
-    @PreAuthorize("#uuid == authentication.principal.uuid")
+    @PreAuthorize("#uuid == authentication.principal.uuid.toString()")
     @Transactional
     public void changePassword(String uuid, String currentPassword, String newPassword)
             throws EntityNotFoundException, EntityInvalidArgumentException {
