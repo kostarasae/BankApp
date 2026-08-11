@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -18,4 +19,7 @@ public interface UserRepository extends JpaRepository<User, Long>,
 
     Optional<User> findByUuidAndDeletedFalse(UUID uuid);
     Optional<User> findByUsernameAndDeletedFalse(String username);
+
+    List<User> findByRole_NameAndDeletedFalseOrderByUsernameAsc(String roleName);
+    long countByRole_NameAndDeletedFalse(String roleName);
 }

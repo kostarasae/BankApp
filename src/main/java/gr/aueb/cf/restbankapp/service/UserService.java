@@ -14,11 +14,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import gr.aueb.cf.restbankapp.security.SecurityService;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Service
 @Slf4j
@@ -29,6 +33,9 @@ public class UserService implements IUserService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
     private final SecurityService securityService;
+
+    private static final String ROLE_ADMIN = "ADMIN";
+    private static final String ROLE_EMPLOYEE = "EMPLOYEE";
 
     @Override
     @Transactional(rollbackFor = { EntityAlreadyExistsException.class, EntityInvalidArgumentException.class })
@@ -113,5 +120,57 @@ public class UserService implements IUserService {
     @Transactional(readOnly = true)
     public boolean isUserExists(String username) {
         return userRepository.findByUsernameAndDeletedFalse(username).isPresent();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(readOnly = true)
+    public List<UserReadOnlyDTO> getStaffUsers() {
+        return Stream.concat(
+                        userRepository.findByRole_NameAndDeletedFalseOrderByUsernameAsc(ROLE_ADMIN).stream(),
+                        userRepository.findByRole_NameAndDeletedFalseOrderByUsernameAsc(ROLE_EMPLOYEE).stream())
+                .map(mapper::mapToUserReadOnlyDTO)
+                .toList();
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(rollbackFor = { EntityNotFoundException.class, EntityInvalidArgumentException.class })
+    public void deleteUser(UUID uuid) throws EntityNotFoundException, EntityInvalidArgumentException {
+        User user = userRepository.findByUuidAndDeletedFalse(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("User", "User with uuid=" + uuid + " not found"));
+
+        if (uuid.equals(currentUserUuid())) {
+            throw new EntityInvalidArgumentException("User", "You cannot delete your own account");
+        }
+        // Losing the last administrator would lock everyone out of the application
+        if (ROLE_ADMIN.equals(user.getRole().getName())
+                && userRepository.countByRole_NameAndDeletedFalse(ROLE_ADMIN) <= 1) {
+            throw new EntityInvalidArgumentException("User", "The last administrator cannot be deleted");
+        }
+        if (user.getCustomer() != null) {
+            throw new EntityInvalidArgumentException("User",
+                    "This user belongs to a customer — delete the customer instead");
+        }
+
+        user.softDelete();
+        log.info("User with uuid={} deleted by an administrator", uuid);
+    }
+
+    @Override
+    @PreAuthorize("hasRole('ADMIN')")
+    @Transactional(rollbackFor = EntityNotFoundException.class)
+    public void resetPassword(UUID uuid, String newPassword) throws EntityNotFoundException {
+        User user = userRepository.findByUuidAndDeletedFalse(uuid)
+                .orElseThrow(() -> new EntityNotFoundException("User", "User with uuid=" + uuid + " not found"));
+        user.setPassword(passwordEncoder.encode(newPassword));
+        log.info("Password reset by an administrator for user with uuid={}", uuid);
+    }
+
+    private UUID currentUserUuid() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getPrincipal() instanceof User principal
+                ? principal.getUuid()
+                : null;
     }
 }
