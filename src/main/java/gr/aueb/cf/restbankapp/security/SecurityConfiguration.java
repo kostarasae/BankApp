@@ -56,7 +56,6 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/api/v1/users").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/authenticate").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/customers").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/api/v1/customers/{uuid}/*").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/v1/accounts").hasAuthority("CREATE_ACCOUNT")
                         .requestMatchers("/api/v1/eligible/**").hasRole("ADMIN")
                         .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**").permitAll()
