@@ -236,6 +236,21 @@ export async function getAccountByPhone(phone) {
 
 
 // USERS
+export async function getStaffUsers() {
+    const response = await axios.get(`${BASE_URL}/users/staff`);
+    return response.data;
+}
+
+export async function deleteUser(uuid) {
+    const response = await axios.delete(`${BASE_URL}/users/${uuid}`);
+    return response.data;
+}
+
+export async function resetUserPassword(uuid, newPassword) {
+    const response = await axios.put(`${BASE_URL}/users/${uuid}/reset-password`, { newPassword });
+    return response.data;
+}
+
 export async function createUser(username, password, roleId) {
     const response = await axios.post(`${BASE_URL}/users`, { username, password, roleId });
     return response.data;

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useCustomerAccounts } from "../hooks/useCustomerAccounts";
 import { useCustomers } from "../hooks/useCustomers";
+import { useStaffUsers } from "../hooks/useStaffUsers";
+import StaffProfile from "./StaffProfile";
 import Header from "./Header";
 import Footer from "./Footer";
 import Card from "./Card";
@@ -31,6 +33,8 @@ const TABS = [
     { id: 'settings',    label: 'Ρυθμίσεις',   icon: 'gear',     Component: SettingsPanel },
 ];
 
+const ROLE_LABELS = { CUSTOMER: 'Πελάτης', ADMIN: 'Διαχειριστής', EMPLOYEE: 'Υπάλληλος' };
+
 const NEEDS_IBAN = ['dashboard', 'payments', 'history', 'iris'];
 const PICKER_TABS = ['dashboard', 'payments', 'history', 'iris', 'investments', 'cards', 'profile'];
 const NEEDS_CUSTOMER = ['dashboard', 'payments', 'history', 'iris', 'profile'];
@@ -41,7 +45,9 @@ export default function MainLayout() {
     const isAdmin = role === 'ADMIN';
 
     const [staffCustomerUuid, setStaffCustomerUuid] = useState('');
+    const [selectedStaffUuid, setSelectedStaffUuid] = useState('');
     const { customers, reload: reloadCustomers } = useCustomers(isStaff);
+    const { staff, reload: reloadStaff } = useStaffUsers(isAdmin);
 
     const activeCustomerUuid = isStaff ? staffCustomerUuid : customerUuid;
     const { accounts, selectedIban, setSelectedIban, reload: reloadAccounts } = useCustomerAccounts(activeCustomerUuid);
@@ -59,12 +65,25 @@ export default function MainLayout() {
     function selectTab(id) {
         setActiveTab(id);
         setMenuOpen(false);
+        // A staff member has no accounts, so the selection cannot follow us elsewhere
+        if (id !== 'profile') setSelectedStaffUuid('');
     }
 
     function openHistory(iban) {
         setSelectedIban(iban);
         setActiveTab('history');
     }
+
+    // The picker holds either a customer or a staff user; a prefix keeps them apart
+    function selectPerson(value) {
+        const [kind, uuid] = value.split(':');
+        setStaffCustomerUuid(kind === 'c' ? uuid : '');
+        setSelectedStaffUuid(kind === 'u' ? uuid : '');
+    }
+
+    // Staff users only make sense on the profile — they have no accounts to show
+    const showStaffInPicker = isAdmin && active.id === 'profile';
+    const selectedStaff = selectedStaffUuid ? staff.find(u => u.uuid === selectedStaffUuid) : null;
 
     const panelProps = NEEDS_IBAN.includes(active.id) ? { iban: selectedIban } : {};
     if (active.id === 'dashboard') {
@@ -144,15 +163,29 @@ export default function MainLayout() {
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {isStaff && PICKER_TABS.includes(active.id) && (
                     <Card>
-                        <label className="block font-bold text-sm mb-[3px]">Πελάτης</label>
-                        <select value={staffCustomerUuid} onChange={e => setStaffCustomerUuid(e.target.value)}
+                        <label className="block font-bold text-sm mb-[3px]">
+                            {showStaffInPicker ? 'Πρόσωπο' : 'Πελάτης'}
+                        </label>
+                        <select value={selectedStaffUuid ? `u:${selectedStaffUuid}` : (staffCustomerUuid ? `c:${staffCustomerUuid}` : '')}
+                            onChange={e => selectPerson(e.target.value)}
                             className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white w-full max-w-[420px]">
-                            <option value="">— Επιλέξτε πελάτη —</option>
-                            {customers.map(c => (
-                                <option key={c.uuid} value={c.uuid}>
-                                    {c.firstname} {c.lastname} ({c.username})
-                                </option>
-                            ))}
+                            <option value="">— Επιλέξτε {showStaffInPicker ? 'πρόσωπο' : 'πελάτη'} —</option>
+                            <optgroup label="Πελάτες">
+                                {customers.map(c => (
+                                    <option key={c.uuid} value={`c:${c.uuid}`}>
+                                        {c.firstname} {c.lastname} ({c.username})
+                                    </option>
+                                ))}
+                            </optgroup>
+                            {showStaffInPicker && staff.length > 0 && (
+                                <optgroup label="Προσωπικό">
+                                    {staff.map(u => (
+                                        <option key={u.uuid} value={`u:${u.uuid}`}>
+                                            {u.username} ({ROLE_LABELS[u.role] ?? u.role})
+                                        </option>
+                                    ))}
+                                </optgroup>
+                            )}
                         </select>
                     </Card>
                 )}
@@ -167,9 +200,12 @@ export default function MainLayout() {
                     </Card>
                 )}
 
-                {isStaff && NEEDS_CUSTOMER.includes(active.id) && !activeCustomerUuid
-                    ? <Card className="mb-0"><p className="text-muted">Επιλέξτε πελάτη για να δείτε τα στοιχεία του.</p></Card>
-                    : <active.Component {...panelProps} />}
+                {selectedStaff && active.id === 'profile'
+                    ? <StaffProfile user={selectedStaff} isAdmin={isAdmin}
+                        onDeleted={() => { setSelectedStaffUuid(''); reloadStaff(); }} />
+                    : isStaff && NEEDS_CUSTOMER.includes(active.id) && !activeCustomerUuid
+                        ? <Card className="mb-0"><p className="text-muted">Επιλέξτε πελάτη για να δείτε τα στοιχεία του.</p></Card>
+                        : <active.Component {...panelProps} />}
                 </div>
             </main>
             <Footer className="-ml-[100px] w-[calc(100%+100px)]" />
