@@ -136,6 +136,10 @@ public class CustomerRestController {
 
         customerEditValidator.validate(customerUpdateDTO, bindingResult);
 
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("Customer", "Invalid customer data", bindingResult);
+        }
+
         CustomerReadOnlyDTO customerReadOnlyDTO = customerService.updateCustomer(customerUpdateDTO);
 
         return ResponseEntity.ok(customerReadOnlyDTO);
