@@ -6,6 +6,7 @@ import gr.aueb.cf.restbankapp.repository.PersonalInfoRepository;
 import gr.aueb.cf.restbankapp.repository.RegionRepository;
 import gr.aueb.cf.restbankapp.repository.RoleRepository;
 import gr.aueb.cf.restbankapp.repository.UserRepository;
+import gr.aueb.cf.restbankapp.security.SecurityService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +50,7 @@ class CustomerServiceImplSecurityTest {
     @MockBean private PersonalInfoRepository personalInfoRepository;
     @MockBean private Mapper mapper;
     @MockBean private PasswordEncoder passwordEncoder;
+    @MockBean private SecurityService securityService;
 
     // Autowire the interface: the method-security proxy is a JDK dynamic proxy of
     // ICustomerService, not a CustomerServiceImpl subclass.
