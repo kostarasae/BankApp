@@ -151,6 +151,22 @@ public class CustomerServiceImpl implements ICustomerService {
                 throw new EntityAlreadyExistsException("Customer", "Customer with ID number " + dto.personalInfoUpdateDTO().idNumber() + " already exists");
             }
 
+            if (!Objects.equals(customer.getEmail(), dto.email())) {
+                if (customerRepository.findByEmail(dto.email()).isPresent()) {
+                    throw new EntityAlreadyExistsException("Email", "Customer with email " + dto.email() + " already exists");
+                }
+                customer.setEmail(dto.email());
+            }
+            customer.setPhone(dto.phone());
+
+            PersonalInfo personalInfo = customer.getPersonalInfo();
+            personalInfo.setIdNumber(dto.personalInfoUpdateDTO().idNumber());
+            personalInfo.setPlaceOfBirth(dto.personalInfoUpdateDTO().placeOfBirth());
+            personalInfo.setMunicipalityOfRegistration(dto.personalInfoUpdateDTO().municipalityOfRegistration());
+            personalInfo.setDateOfBirth(dto.personalInfoUpdateDTO().dateOfBirth());
+            personalInfo.setHomeAddress(dto.personalInfoUpdateDTO().homeAddress());
+            personalInfo.setGender(dto.personalInfoUpdateDTO().gender());
+
             if (!Objects.equals(dto.regionId(), customer.getRegion().getId())) {
                 Region region = regionRepository.findById(dto.regionId())
                         .orElseThrow(() -> new EntityInvalidArgumentException("Region","Region id=" + dto.regionId() + " invalid"));

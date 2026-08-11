@@ -29,6 +29,10 @@ import java.util.UUID;
         String email,
 
         @NotNull
+        @Pattern(regexp = "[0-9]{10}", message = "Phone must be exactly 10 digits, no country code")
+        String phone,
+
+        @NotNull
         Long regionId,
 
         @Valid
