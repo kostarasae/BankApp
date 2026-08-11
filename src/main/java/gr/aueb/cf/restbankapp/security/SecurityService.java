@@ -1,6 +1,7 @@
 package gr.aueb.cf.restbankapp.security;
 
 import gr.aueb.cf.restbankapp.model.User;
+import gr.aueb.cf.restbankapp.repository.AccountRepository;
 import gr.aueb.cf.restbankapp.repository.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
@@ -14,11 +15,24 @@ import java.util.UUID;
 public class SecurityService {
 
     private final CustomerRepository customerRepository;
+    private final AccountRepository accountRepository;
 
     public boolean isOwnCustomerProfile(UUID customerUuid, Authentication authentication) {
         User principal = (User) authentication.getPrincipal();
         // Find the customer record and check if its user uuid matches the logged-in user
         return customerRepository.existsByUuidAndUser_Uuid(customerUuid, principal.getUuid());
+    }
+
+    /**
+     * Whether the account belongs to the logged-in user. IBANs are not secret —
+     * they travel with every transfer — so a role check alone is not enough to
+     * protect per-account data.
+     */
+    public boolean isOwnAccount(String iban, Authentication authentication) {
+        if (!(authentication.getPrincipal() instanceof User principal)) {
+            return false;
+        }
+        return accountRepository.existsByIbanAndCustomers_User_Uuid(iban, principal.getUuid());
     }
 
     /**

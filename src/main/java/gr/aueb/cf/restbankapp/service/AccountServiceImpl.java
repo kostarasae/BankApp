@@ -197,7 +197,7 @@ public class AccountServiceImpl implements IAccountService {
         }
     }
 
-    @PreAuthorize("hasAnyAuthority('VIEW_ACCOUNT', 'VIEW_ONLY_ACCOUNT')")
+    @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or (hasAuthority('VIEW_ONLY_ACCOUNT') and @securityService.isOwnAccount(#iban, authentication))")
     @Override
     public synchronized List<TransactionReadOnlyDTO> getTransactions(String iban) {
         return transactionRepository.findByIbanOrderByCreatedAtDesc(iban)
