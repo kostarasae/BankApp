@@ -54,11 +54,13 @@ public class Mapper {
             customer.getPersonalInfo().getPlaceOfBirth(),
             customer.getPersonalInfo().getMunicipalityOfRegistration(),
             customer.getPersonalInfo().getDateOfBirth(),
+            customer.getPersonalInfo().getHomeAddress(),
             customer.getPersonalInfo().getGender()
         );
         return new CustomerReadOnlyDTO(customer.getUuid().toString(),
             customer.getFirstname(), customer.getLastname(), customer.getVat(), customer.getEmail(),
-            customer.getPhone(), customer.getRegion().getName(), customer.getUser().getUsername(), personalInfoDTO);
+            customer.getPhone(), customer.getRegion().getName(), customer.getRegion().getId(),
+            customer.getUser().getUsername(), personalInfoDTO);
     }
 
     public AccountReadOnlyDTO mapToAccountReadOnlyDTO(Account account) {
