@@ -78,7 +78,6 @@ public class AccountServiceImpl implements IAccountService {
             Account account = accountRepository.findByIban(iban)
                     .orElseThrow(() -> new EntityNotFoundException("Account", "Account with iban " + iban + " not found!"));
             account.softDelete();
-            account.getCustomers().forEach(Customer::softDelete);
             log.info("Account with iban={} deleted successfully", iban);
             return mapper.mapToAccountReadOnlyDTO(account);
         } catch (EntityNotFoundException e) {
