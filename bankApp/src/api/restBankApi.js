@@ -216,6 +216,11 @@ export async function getAccountByPhone(phone) {
 
 
 // USERS
+export async function createUser(username, password, roleId) {
+    const response = await axios.post(`${BASE_URL}/users`, { username, password, roleId });
+    return response.data;
+}
+
 export async function changePassword(uuid, currentPassword, newPassword) {
     try {
         const response = await axios.put(`${BASE_URL}/users/${uuid}/password`, {currentPassword: currentPassword, newPassword: newPassword});

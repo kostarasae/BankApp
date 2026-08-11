@@ -78,6 +78,9 @@ export default function MainLayout() {
     if (active.id === 'settings') {
         Object.assign(panelProps, { isAdmin, customers });
     }
+    if (active.id === 'create') {
+        panelProps.isAdmin = isAdmin;
+    }
 
     return (
         <>
