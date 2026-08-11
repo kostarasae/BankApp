@@ -132,9 +132,15 @@ public class UserRestController {
 
 
     @PutMapping("/{uuid}/password")
-    public ResponseEntity<Void> changePassword(@PathVariable String uuid, @RequestBody PasswordChangeDTO dto)
-            throws EntityNotFoundException, EntityInvalidArgumentException {
+    public ResponseEntity<Void> changePassword(
+            @PathVariable String uuid,
+            @Valid @RequestBody PasswordChangeDTO dto,
+            BindingResult bindingResult)
+            throws EntityNotFoundException, EntityInvalidArgumentException, ValidationException {
 
+        if (bindingResult.hasErrors()) {
+            throw new ValidationException("PasswordChange", "Invalid password", bindingResult);
+        }
         userService.changePassword(uuid, dto.currentPassword(), dto.newPassword());
         return ResponseEntity.noContent().build();
     }
