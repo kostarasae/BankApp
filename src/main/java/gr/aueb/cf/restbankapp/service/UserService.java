@@ -13,6 +13,8 @@ import gr.aueb.cf.restbankapp.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,9 @@ public class UserService implements IUserService {
             user.setPassword(passwordEncoder.encode(userInsertDTO.password()));
             Role role = roleRepository.findById(userInsertDTO.roleId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Role", "Role id=" + userInsertDTO.roleId() + " invalid"));
+            if (!"CUSTOMER".equals(role.getName()) && !isAdmin()) {
+                throw new EntityInvalidArgumentException("Role", "Only an administrator can assign the role " + role.getName());
+            }
             role.addUser(user);
             userRepository.save(user);
             log.info("Save succeeded for user with username={}.", userInsertDTO.username());
@@ -51,6 +56,12 @@ public class UserService implements IUserService {
             log.error("Save failed. Invalid arguments for user with username={}", userInsertDTO.username());
             throw e;
         }
+    }
+
+    private boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 
     @Override

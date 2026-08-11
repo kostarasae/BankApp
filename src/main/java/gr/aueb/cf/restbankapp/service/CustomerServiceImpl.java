@@ -24,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -79,6 +81,10 @@ public class CustomerServiceImpl implements ICustomerService {
             Role role = roleRepository.findById(dto.userInsertDTO().roleId())
                     .orElseThrow(() -> new EntityInvalidArgumentException("Role","Role id=" + dto.userInsertDTO().roleId() + " invalid"));
 
+            if (!"CUSTOMER".equals(role.getName()) && !isAdmin()) {
+                throw new EntityInvalidArgumentException("Role", "Only an administrator can assign the role " + role.getName());
+            }
+
             Customer customer = mapper.mapToCustomerEntity(dto);
             User user = mapper.mapToUserEntity(dto.userInsertDTO());
             user.setPassword(passwordEncoder.encode(dto.userInsertDTO().password()));
@@ -101,6 +107,12 @@ public class CustomerServiceImpl implements ICustomerService {
     @Transactional(readOnly = true)
     public boolean isCustomerExists(String vat) {
         return customerRepository.findByVat(vat).isPresent();
+    }
+
+    private boolean isAdmin() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        return authentication != null && authentication.getAuthorities().stream()
+                .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
     }
 
     @Override
@@ -282,6 +294,7 @@ public class CustomerServiceImpl implements ICustomerService {
     }
 
     @Override
+    @PreAuthorize("hasAuthority('EDIT_CUSTOMER') or @securityService.isOwnCustomerProfile(#uuid, authentication)")
     @Retryable(
             retryFor = { IOException.class, HttpServerErrorException.class },
             maxAttempts = 3,
