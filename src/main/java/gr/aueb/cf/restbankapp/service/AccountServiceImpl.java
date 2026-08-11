@@ -49,6 +49,9 @@ public class AccountServiceImpl implements IAccountService {
                     new EntityNotFoundException("Customer", "Customer with uuid=" + accountInsertDTO.customerUuid() + " not found!"));
             customer.addAccount(account);
             customerRepository.save(customer);
+            if (accountInsertDTO.initialDeposit() != null && accountInsertDTO.initialDeposit().signum() > 0) {
+                recordTransaction(iban, accountInsertDTO.initialDeposit(), TransactionType.DEPOSIT, "Αρχική κατάθεση");
+            }
             // Return read only DTO
             return mapper.mapToAccountReadOnlyDTO(account);
         } catch (EntityNotFoundException e) {
@@ -67,6 +70,20 @@ public class AccountServiceImpl implements IAccountService {
     @Transactional(readOnly = true)
     public boolean isAccountExists(String iban) {
         return accountRepository.findByIban(iban).isPresent();
+    }
+
+    /**
+     * Records one movement so that the statement always adds up to the balance.
+     * DEPOSIT counts as money in, WITHDRAWAL and TRANSFER as money out, which is
+     * the same convention the client uses to colour a row.
+     */
+    private void recordTransaction(String iban, BigDecimal amount, TransactionType type, String description) {
+        Transaction transaction = new Transaction();
+        transaction.setIban(iban);
+        transaction.setAmount(amount);
+        transaction.setType(type);
+        transaction.setDescription(description);
+        transactionRepository.save(transaction);
     }
 
     @Override
@@ -135,12 +152,10 @@ public class AccountServiceImpl implements IAccountService {
             account.setBalance(predictedBalance);
             accountRepository.save(account);
             log.info("Amount of {} has been withdrawn from account with iban={} successfully", withdrawDTO.amount(), withdrawDTO.iban());
-            Transaction transaction = new Transaction();
-            transaction.setIban(withdrawDTO.iban());
-            transaction.setAmount(withdrawDTO.amount());
-            transaction.setType(TransactionType.WITHDRAWAL);
-            transaction.setDescription(withdrawDTO.description());
-            transactionRepository.save(transaction);
+            recordTransaction(withdrawDTO.iban(), withdrawDTO.amount(), TransactionType.WITHDRAWAL, withdrawDTO.description());
+            if (fee.signum() > 0) {
+                recordTransaction(withdrawDTO.iban(), fee, TransactionType.WITHDRAWAL, "Προμήθεια ανάληψης");
+            }
             return mapper.mapToAccountReadOnlyDTO(account);
         } catch (EntityNotFoundException e) {
             log.error("The account with iban={} was not found", withdrawDTO.iban());
@@ -178,12 +193,13 @@ public class AccountServiceImpl implements IAccountService {
             accountRepository.save(destinationAccount);
             log.info("Amount of {} has been transferred from account with iban={} to account with iban={} successfully",
                     transferDTO.amount(), transferDTO.myIban(), transferDTO.toIban());
-            Transaction transaction = new Transaction();
-            transaction.setIban(transferDTO.myIban());
-            transaction.setAmount(transferDTO.amount());
-            transaction.setType(TransactionType.TRANSFER);
-            transaction.setDescription(transferDTO.description());
-            transactionRepository.save(transaction);
+            recordTransaction(transferDTO.myIban(), transferDTO.amount(), TransactionType.TRANSFER, transferDTO.description());
+            if (fee.signum() > 0) {
+                recordTransaction(transferDTO.myIban(), fee, TransactionType.WITHDRAWAL, "Προμήθεια μεταφοράς");
+            }
+            // The recipient needs the incoming leg on their own statement
+            recordTransaction(transferDTO.toIban(), transferDTO.amount(), TransactionType.DEPOSIT,
+                    "Εισερχόμενη μεταφορά από " + transferDTO.myIban());
             return mapper.mapToAccountReadOnlyDTO(sourceAccount);
         } catch (EntityNotFoundException e) {
             log.error("The account with iban={} was not found", e.getMessage().contains("Source") ? transferDTO.myIban() : transferDTO.toIban());
