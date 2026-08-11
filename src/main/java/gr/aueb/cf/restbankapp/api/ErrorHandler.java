@@ -91,7 +91,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleInsufficientBalanceException(InsufficientBalanceException e) {
         log.warn("Withdrawal failed. Insufficient balance. Message={}", e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.UNPROCESSABLE_ENTITY)    // 422 — valid request, business rule fails
                 .body(new ErrorResponseDTO(e.getCode(), e.getMessage()));
     }
 
@@ -99,7 +99,7 @@ public class ErrorHandler extends ResponseEntityExceptionHandler {
     public ResponseEntity<ErrorResponseDTO> handleNegativeAmountException(NegativeAmountException e) {
         log.warn("Negative amount is not allowed. Message={}", e.getMessage());
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(HttpStatus.BAD_REQUEST)             // 400 — invalid input
                 .body(new ErrorResponseDTO(e.getCode(), e.getMessage()));
     }
 
