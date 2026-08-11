@@ -7,14 +7,14 @@ COPY gradlew .
 COPY gradle gradle
 COPY build.gradle .
 COPY settings.gradle .
-COPY package.json ./
 
 # Make gradlew executable
 RUN chmod +x gradlew
 
 COPY src src
-COPY tailwind.config.js postcss.config.js ./
+COPY bankApp bankApp
 
+# Builds the backend and the React client (Vite); the Node plugin downloads Node
 RUN ./gradlew build -x test --no-daemon
 
 # Stage 2: Run

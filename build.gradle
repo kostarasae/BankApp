@@ -63,21 +63,30 @@ tasks.named('test', Test) {
     useJUnitPlatform()
 }
 
-// -- Tailwind / frontend build tasks using Node plugin (downloads Node if missing)
+// -- React (bankApp/) frontend build using Node plugin (downloads Node if missing)
 node {
-    version = '18.16.0'
+    version = '20.19.0'
     download = true
-    // optional: set workDir / nodeProjectDir if needed
+    nodeProjectDir = file("${project.projectDir}/bankApp")
 }
 
-task buildTailwind(type: com.github.gradle.node.npm.task.NpmTask) {
-    description = 'Run Tailwind build (npm run build:css)'
+task buildReact(type: com.github.gradle.node.npm.task.NpmTask) {
+    description = 'Build the React client (bankApp) with Vite'
     group = 'build'
     dependsOn npmInstall
-    args = ['run', 'build:css']
+    args = ['run', 'build']
+    inputs.dir("${project.projectDir}/bankApp/src")
+    inputs.file("${project.projectDir}/bankApp/package.json")
+    outputs.dir("${project.projectDir}/bankApp/dist")
 }
 
-// Ensure the generated CSS is present before packaging resources
-tasks.named('processResources') {
-    dependsOn buildTailwind
+// Copy the built React app into the packaged static resources (served at /)
+task copyReactDist(type: Copy) {
+    dependsOn buildReact, tasks.named('processResources')
+    from "${project.projectDir}/bankApp/dist"
+    into "${layout.buildDirectory.get()}/resources/main/static"
+}
+
+tasks.named('classes') {
+    dependsOn copyReactDist
 }

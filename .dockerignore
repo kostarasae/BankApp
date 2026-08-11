@@ -1,0 +1,7 @@
+.git
+.gradle
+build
+bankApp/node_modules
+bankApp/dist
+**/*.log
+docs
