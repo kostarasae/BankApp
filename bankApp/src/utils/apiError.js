@@ -52,6 +52,8 @@ function translateFieldError(message) {
     }
     if (/same account/i.test(message)) return 'δεν μπορεί να είναι ο ίδιος λογαριασμός';
     if (/greater than zero/i.test(message)) return 'πρέπει να είναι μεγαλύτερο από μηδέν';
+    if (/already exists/i.test(message)) return 'χρησιμοποιείται ήδη από άλλον πελάτη';
+    if (/not found/i.test(message)) return 'δεν βρέθηκε';
     return message;
 }
 

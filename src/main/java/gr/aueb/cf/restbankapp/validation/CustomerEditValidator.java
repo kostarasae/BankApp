@@ -32,12 +32,13 @@ public class CustomerEditValidator implements Validator {
             if (readOnlyDTO != null && !readOnlyDTO.vat().equals(customerUpdateDTO.vat())) {
                 if (customerService.isCustomerExists(customerUpdateDTO.vat())) {
                     log.warn("Update failed. Customer with vat={} already exists", customerUpdateDTO.vat());
-                    errors.rejectValue("vat", "vat.customer.exists");
+                    errors.rejectValue("vat", "vat.customer.exists",
+                            "A customer with this VAT already exists");
                 }
             }
         } catch (EntityNotFoundException e) {
             log.warn("Update failed. Customer with uuid={} not found", customerUpdateDTO.uuid());
-            errors.rejectValue("uuid", "uuid.customer.notfound");
+            errors.rejectValue("uuid", "uuid.customer.notfound", "Customer not found");
         }
     }
 }
