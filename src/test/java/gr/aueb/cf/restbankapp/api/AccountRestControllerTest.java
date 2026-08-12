@@ -100,16 +100,8 @@ class AccountRestControllerTest {
                 .andExpect(status().isOk());               // ← 201, not 200
     }
 
-    // Test without required authority
-    @Test
-    @WithMockUser
-    void deposit_shouldReturn403_whenNoAuthority() throws Exception {
-        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
-
-        mockMvc.perform(post("/api/v1/accounts/deposit")       // ← fixed path
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(dto))
-                        .with(csrf()))
-                .andExpect(status().isForbidden());
-    }
+    // Authorization for deposit lives on the service, which @WebMvcTest replaces with
+    // a mock — so it cannot be exercised from here. It is covered instead by
+    // AccountServiceImplSecurityTest, which loads the real bean behind the
+    // method-security proxy.
 }
