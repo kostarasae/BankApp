@@ -5,7 +5,8 @@ import Card from "./Card";
 import { formatEuro } from "../utils/format";
 
 export default function Dashboard({ iban, accounts = [], selectedIban, onSelect, onOpenHistory, isAdmin = false, onAccountsChanged }) {
-    const { transactions, loading, error } = useAccount(iban);
+    // The donut summarises a period, not one screen of the statement
+    const { transactions, loading, error } = useAccount(iban, { size: 200 });
 
     if (!iban) {
         return (

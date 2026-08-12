@@ -164,9 +164,12 @@ export async function uploadIdFile(uuid, file) {
     }
 }
 
-export async function getTransactions(iban) {
+// Returns a Spring Data page: { content, number, totalPages, totalElements, ... }
+export async function getTransactions(iban, { page = 0, size = 20 } = {}) {
     try {
-        const response = await axios.get(`${BASE_URL}/accounts/${iban}/transactions`);
+        const response = await axios.get(`${BASE_URL}/accounts/${iban}/transactions`, {
+            params: { page, size },
+        });
         return response.data;
     } catch (error) {
         console.error('Error fetching transactions:', error);
