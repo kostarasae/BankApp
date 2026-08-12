@@ -6,6 +6,10 @@ import gr.aueb.cf.restbankapp.service.IAccountService;
 import gr.aueb.cf.restbankapp.validation.AccountValidator;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
@@ -119,9 +123,16 @@ public class AccountRestController {
         return ResponseEntity.ok(accountService.getAllAccounts());
     }
 
+    /**
+     * Paginated by default so an account with thousands of movements does not
+     * ship its whole history in one response. Newest first, since that is what a
+     * statement is read for.
+     */
     @GetMapping("/{iban}/transactions")
-    public ResponseEntity<List<TransactionReadOnlyDTO>> getTransactions(@PathVariable String iban) {
-        return ResponseEntity.ok(accountService.getTransactions(iban));
+    public ResponseEntity<Page<TransactionReadOnlyDTO>> getTransactions(
+            @PathVariable String iban,
+            @PageableDefault(size = 20, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+        return ResponseEntity.ok(accountService.getTransactions(iban, pageable));
     }
 
     @GetMapping("/{iban}/fee")

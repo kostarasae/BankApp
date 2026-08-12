@@ -3,6 +3,8 @@ package gr.aueb.cf.restbankapp.service;
 import gr.aueb.cf.restbankapp.core.exceptions.*;
 import gr.aueb.cf.restbankapp.dto.*;
 import gr.aueb.cf.restbankapp.model.Transaction;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -21,6 +23,7 @@ public interface IAccountService {
     AccountReadOnlyDTO transfer(AccountTransferDTO transferDTO) throws EntityNotFoundException, NegativeAmountException, InsufficientBalanceException;
 
     List<TransactionReadOnlyDTO> getTransactions(String iban);
+    Page<TransactionReadOnlyDTO> getTransactions(String iban, Pageable pageable);
 
     BigDecimal getBalance(String iban) throws EntityNotFoundException;
 

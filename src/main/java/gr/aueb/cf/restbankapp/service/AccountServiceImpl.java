@@ -15,6 +15,8 @@ import gr.aueb.cf.restbankapp.repository.TransactionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -211,6 +213,14 @@ public class AccountServiceImpl implements IAccountService {
             log.error("The amount={} is greater than the balance of the account with iban={}", transferDTO.amount(), transferDTO.myIban());
             throw e;
         }
+    }
+
+    @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or (hasAuthority('VIEW_ONLY_ACCOUNT') and @securityService.isOwnAccount(#iban, authentication))")
+    @Override
+    @Transactional(readOnly = true)
+    public Page<TransactionReadOnlyDTO> getTransactions(String iban, Pageable pageable) {
+        return transactionRepository.findByIban(iban, pageable)
+                .map(mapper::mapToTransactionReadOnlyDTO);
     }
 
     @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or (hasAuthority('VIEW_ONLY_ACCOUNT') and @securityService.isOwnAccount(#iban, authentication))")
