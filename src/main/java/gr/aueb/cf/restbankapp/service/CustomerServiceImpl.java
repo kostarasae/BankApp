@@ -197,10 +197,22 @@ public class CustomerServiceImpl implements ICustomerService {
     @Override
     @PreAuthorize("hasAuthority('DELETE_CUSTOMER')")
     @Transactional(rollbackFor = EntityNotFoundException.class)
-    public CustomerReadOnlyDTO deleteCustomerByUUID(UUID uuid) throws EntityNotFoundException {
+    public CustomerReadOnlyDTO deleteCustomerByUUID(UUID uuid)
+            throws EntityNotFoundException, EntityInvalidArgumentException {
         try {
             Customer customer = customerRepository.findByUuidAndDeletedFalse(uuid)
                     .orElseThrow(() -> new EntityNotFoundException("Customer","Customer with uuid=" + uuid + " not found"));
+
+            // An account outlives its owner's record, so deleting the customer first
+            // would leave money sitting in an account nobody owns. Close them first.
+            long openAccounts = customer.getAccounts().stream()
+                    .filter(account -> !account.isDeleted())
+                    .count();
+            if (openAccounts > 0) {
+                throw new EntityInvalidArgumentException("Customer",
+                        "Customer with uuid=" + uuid + " still has " + openAccounts
+                                + " open account(s) — close them before deleting the customer");
+            }
 
             customer.softDelete();
             customer.getPersonalInfo().softDelete();
@@ -211,6 +223,9 @@ public class CustomerServiceImpl implements ICustomerService {
         } catch (EntityNotFoundException e) {
             log.error("Delete failed for customer with uuid={}. Customer not found", uuid, e);
             // Automatic rollback due to @Transactional annotation
+            throw e;
+        } catch (EntityInvalidArgumentException e) {
+            log.error("Delete refused for customer with uuid={}. Open accounts remain", uuid);
             throw e;
         }
     }

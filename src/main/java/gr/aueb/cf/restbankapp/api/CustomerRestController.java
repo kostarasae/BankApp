@@ -257,7 +257,7 @@ public class CustomerRestController {
 
     @DeleteMapping("/{uuid}")
     public ResponseEntity<CustomerReadOnlyDTO> deleteCustomerByUUID(@PathVariable UUID uuid)
-            throws EntityNotFoundException {
+            throws EntityNotFoundException, EntityInvalidArgumentException {
         CustomerReadOnlyDTO customerReadOnlyDTO = customerService.deleteCustomerByUUID(uuid);
         return ResponseEntity.ok(customerReadOnlyDTO);
     }

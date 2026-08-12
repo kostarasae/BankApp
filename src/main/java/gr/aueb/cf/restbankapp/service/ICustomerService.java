@@ -24,7 +24,8 @@ public interface ICustomerService {
     CustomerReadOnlyDTO updateCustomer(CustomerUpdateDTO customerUpdateDTO)
             throws EntityNotFoundException, EntityAlreadyExistsException, EntityInvalidArgumentException;
 
-    CustomerReadOnlyDTO deleteCustomerByUUID(UUID uuid) throws EntityNotFoundException;
+    CustomerReadOnlyDTO deleteCustomerByUUID(UUID uuid)
+            throws EntityNotFoundException, EntityInvalidArgumentException;
 
     void resetPassword(UUID uuid, String newPassword) throws EntityNotFoundException;
 
