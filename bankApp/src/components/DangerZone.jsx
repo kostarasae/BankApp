@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import Button from './Button';
 import StatusMessage from './StatusMessage';
+import { getErrorMessage } from '../utils/apiError';
 
 /**
  * A destructive action that cannot be undone from the interface, so it asks the
  * user to type a value they can see on screen rather than accepting a single click.
  */
-export default function DangerZone({ title, description, confirmLabel, confirmValue, actionLabel, onConfirm }) {
+export default function DangerZone({ title, description, confirmLabel, confirmValue, actionLabel, onConfirm, errorOverrides = {} }) {
     const [open, setOpen] = useState(false);
     const [typed, setTyped] = useState('');
     const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ export default function DangerZone({ title, description, confirmLabel, confirmVa
         try {
             await onConfirm();
         } catch (err) {
-            setStatus({ text: err?.userMessage ?? 'Η ενέργεια απέτυχε', ok: false });
+            setStatus({ text: getErrorMessage(err, errorOverrides), ok: false });
         } finally {
             setLoading(false);
         }

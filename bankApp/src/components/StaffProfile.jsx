@@ -81,6 +81,9 @@ export default function StaffProfile({ user, isAdmin = false, onDeleted, onChang
                         confirmLabel="Για επιβεβαίωση γράψε το όνομα χρήστη:"
                         confirmValue={user.username}
                         actionLabel="Διαγραφή χρήστη"
+                        errorOverrides={{
+                            UserInvalidArgument: 'Η διαγραφή δεν επιτρέπεται: δεν μπορείτε να διαγράψετε τον εαυτό σας, τον τελευταίο διαχειριστή, ή χρήστη που αντιστοιχεί σε πελάτη.',
+                        }}
                         onConfirm={async () => {
                             await deleteUser(user.uuid);
                             onDeleted?.();
