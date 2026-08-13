@@ -1,0 +1,51 @@
+# Local development stack: PostgreSQL + the application.
+#
+#   docker compose up          build and start everything
+#   docker compose up -d       same, in the background
+#   docker compose down        stop
+#   docker compose down -v     stop and delete the database data
+#
+# The first build takes a few minutes: it compiles the backend and the React
+# client inside the image.
+
+services:
+  db:
+    image: postgres:16
+    container_name: bankapp-db
+    environment:
+      POSTGRES_DB: bankapp
+      POSTGRES_USER: cf9
+      POSTGRES_PASSWORD: "1"
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    # The app must not start before the database can actually accept queries;
+    # depends_on alone only waits for the container, not for readiness.
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cf9 -d bankapp"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  app:
+    build: .
+    container_name: bankapp-app
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      SPRING_PROFILES_ACTIVE: dev
+      # Inside the compose network a container is reached by its service name,
+      # so the host is "db" — not localhost, which would point at the container itself.
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: bankapp
+      DB_USER: cf9
+      DB_PASSWORD: "1"
+      ALLOWED_ORIGINS: http://localhost:8080
+    ports:
+      - "8080:8080"
+
+volumes:
+  pgdata:

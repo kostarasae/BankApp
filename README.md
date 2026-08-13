@@ -37,20 +37,38 @@ IRIS, με πρόσβαση που καθορίζεται από τον ρόλο
 | **Docker** | οποιαδήποτε | Για τη βάση δεδομένων |
 | ~~Node.js~~ | — | **Δεν χρειάζεται.** Το Gradle κατεβάζει Node 20 αυτόματα |
 
-### Βήμα 1 — Βάση δεδομένων
+### Ο γρήγορος τρόπος — τα πάντα με μία εντολή
 
 ```bash
-docker run --name bankapp-pg -p 5432:5432 \
-  -e POSTGRES_DB=bankapp \
-  -e POSTGRES_USER=cf9 \
-  -e POSTGRES_PASSWORD=1 \
-  -d postgres:16
+docker compose up
 ```
 
-Δεν χρειάζεται να δημιουργήσεις πίνακες: το **Flyway** τρέχει τις migrations
-`V1`–`V5` στο πρώτο ξεκίνημα και εισάγει δοκιμαστικά δεδομένα.
+Σηκώνει **PostgreSQL και εφαρμογή μαζί**. Άνοιξε **http://localhost:8080**.
 
-### Βήμα 2 — Build και εκτέλεση
+Το πρώτο build αργεί μερικά λεπτά — μεταγλωττίζει backend και React μέσα στο image.
+Δεν χρειάζεται να δημιουργήσεις πίνακες: το **Flyway** τρέχει τις migrations `V1`–`V5`
+στο πρώτο ξεκίνημα και εισάγει δοκιμαστικά δεδομένα.
+
+| Εντολή | Τι κάνει |
+|---|---|
+| `docker compose up` | Build και εκκίνηση |
+| `docker compose up -d` | Το ίδιο, στο παρασκήνιο |
+| `docker compose down` | Σταμάτημα |
+| `docker compose down -v` | Σταμάτημα **και διαγραφή** των δεδομένων |
+
+---
+
+### Ο τρόπος για ανάπτυξη — βάση σε Docker, εφαρμογή τοπικά
+
+Πιο βολικός όταν γράφεις κώδικα: δεν ξαναχτίζεις image σε κάθε αλλαγή.
+
+**Βήμα 1 — Βάση δεδομένων**
+
+```bash
+docker compose up -d db
+```
+
+**Βήμα 2 — Build και εκτέλεση**
 
 ```bash
 ./gradlew bootRun --args='--spring.profiles.active=dev'
@@ -129,7 +147,8 @@ Stage 1 (eclipse-temurin:21-jdk)   ← build
 
 Stage 2 (eclipse-temurin:21-jre-alpine)   ← runtime
   αντιγράφει ΜΟΝΟ το jar από το stage 1
-  ENTRYPOINT: java -jar app.jar --spring.profiles.active=pro
+  ENV SPRING_PROFILES_ACTIVE=pro   (το docker-compose το αλλάζει σε dev τοπικά)
+  ENTRYPOINT: java -jar app.jar
 ```
 
 Το δεύτερο stage κρατά μόνο το JRE και το jar — όχι το JDK, τα sources ή το

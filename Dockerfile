@@ -26,4 +26,7 @@ COPY --from=builder /app/build/libs/restBankApp-0.0.1-SNAPSHOT.jar app.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=pro"]
+# Production is the default; docker-compose overrides it for local runs
+ENV SPRING_PROFILES_ACTIVE=pro
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
