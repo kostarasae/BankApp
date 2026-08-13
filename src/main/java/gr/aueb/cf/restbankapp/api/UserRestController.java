@@ -18,6 +18,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/users")
 @RequiredArgsConstructor
+@Tag(name = "Users", description = "User accounts, staff management and passwords.")
 public class UserRestController {
 
     private final IUserService userService;
@@ -133,6 +135,20 @@ public class UserRestController {
     }
 
 
+    @Operation(
+            summary = "Change your own password",
+            description = """
+                    Requires the current password, so it only works on your own account —
+                    the uuid in the path has to be yours. An administrator setting someone
+                    else's password uses the reset endpoints instead."""
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Password changed"),
+            @ApiResponse(responseCode = "400", description = "Current password is wrong, or the new one does not meet the strength rule",
+                    content = @Content(schema = @Schema(implementation = ValidationErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "User not found")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/{uuid}/password")
     public ResponseEntity<Void> changePassword(
             @PathVariable String uuid,

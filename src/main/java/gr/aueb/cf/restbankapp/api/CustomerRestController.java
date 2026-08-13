@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,6 +33,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("api/v1/customers")
 @RequiredArgsConstructor
+@Tag(name = "Customers", description = "Customer records: registration, details, accounts and identity documents.")
 public class CustomerRestController {
 
     private final ICustomerService customerService;
@@ -172,6 +174,7 @@ public class CustomerRestController {
             )
     })
 
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping("/{uuid}/id-file")
     public ResponseEntity<Void> uploadIdFile(
             @PathVariable UUID uuid,
@@ -262,6 +265,17 @@ public class CustomerRestController {
         return ResponseEntity.ok(customerReadOnlyDTO);
     }
 
+    @Operation(
+            summary = "List a customer's accounts",
+            description = """
+                    Returns the customer's open accounts. Staff may ask for any customer;
+                    a customer may only ask for their own."""
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "The customer's open accounts"),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{uuid}/accounts")
     @PreAuthorize("hasAuthority('VIEW_ACCOUNT') or authentication.principal.customer?.uuid?.toString() == #uuid")
     public ResponseEntity<List<AccountReadOnlyDTO>> getCustomerAccounts(@PathVariable String uuid)
@@ -270,6 +284,21 @@ public class CustomerRestController {
         return ResponseEntity.ok(accounts);
     }
 
+    @Operation(
+            summary = "Set a customer's password (administrator)",
+            description = """
+                    Replaces the password without asking for the current one, for when a
+                    customer has lost access. Administrators only — an employee cannot reset
+                    anyone's password. A customer changing their own password uses
+                    PUT /users/{uuid}/password instead, which does require the current one."""
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Password changed"),
+            @ApiResponse(responseCode = "400", description = "New password does not meet the strength rule",
+                    content = @Content(schema = @Schema(implementation = ValidationErrorResponseDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Customer not found")
+    })
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping("/{uuid}/password")
     public ResponseEntity<Void> resetCustomerPassword(
             @PathVariable UUID uuid,
