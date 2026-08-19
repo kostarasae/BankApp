@@ -13,7 +13,14 @@ export default function DangerZone({ title, description, confirmLabel, confirmVa
     const [loading, setLoading] = useState(false);
     const [status, setStatus] = useState({ text: '', ok: false });
 
-    const matches = typed.trim().toLowerCase() === String(confirmValue ?? '').trim().toLowerCase();
+    // Greek capitals drop their accents — ΠΑΠΑΔΟΠΟΥΛΟΥ lowercased is παπαδοπουλου,
+    // which would never equal παπαδοπούλου. Someone typing a surname the way it
+    // appears on an ID card would be locked out of confirming, so accents are
+    // stripped on both sides before comparing.
+    const normalise = value =>
+        String(value ?? '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+
+    const matches = normalise(typed) === normalise(confirmValue);
 
     async function handleConfirm() {
         setLoading(true);
