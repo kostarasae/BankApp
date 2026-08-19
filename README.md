@@ -342,7 +342,10 @@ description.
 
 `contextLoads` runs against **H2 in-memory**, so it needs no PostgreSQL.
 
-**Integration tests** with Postman — scenarios in `docs/kostabank_tests.md`.
+**Integration tests** are run by hand against a running instance with Postman or curl,
+covering the flows that span several endpoints: a transfer landing on both statements,
+a password change followed by a fresh login, and a deletion being refused while the
+customer still holds an open account.
 
 ---
 
