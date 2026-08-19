@@ -1,9 +1,12 @@
 package gr.aueb.cf.restbankapp.service;
 
 import gr.aueb.cf.restbankapp.config.BankConfiguration;
+import gr.aueb.cf.restbankapp.core.exceptions.EntityNotFoundException;
 import gr.aueb.cf.restbankapp.core.exceptions.InsufficientBalanceException;
+import gr.aueb.cf.restbankapp.core.exceptions.NegativeAmountException;
 import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
 import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
+import gr.aueb.cf.restbankapp.dto.AccountTransferDTO;
 import gr.aueb.cf.restbankapp.model.AccountType;
 import gr.aueb.cf.restbankapp.dto.AccountWithdrawDTO;
 import gr.aueb.cf.restbankapp.mapper.Mapper;
@@ -27,6 +30,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
 class AccountServiceImplTest {
@@ -122,5 +127,59 @@ class AccountServiceImplTest {
         assertThrows(InsufficientBalanceException.class, () -> {
             service.withdraw(accountWithdrawDTO1000);
         });
+    }
+
+    @Test
+    void deposit_negativeAmount_throwsNegativeAmountException() {
+        when(repository.findByIban(anyString()))
+            .thenReturn(Optional.of(accountChecking));
+
+        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(-50));
+
+        assertThrows(NegativeAmountException.class, () -> service.deposit(dto));
+        verify(repository, never()).save(any());
+    }
+
+    @Test
+    void deposit_accountNotFound_throwsEntityNotFoundException() {
+       when(repository.findByIban(anyString())).thenReturn(Optional.empty());
+
+       AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
+
+       assertThrows(EntityNotFoundException.class, () -> service.deposit(dto));
+    }
+
+    // G.4 — the account has to exist before anything else is considered
+    @Test
+    void deposit_shouldThrowEntityNotFound_whenIbanIsUnknown() {
+        when(repository.findByIban(anyString())).thenReturn(Optional.empty());
+
+        AccountDepositDTO dto = new AccountDepositDTO("GR-does-not-exist", null, BigDecimal.valueOf(100));
+
+        assertThrows(EntityNotFoundException.class, () -> service.deposit(dto));
+        verify(repository, never()).save(any());
+        verify(transactionRepository, never()).save(any());
+    }
+
+    // G.5 — a transfer moves money out of one account and into the other, and the
+    // sender also pays the fee. Both sides must end up right, not just the sender.
+    @Test
+    void transfer_shouldMoveMoneyAndChargeTheSender() throws Exception {
+        Account source = new AccountChecking.Builder("1", "GR123", BigDecimal.valueOf(1000), "customer-a")
+                .feeStrategy(config.getDefaultCheckingFeeStrategy())
+                .build();
+        Account target = new AccountChecking.Builder("2", "GR456", BigDecimal.valueOf(500), "customer-b")
+                .feeStrategy(config.getDefaultCheckingFeeStrategy())
+                .build();
+        when(repository.findByIban("GR123")).thenReturn(Optional.of(source));
+        when(repository.findByIban("GR456")).thenReturn(Optional.of(target));
+
+        BigDecimal fee = source.getFeeStrategy().calculateFee(BigDecimal.valueOf(200));
+        service.transfer(new AccountTransferDTO("GR123", "GR456", "rent", BigDecimal.valueOf(200)));
+
+        // Sender pays the amount plus the fee; recipient receives the amount only.
+        assertEquals(0, BigDecimal.valueOf(1000).subtract(BigDecimal.valueOf(200)).subtract(fee)
+                .compareTo(source.getBalance()));
+        assertEquals(0, BigDecimal.valueOf(700).compareTo(target.getBalance()));
     }
 }

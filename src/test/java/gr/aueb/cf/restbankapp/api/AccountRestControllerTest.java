@@ -3,6 +3,7 @@ package gr.aueb.cf.restbankapp.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.aueb.cf.restbankapp.authentication.JwtService;
 import gr.aueb.cf.restbankapp.dto.AccountDepositDTO;
+import gr.aueb.cf.restbankapp.dto.AccountWithdrawDTO;
 import gr.aueb.cf.restbankapp.dto.AccountReadOnlyDTO;
 import gr.aueb.cf.restbankapp.model.AccountType;
 import gr.aueb.cf.restbankapp.security.JwtAuthenticationFilter;
@@ -104,4 +105,34 @@ class AccountRestControllerTest {
     // a mock — so it cannot be exercised from here. It is covered instead by
     // AccountServiceImplSecurityTest, which loads the real bean behind the
     // method-security proxy.
+
+    // G.8 — the happy path for a withdrawal through the HTTP layer
+    @Test
+    @WithMockUser(authorities = "CAN_WITHDRAW")
+    void withdraw_shouldReturn200_withTheAuthority() throws Exception {
+        AccountWithdrawDTO dto = new AccountWithdrawDTO("GR123", null, BigDecimal.valueOf(50));
+
+        when(accountService.withdraw(any()))
+                .thenReturn(new AccountReadOnlyDTO("GR123", "0000000123", AccountType.CHECKING, BigDecimal.valueOf(50)));
+
+        mockMvc.perform(post("/api/v1/accounts/withdraw")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto))
+                        .with(csrf()))
+                .andExpect(status().isOk());
+    }
+
+    // G.9 — with no user at all the request never reaches the controller. This is
+    // authentication, decided by the filter chain, not authorization on a method —
+    // which is why it can be tested here while the 403 case cannot.
+    @Test
+    void deposit_shouldReturn401_whenUnauthenticated() throws Exception {
+        AccountDepositDTO dto = new AccountDepositDTO("GR123", null, BigDecimal.valueOf(100));
+
+        mockMvc.perform(post("/api/v1/accounts/deposit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(dto))
+                        .with(csrf()))
+                .andExpect(status().isUnauthorized());
+    }
 }
