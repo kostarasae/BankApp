@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import Button from './Button';
 import StatusMessage from './StatusMessage';
 import { getErrorMessage } from '../utils/apiError';
@@ -8,6 +8,9 @@ import { getErrorMessage } from '../utils/apiError';
  * user to type a value they can see on screen rather than accepting a single click.
  */
 export default function DangerZone({ title, description, confirmLabel, confirmValue, actionLabel, onConfirm, errorOverrides = {} }) {
+    // A dashboard can show one of these per account, so the id has to be unique
+    // per instance — a hardcoded one would repeat and break the association.
+    const fieldId = useId();
     const [open, setOpen] = useState(false);
     const [typed, setTyped] = useState('');
     const [loading, setLoading] = useState(false);
@@ -48,10 +51,10 @@ export default function DangerZone({ title, description, confirmLabel, confirmVa
                 </button>
             ) : (
                 <>
-                    <label className="font-bold text-sm mb-[3px]">
+                    <label htmlFor={fieldId} className="font-bold text-sm mb-[3px]">
                         {confirmLabel} <span className="text-red-700">{confirmValue}</span>
                     </label>
-                    <input value={typed} onChange={e => setTyped(e.target.value)} autoFocus
+                    <input id={fieldId} value={typed} onChange={e => setTyped(e.target.value)} autoFocus
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
 
                     <div className="flex gap-2 mt-3">

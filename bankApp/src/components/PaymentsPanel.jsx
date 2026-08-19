@@ -85,8 +85,8 @@ export default function PaymentsPanel({ iban, onSuccess }) {
             <div className="flex flex-col gap-4">
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Πληρωμή Λογαριασμού</legend>
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Πάροχος</label>
-                    <select value={payment.provider}
+                    <label htmlFor="bill-provider" className="font-bold text-sm mt-2.5 mb-[3px]">Πάροχος</label>
+                    <select id="bill-provider" value={payment.provider}
                         onChange={e => setPayment(prev => ({ ...prev, provider: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border">
                         <option value="">-- Επιλέξτε Πάροχο --</option>
@@ -95,12 +95,12 @@ export default function PaymentsPanel({ iban, onSuccess }) {
                         <option value="ΟΤΕ">ΟΤΕ</option>
                         <option value="ΑΑΔΕ">ΑΑΔΕ</option>
                     </select>
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Κωδικός Λογαριασμού</label>
-                    <input value={payment.paymentId} placeholder="RF1234567890123456789012345"
+                    <label htmlFor="bill-code" className="font-bold text-sm mt-2.5 mb-[3px]">Κωδικός Λογαριασμού</label>
+                    <input id="bill-code" value={payment.paymentId} placeholder="RF1234567890123456789012345"
                         onChange={e => setPayment(prev => ({ ...prev, paymentId: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
-                    <input type="number" min="0.01" step="0.01" value={payment.amount} placeholder="0.00"
+                    <label htmlFor="bill-amount" className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
+                    <input id="bill-amount" type="number" min="0.01" step="0.01" value={payment.amount} placeholder="0.00"
                         onChange={e => setPayment(prev => ({ ...prev, amount: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
                     <Button disabled={loading} onClick={handlePayment} className="mt-2.5 w-full">Πληρωμή</Button>
@@ -109,16 +109,16 @@ export default function PaymentsPanel({ iban, onSuccess }) {
 
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Τραπεζική Μεταφορά</legend>
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">IBAN Παραλήπτη</label>
-                    <input value={transferForm.recipientIban} placeholder="GR1234567890123456789012345"
+                    <label htmlFor="transfer-iban" className="font-bold text-sm mt-2.5 mb-[3px]">IBAN Παραλήπτη</label>
+                    <input id="transfer-iban" value={transferForm.recipientIban} placeholder="GR1234567890123456789012345"
                         onChange={e => setTransferForm(prev => ({ ...prev, recipientIban: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Περιγραφή</label>
-                    <input value={transferForm.description} placeholder="Περιγραφή της μεταφοράς"
+                    <label htmlFor="transfer-description" className="font-bold text-sm mt-2.5 mb-[3px]">Περιγραφή</label>
+                    <input id="transfer-description" value={transferForm.description} placeholder="Περιγραφή της μεταφοράς"
                         onChange={e => setTransferForm(prev => ({ ...prev, description: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
-                    <input type="number" min="0.01" step="0.01" value={transferForm.amount} placeholder="0.00"
+                    <label htmlFor="transfer-amount" className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
+                    <input id="transfer-amount" type="number" min="0.01" step="0.01" value={transferForm.amount} placeholder="0.00"
                         onChange={e => setTransferForm(prev => ({ ...prev, amount: e.target.value }))}
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
                     <Button disabled={loading} onClick={handleTransfer} className="mt-2.5 w-full">Μεταφορά</Button>

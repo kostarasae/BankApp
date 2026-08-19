@@ -163,10 +163,10 @@ export default function MainLayout() {
                 <div className="surface-group [&>*:last-child>.card:last-child]:mb-0">
                 {isStaff && PICKER_TABS.includes(active.id) && (
                     <Card>
-                        <label className="block font-bold text-sm mb-[3px]">
+                        <label htmlFor="person-picker" className="block font-bold text-sm mb-[3px]">
                             {showStaffInPicker ? 'Πρόσωπο' : 'Πελάτης'}
                         </label>
-                        <select value={selectedStaffUuid ? `u:${selectedStaffUuid}` : (staffCustomerUuid ? `c:${staffCustomerUuid}` : '')}
+                        <select id="person-picker" value={selectedStaffUuid ? `u:${selectedStaffUuid}` : (staffCustomerUuid ? `c:${staffCustomerUuid}` : '')}
                             onChange={e => selectPerson(e.target.value)}
                             className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white w-full max-w-[420px]">
                             <option value="">— Επιλέξτε {showStaffInPicker ? 'πρόσωπο' : 'πελάτη'} —</option>
@@ -192,8 +192,8 @@ export default function MainLayout() {
 
                 {accounts.length > 1 && NEEDS_IBAN.includes(active.id) && active.id !== 'dashboard' && (
                     <Card>
-                        <label className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>
-                        <select value={selectedIban} onChange={e => setSelectedIban(e.target.value)}
+                        <label htmlFor="account-picker" className="block font-bold text-sm mb-[3px]">Ενεργός Λογαριασμός</label>
+                        <select id="account-picker" value={selectedIban} onChange={e => setSelectedIban(e.target.value)}
                             className="p-3 text-base border border-gray-300 rounded h-12 box-border bg-white w-full max-w-[420px]">
                             {accounts.map(a => <option key={a.iban} value={a.iban}>{a.iban}</option>)}
                         </select>

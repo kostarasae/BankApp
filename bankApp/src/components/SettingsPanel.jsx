@@ -96,8 +96,8 @@ export default function SettingsPanel({ isAdmin = false, customers = [] }) {
 
                     {forCustomer && (
                         <>
-                            <label className={LABEL_CLS}>Πελάτης</label>
-                            <select className={INPUT_CLS} value={customerUuid}
+                            <label htmlFor="settings-customer" className={LABEL_CLS}>Πελάτης</label>
+                            <select id="settings-customer" className={INPUT_CLS} value={customerUuid}
                                 onChange={e => setCustomerUuid(e.target.value)}>
                                 <option value="">— Επιλέξτε πελάτη —</option>
                                 {customers.map(c => (
@@ -111,18 +111,18 @@ export default function SettingsPanel({ isAdmin = false, customers = [] }) {
 
                     {!forCustomer && (
                         <>
-                            <label className={LABEL_CLS}>Τρέχων κωδικός</label>
-                            <input type="password" autoComplete="current-password" className={INPUT_CLS}
+                            <label htmlFor="settings-current-password" className={LABEL_CLS}>Τρέχων κωδικός</label>
+                            <input id="settings-current-password" type="password" autoComplete="current-password" className={INPUT_CLS}
                                 value={currentPassword} onChange={e => setCurrentPassword(e.target.value)} />
                         </>
                     )}
 
-                    <label className={LABEL_CLS}>Νέος κωδικός</label>
-                    <input type="password" autoComplete="new-password" className={INPUT_CLS}
+                    <label htmlFor="settings-new-password" className={LABEL_CLS}>Νέος κωδικός</label>
+                    <input id="settings-new-password" type="password" autoComplete="new-password" className={INPUT_CLS}
                         value={newPassword} onChange={e => setNewPassword(e.target.value)} />
 
-                    <label className={LABEL_CLS}>Επιβεβαίωση νέου κωδικού</label>
-                    <input type="password" autoComplete="new-password" className={INPUT_CLS}
+                    <label htmlFor="settings-confirm-password" className={LABEL_CLS}>Επιβεβαίωση νέου κωδικού</label>
+                    <input id="settings-confirm-password" type="password" autoComplete="new-password" className={INPUT_CLS}
                         value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
 
                     <Button type="submit" disabled={loading} className="mt-2.5 w-full">

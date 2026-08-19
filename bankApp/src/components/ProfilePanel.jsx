@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { useAuth } from "../context/AuthContext";
 import { useCustomerProfile } from "../hooks/useCustomerProfile";
 import { updateCustomer, deleteCustomer } from '../api/restBankApi';
@@ -27,10 +27,12 @@ function Row({ label, value }) {
 }
 
 function Field({ label, name, value, onChange, type = 'text' }) {
+    // Rendered once per field, so each needs its own id to tie label and input together
+    const id = useId();
     return (
         <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 items-center py-1.5">
-            <label className="font-bold">{label}</label>
-            <input name={name} type={type} value={value ?? ''} onChange={onChange}
+            <label htmlFor={id} className="font-bold">{label}</label>
+            <input id={id} name={name} type={type} value={value ?? ''} onChange={onChange}
                 className="p-2.5 text-base border border-gray-300 rounded box-border" />
         </div>
     );
@@ -121,8 +123,8 @@ export default function ProfilePanel({ customerUuid: propUuid, isStaff = false, 
                         <Field label="Επώνυμο" name="lastname" value={form.lastname} onChange={handleChange} />
                         <Field label="ΑΦΜ" name="vat" value={form.vat} onChange={handleChange} />
                         <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 items-center py-1.5">
-                            <label className="font-bold">Περιοχή</label>
-                            <select name="regionId" value={form.regionId} onChange={handleChange}
+                            <label htmlFor="profile-region" className="font-bold">Περιοχή</label>
+                            <select id="profile-region" name="regionId" value={form.regionId} onChange={handleChange}
                                 className="p-2.5 text-base border border-gray-300 rounded box-border">
                                 {REGIONS.map((name, i) => (
                                     <option key={name} value={i + 1}>{name}</option>
@@ -145,8 +147,8 @@ export default function ProfilePanel({ customerUuid: propUuid, isStaff = false, 
                         <Field label="Δήμος Εγγραφής" name="municipalityOfRegistration" value={form.municipalityOfRegistration} onChange={handleChange} />
                         <Field label="Ημ. Γέννησης" name="dateOfBirth" type="date" value={form.dateOfBirth} onChange={handleChange} />
                         <div className="grid grid-cols-[minmax(200px,38%)_1fr] gap-x-8 items-center py-1.5">
-                            <label className="font-bold">Φύλο</label>
-                            <select name="gender" value={form.gender ?? ''} onChange={handleChange}
+                            <label htmlFor="profile-gender" className="font-bold">Φύλο</label>
+                            <select id="profile-gender" name="gender" value={form.gender ?? ''} onChange={handleChange}
                                 className="p-2.5 text-base border border-gray-300 rounded box-border">
                                 <option value="MALE">Άνδρας</option>
                                 <option value="FEMALE">Γυναίκα</option>

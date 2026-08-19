@@ -20,14 +20,21 @@ describe('AtmForm', () => {
         vi.clearAllMocks();
     });
 
+    it('names its fields, so they can be found by their label', () => {
+        render(<AtmForm iban={iban} onSuccess={noop} />);
+
+        // This only passes because each label carries htmlFor matching the field's id.
+        // Without that, a screen reader announces the field with no name at all.
+        expect(screen.getByLabelText('Ποσό (€)')).toBeInTheDocument();
+        expect(screen.getByLabelText('Επιλογή ATM')).toBeInTheDocument();
+    });
+
     it('keeps the amount the user types', async () => {
         // The 'user'. Always setup() before interacting.
         const user = userEvent.setup();
         render(<AtmForm iban={iban} onSuccess={noop} />);
 
-        // The labels here are not tied to their fields — no htmlFor, no id — so
-        // getByLabelText would find nothing. A number input has the role
-        // 'spinbutton', not 'textbox'.
+        // A number input has the role 'spinbutton', not 'textbox'.
         const amountField = screen.getByRole('spinbutton');
 
         // userEvent is async: without await, the expect would run before React

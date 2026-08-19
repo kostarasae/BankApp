@@ -66,8 +66,8 @@ export default function StaffProfile({ user, isAdmin = false, onDeleted, onChang
                 <>
                     <fieldset className="flex flex-col rounded-lg p-4 border border-gray-300 mt-4">
                         <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Αλλαγή κωδικού</legend>
-                        <label className="font-bold text-sm mt-2.5 mb-[3px]">Νέος κωδικός</label>
-                        <input type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
+                        <label htmlFor="staff-new-password" className="font-bold text-sm mt-2.5 mb-[3px]">Νέος κωδικός</label>
+                        <input id="staff-new-password" type="password" value={newPassword} onChange={e => setNewPassword(e.target.value)}
                             className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
                         <Button onClick={handleReset} disabled={saving} className="mt-2.5 self-start">
                             {saving ? 'Αλλαγή...' : 'Αλλαγή κωδικού'}

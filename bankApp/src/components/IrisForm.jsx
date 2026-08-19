@@ -63,18 +63,18 @@ export default function IrisForm({ iban, onSuccess }) {
                 <fieldset className="flex flex-col gap-1 rounded-lg p-4 border border-gray-300">
                     <legend className="font-bold text-sm text-[#1f3c88] px-1.5">Αποστολή χρημάτων μέσω IRIS</legend>
 
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Αριθμός τηλεφώνου</label>
-                    <input type="tel" inputMode="numeric" maxLength={10}
+                    <label htmlFor="iris-phone" className="font-bold text-sm mt-2.5 mb-[3px]">Αριθμός τηλεφώνου</label>
+                    <input id="iris-phone" type="tel" inputMode="numeric" maxLength={10}
                         value={phone} onChange={e => setPhone(e.target.value)} placeholder="6912345678"
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
 
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
-                    <input type="number" min="0.01" step="0.01"
+                    <label htmlFor="iris-amount" className="font-bold text-sm mt-2.5 mb-[3px]">Ποσό (€)</label>
+                    <input id="iris-amount" type="number" min="0.01" step="0.01"
                         value={amount} onChange={e => setAmount(e.target.value)} placeholder="0.00"
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
 
-                    <label className="font-bold text-sm mt-2.5 mb-[3px]">Περιγραφή</label>
-                    <input value={description} onChange={e => setDescription(e.target.value)}
+                    <label htmlFor="iris-description" className="font-bold text-sm mt-2.5 mb-[3px]">Περιγραφή</label>
+                    <input id="iris-description" value={description} onChange={e => setDescription(e.target.value)}
                         placeholder="π.χ. ενοίκιο, εστιατόριο"
                         className="p-3 text-base border border-gray-300 rounded h-12 box-border" />
 
