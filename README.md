@@ -6,6 +6,8 @@ transfers, with access decided by the user's role.
 
 Final project — **Coding Factory 10**, Athens University of Economics and Business.
 
+[![build](https://github.com/kostarasae/BankApp/actions/workflows/build.yml/badge.svg)](https://github.com/kostarasae/BankApp/actions/workflows/build.yml)
+
 🔗 **Live:** https://bankapp-3cwp.onrender.com
 📖 **API documentation (Swagger):** https://bankapp-3cwp.onrender.com/swagger-ui.html
 
@@ -156,7 +158,9 @@ The second stage keeps only the JRE and the jar — not the JDK, the sources or
 `node_modules`. `.dockerignore` keeps `build/`, `node_modules/`, `docs/` and `.git/`
 out of the build context.
 
-Tests are skipped during the image build (`-x test`); they run locally and in CI.
+Tests are skipped during the image build (`-x test`) so a deploy is not held up by them;
+they run on every push through GitHub Actions instead — see
+[`.github/workflows/build.yml`](.github/workflows/build.yml).
 
 ### Deploy steps on Render
 
@@ -342,10 +346,25 @@ description.
 
 `contextLoads` runs against **H2 in-memory**, so it needs no PostgreSQL.
 
-**Integration tests** are run by hand against a running instance with Postman or curl,
-covering the flows that span several endpoints: a transfer landing on both statements,
-a password change followed by a fresh login, and a deletion being refused while the
-customer still holds an open account.
+### Continuous integration
+
+Every push to `main` runs the whole thing on a clean machine — the Gradle build with the
+JUnit suite, then the Vitest suite and the linter. Nothing is carried over from a
+developer's laptop, so a change that only builds locally fails here.
+
+### Checking it by hand
+
+Some things only a person can confirm. Against a running instance:
+
+| Check | Expected |
+|---|---|
+| Log in as `admin`, then `maria`, then an employee | Each sees a different set of tabs and actions |
+| Transfer between two customers | Amount and fee on the sender's statement, amount alone on the recipient's, both balances agreeing with their statements |
+| Open a statement with more than 20 movements | It pages, and the dashboard chart still covers the whole period |
+| Delete a customer who still has an open account | Refused until the account is closed |
+| As an administrator, try to delete your own account | Refused |
+| Press **Authorize** in Swagger UI, paste a token, call an endpoint | Works from the page |
+| Refresh the browser on `/login` | Loads rather than returning 404 |
 
 ---
 
